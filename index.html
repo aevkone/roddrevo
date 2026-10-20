@@ -109,7 +109,7 @@ button:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
 .scroller:focus-visible{outline:3px solid var(--accent);outline-offset:4px}
 .canvas{width:100%}
 .canvas .tree{touch-action:pan-x pan-y pinch-zoom}
-.lens{position:fixed;left:0;top:0;z-index:20;width:min(380px,72vw);aspect-ratio:1;border-radius:50%;overflow:hidden;pointer-events:none;
+.lens{position:fixed;left:0;top:0;z-index:20;width:min(380px,72vw,62vh);aspect-ratio:1;border-radius:50%;overflow:hidden;pointer-events:none;
  background:var(--card);border:4px solid var(--gold);box-shadow:0 0 0 2px var(--card),var(--shadow-card)}
 .lens-in{position:absolute;left:0;top:0;transform-origin:0 0}
 .lens-in svg{display:block;height:auto;max-width:none}
@@ -258,6 +258,8 @@ button:not(:disabled):active,.cta:active{transform:scale(.97)}
 
 .all-fams{font-size:1rem;color:var(--muted);margin:4px 0 0;line-height:1.6;max-width:none}
 .all-fams b{color:var(--ink);font-weight:600}
+#canvas{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none}
+#canvas.lensing{touch-action:none}
 
 [hidden]{display:none!important}
 .readonly .edit-only{display:none!important}
@@ -384,13 +386,13 @@ body.panel-open{overflow:hidden}
       <button type="button" id="zoomOut" aria-label="Уменьшить схему">−</button>
       <span class="zoom-level" id="zoomLevel" aria-live="polite">Целиком</span>
       <button type="button" id="zoomIn" aria-label="Увеличить схему">+</button>
-      <button type="button" id="lensbtn" class="mouse-only" aria-pressed="true">Лупа</button>
+      <button type="button" id="lensbtn" aria-pressed="true">Лупа</button>
       <button type="button" id="replay">Проиграть заново</button>
     </div>
   </div>
   <div class="add-cta edit-only"><button type="button" id="addAny" class="cta"><span class="cta-plus" aria-hidden="true">+</span>Добавить новые сведения в древо</button><span class="cta-note">Человек, история, дата или исправление — запись сразу увидят все родные</span></div>
   <div class="lens-hint mouse-only"><span class="lh-icon" aria-hidden="true"><svg viewBox="0 0 48 48"><circle cx="20" cy="20" r="13"/><path d="M30 30 L43 43"/></svg></span><p><b>Режим лупы:</b> наведите курсор на древо — под ним появится увеличительное стекло, и любую карточку можно прочитать крупно.</p></div>
-  <div class="lens-hint touch-only"><span class="lh-icon" aria-hidden="true"><svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="6"/><circle cx="24" cy="24" r="15"/></svg></span><p><b>Коснитесь человека</b> — откроется его карточка. Схему можно листать пальцем, а кнопкой <b>−</b> увидеть её целиком.</p></div>
+  <div class="lens-hint touch-only"><span class="lh-icon" aria-hidden="true"><svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="6"/><circle cx="24" cy="24" r="15"/></svg></span><p><b>Лупа:</b> нажмите на древо и подержите палец — появится увеличительное стекло, ведите им по карточкам. <b>Коснитесь человека</b> — откроется его карточка. Листайте схему пальцем, кнопкой <b>−</b> увидите её целиком.</p></div>
   <p class="line-note" id="lineNote" hidden><span></span> <button type="button" id="lineOff">Показать всё древо</button></p>
   <div class="scroll-wrap"><div class="scroller" id="scroller" tabindex="0" role="region" aria-label="Схема древа, листайте вбок стрелками"><div class="canvas" id="canvas"></div></div>
   <div class="minimap" id="minimap" hidden aria-hidden="true"><div class="mm-in" id="mmIn"></div><div class="mm-view" id="mmView"></div></div></div>
@@ -671,15 +673,19 @@ body.panel-open{overflow:hidden}
 
   // длинные строки: сначала уменьшаем кегль (не больше чем до 80%), потом обрезаем с многоточием
   function fit(svg){
+    // повторный вызов (после загрузки шрифтов) сначала сбрасывает прошлую подгонку
     svg.querySelectorAll('text.fit').forEach(function(t){
-      var max = W - 36, full = t.textContent, len;
-      try { len = t.getComputedTextLength(); } catch(e) { return; }
-      if (len <= max) return;
+      t.style.removeProperty('font-size'); t.removeAttribute('textLength'); t.removeAttribute('lengthAdjust');
+      // меряем рамку текста: она шире «длины текста» на выносные элементы букв и совпадает с тем, что видно
+      var max = W - 56, full = t.textContent, len;
+      try { len = t.getBBox().width; } catch(e) { return; }
+      if (!len || len <= max) return;
       var fs = parseFloat(getComputedStyle(t).fontSize), r = Math.max(.66, max / len);
       t.style.fontSize = (fs * r).toFixed(1) + 'px';
-      if (t.getComputedTextLength() <= max) return;
+      var len2 = t.getBBox().width;
+      if (len2 <= max) return;
       // имя в родословной не обрезаем: если и после уменьшения не влезает — слегка сжимаем по ширине
-      t.setAttribute('textLength', max); t.setAttribute('lengthAdjust', 'spacingAndGlyphs');
+      t.setAttribute('textLength', (t.getComputedTextLength() * max / len2).toFixed(1)); t.setAttribute('lengthAdjust', 'spacingAndGlyphs');
     });
   }
 
@@ -694,6 +700,7 @@ body.panel-open{overflow:hidden}
   }
 
   window.FamilyTree = {
+    fit: fit,
     draw: function(host, entries){
       var m = build(entries);
       host.innerHTML = render(m);
@@ -808,17 +815,57 @@ body.panel-open{overflow:hidden}
   }
   function frame(){
     raf = 0; var e = pend; if (!e) return;
-    var s = src(), r = s.getBoundingClientRect(), x = e.clientX - r.left, y = e.clientY - r.top;
+    showAt(e.clientX, e.clientY, false);
+  }
+  // touch: лупа стоит над пальцем, чтобы палец не закрывал увеличенное место
+  function showAt(cx, cy, touch){
+    var s = src(), r = s.getBoundingClientRect(), x = cx - r.left, y = cy - r.top;
     if (x < 0 || y < 0 || x > r.width || y > r.height) { lens.hidden = true; return; }
-    var vb = s.viewBox.baseVal.width, z = Math.max(1.3, (level ? 1.1 : .7) * vb / r.width);
+    var vb = s.viewBox.baseVal.width, z = Math.max(touch ? 1.8 : 1.3, (level ? 1.1 : .7) * vb / r.width);
     lens.hidden = false; var R = lens.offsetWidth / 2, w = Math.round(r.width * z);
     if (w !== lastW) { copy.style.width = w + 'px'; lastW = w; }
-    lens.style.transform = 'translate(' + (e.clientX - R) + 'px,' + (e.clientY - R) + 'px)';
+    var lx = cx - R, ly = cy - R;
+    if (touch) {
+      // над пальцем; если не влезает — под ним; на низком экране (телефон боком) — сбоку от пальца
+      ly = cy - 2 * R - 36;
+      if (ly < 8) ly = cy + 48;
+      if (ly + 2 * R > innerHeight - 8) { ly = cy - R; lx = cx > innerWidth / 2 ? cx - 2 * R - 48 : cx + 48; }
+      lx = Math.max(8, Math.min(innerWidth - 2 * R - 8, lx));
+      ly = Math.max(8, Math.min(innerHeight - 2 * R - 8, ly));
+    }
+    lens.style.transform = 'translate(' + lx + 'px,' + ly + 'px)';
     lin.style.transform = 'translate(' + (R - x * z) + 'px,' + (R - y * z) + 'px)';
   }
   c.addEventListener('pointermove', move);
-  c.addEventListener('pointerleave', function(){ pend = null; lens.hidden = true; });
-  c.addEventListener('pointerdown', function(){ pend = null; lens.hidden = true; });
+  c.addEventListener('pointerleave', function(e){ if (e.pointerType === 'mouse') { pend = null; lens.hidden = true; } });
+  c.addEventListener('pointerdown', function(e){ if (e.pointerType === 'mouse') { pend = null; lens.hidden = true; } });
+
+  // лупа пальцем: нажать и подержать на схеме, затем вести палец; обычное листание не мешает
+  var hold = 0, t0 = null, tLens = false, skipClick = false;
+  function tEnd(){ clearTimeout(hold); t0 = null; if (tLens) { tLens = false; lens.hidden = true; c.classList.remove('lensing'); } }
+  c.addEventListener('touchstart', function(e){
+    tEnd();
+    if (!on || !copy || e.touches.length !== 1) return;
+    var t = e.touches[0]; t0 = {x: t.clientX, y: t.clientY};
+    hold = setTimeout(function(){
+      if (!t0) return;
+      tLens = true; skipClick = true; c.classList.add('lensing'); showAt(t0.x, t0.y, true);
+      if (!move.seen) { move.seen = 1; try { localStorage.setItem('lensSeen', '1'); } catch(er) {} }
+      try { if (navigator.vibrate) navigator.vibrate(8); } catch(er) {}
+    }, 300);
+  }, {passive: true});
+  c.addEventListener('touchmove', function(e){
+    var t = e.touches[0];
+    if (tLens) { if (e.cancelable) e.preventDefault(); showAt(t.clientX, t.clientY, true); return; }
+    if (t0 && Math.abs(t.clientX - t0.x) + Math.abs(t.clientY - t0.y) > 10) { clearTimeout(hold); t0 = null; }
+  }, {passive: false});
+  c.addEventListener('touchend', tEnd);
+  c.addEventListener('touchcancel', tEnd);
+  // после лупы касание не открывает карточку и не вызывает меню «копировать»
+  c.addEventListener('click', function(e){ if (skipClick) { skipClick = false; e.stopPropagation(); e.preventDefault(); } }, true);
+  c.addEventListener('touchstart', function(){ skipClick = false; }, {passive: true, capture: true});
+  c.addEventListener('contextmenu', function(e){ if (tLens || skipClick) e.preventDefault(); });
+
 
   // на телефоне по умолчанию «Крупно», если масштаб ещё не выбирали
   var coarse = matchMedia('(pointer: coarse)').matches, def = coarse ? 2 : 0;
@@ -1151,6 +1198,12 @@ body.panel-open{overflow:hidden}
   hook(document.querySelector('#canvas svg'));
   badge(document.querySelector('#canvas svg'));
   if (document.fonts) document.fonts.ready.then(function(){ drawnKey = null; redraw(); });
+  // Chrome не перекладывает текст SVG, когда шрифт догрузился позже, — перерисовываем схему целиком
+  window.redrawTree = function(){ drawnKey = null; redraw(); };
+  if (document.fonts && document.fonts.addEventListener) {
+    var fontT = 0;
+    document.fonts.addEventListener('loadingdone', function(){ clearTimeout(fontT); fontT = setTimeout(window.redrawTree, 80); });
+  }
 
   var kindSel = $('fKind');
   function syncKind(){ form.classList.toggle('is-person', kindSel.value === 'person'); }
