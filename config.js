@@ -1,0 +1,1 @@
+window.FAMILY_API = '';

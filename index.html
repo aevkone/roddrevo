@@ -1,0 +1,1222 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content"><link rel="preload" href="fonts/f7.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" href="fonts/f6.woff2" as="font" type="font/woff2" crossorigin><meta name="robots" content="noindex, nofollow"><title>Генеалогическое древо</title><meta property="og:title" content="Генеалогическое древо Кочергиных"><meta property="og:description" content="131 человек, 6 поколений, все роды нашей семьи. Найдите себя и допишите, что знаете."><meta property="og:image" content="https://aevkone.github.io/roddrevo/og.jpg"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta name="twitter:card" content="summary_large_image"><meta name="theme-color" media="(prefers-color-scheme: light)" content="#f2ede3"><meta name="theme-color" media="(prefers-color-scheme: dark)" content="#121615"><meta name="color-scheme" content="light dark"><link rel="icon" href="favicon.svg" type="image/svg+xml"><script src="config.js"></script>
+<style>
+@font-face{font-family:"Cormorant Garamond";font-style:italic;font-weight:400;src:url(fonts/f0.woff2) format("woff2"),url(fonts/f0.ttf) format("truetype");font-display:swap}
+@font-face{font-family:"Cormorant Garamond";font-style:normal;font-weight:400;src:url(fonts/f1.woff2) format("woff2"),url(fonts/f1.ttf) format("truetype");font-display:swap}
+@font-face{font-family:"Cormorant Garamond";font-style:normal;font-weight:500;src:url(fonts/f7.woff2) format("woff2"),url(fonts/f7.ttf) format("truetype");font-display:swap}
+@font-face{font-family:"Cormorant Garamond";font-style:italic;font-weight:500;src:url(fonts/f8.woff2) format("woff2"),url(fonts/f8.ttf) format("truetype");font-display:swap}
+@font-face{font-family:"Cormorant Garamond";font-style:normal;font-weight:600;src:url(fonts/f2.woff2) format("woff2"),url(fonts/f2.ttf) format("truetype");font-display:swap}
+@font-face{font-family:"Cormorant Garamond";font-style:normal;font-weight:700;src:url(fonts/f5.woff2) format("woff2"),url(fonts/f5.ttf) format("truetype");font-display:swap}
+@font-face{font-family:"Cormorant SC";font-weight:500;src:url(fonts/f3.woff2) format("woff2"),url(fonts/f3.ttf) format("truetype");font-display:swap}
+@font-face{font-family:"Cormorant SC";font-weight:600;src:url(fonts/f4.woff2) format("woff2"),url(fonts/f4.ttf) format("truetype");font-display:swap}
+@font-face{font-family:"Cormorant SC";font-weight:700;src:url(fonts/f6.woff2) format("woff2"),url(fonts/f6.ttf) format("truetype");font-display:swap}
+
+@font-face{font-family:"Cormorant Fallback";src:local("Noto Serif"),local("Georgia"),local("Times New Roman");size-adjust:76%;ascent-override:121%;descent-override:38%;line-gap-override:0%}
+:root{
+ --paper:#f2ede3; --card:#fbf8f2; --ink:#0f1413; --muted:#3f3b34; --rule:#d2c8b4; --line:#6f6858;
+ --frame:#2e2b25; --gold:#86641f; --gold2:#d9bd78; --accent:#7a1f2b;
+ --k:#7a1f2b; --s:#23365c; --m:#2e5a43; --r:#3a3f44; --l:#6e530f;
+ --serif:"Cormorant Garamond","Cormorant Fallback",Georgia,serif;
+ --sc:"Cormorant SC","Cormorant Fallback",Georgia,serif;
+ --on-accent:#fbf8f2; --border-ctl:var(--line); --focus-ring:color-mix(in srgb,var(--gold) 35%,transparent);
+ --accent-tint:color-mix(in srgb,var(--accent) 10%,transparent); --shadow-card:0 18px 40px -24px rgba(40,30,10,.35);
+ --ease-out:cubic-bezier(.23,1,.32,1); --ease-in-out:cubic-bezier(.77,0,.175,1); --ease-drawer:cubic-bezier(.32,.72,0,1);
+}
+
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--paper:#121615;--card:#1b201f;--ink:#fffaf0;--muted:#d8d0c1;--rule:#4a524f;--line:#a39b8c;--frame:#e3dbca;--gold:#e6c57c;--gold2:#f0d99c;--accent:#e0a0a8;--on-accent:#121615;--border-ctl:#a39b8c;--shadow-card:0 18px 40px -24px rgba(0,0,0,.7);--k:#e0939c;--s:#9db3df;--m:#8fc7a9;--r:#c3c8cc;--l:#e2c47a;color-scheme:dark}}
+:root[data-theme="dark"]{--paper:#121615;--card:#1b201f;--ink:#fffaf0;--muted:#d8d0c1;--rule:#4a524f;--line:#a39b8c;--frame:#e3dbca;--gold:#e6c57c;--gold2:#f0d99c;--accent:#e0a0a8;--on-accent:#121615;--border-ctl:#a39b8c;--shadow-card:0 18px 40px -24px rgba(0,0,0,.7);--k:#e0939c;--s:#9db3df;--m:#8fc7a9;--r:#c3c8cc;--l:#e2c47a;color-scheme:dark}
+
+.tree{display:block;width:100%;height:auto}
+.tree text{text-anchor:middle;font-family:var(--serif);font-variant-numeric:lining-nums}
+.tree .card{fill:var(--card);stroke:var(--frame);stroke-width:3.2}
+.tree .stripe{fill:var(--c)}
+.tree .sur{font-family:var(--sc);font-size:26px;letter-spacing:.12em;fill:var(--c);font-weight:700}
+.tree .name{font-size:35px;font-weight:700;fill:var(--ink)}
+.tree .date{font-size:30px;font-weight:500;fill:var(--ink);font-variant-numeric:lining-nums tabular-nums;letter-spacing:.04em}
+.tree .note{font-size:26px;font-weight:500;font-style:italic;fill:var(--muted)}
+.tree .sib{text-anchor:start;font-size:30px;font-weight:700;fill:var(--ink)}
+.tree .sibd{text-anchor:start;font-size:24px;font-weight:400;fill:var(--muted);font-variant-numeric:lining-nums}
+.tree .kin{fill:none;stroke:var(--line);stroke-width:2.6}
+.tree .wed{fill:none;stroke:var(--gold);stroke-width:3.6}
+.tree .wed.ex{stroke:var(--muted)}
+.tree .ring circle{fill:none;stroke:var(--gold);stroke-width:3.2}
+.tree .ring.ex circle{stroke:var(--muted)}
+.tree .exl{font-size:22px;font-style:italic;fill:var(--muted)}
+.tree .genl{font-family:var(--sc);font-size:60px;fill:var(--gold);text-anchor:middle;font-weight:600}
+.f-k{--c:var(--k)}.f-s{--c:var(--s)}.f-m{--c:var(--m)}.f-r{--c:var(--r)}.f-l{--c:var(--l)}.f-i{--c:var(--muted)}
+.f-i .card{stroke-dasharray:9 6}
+.f-i .stripe{fill:none}
+.emblem .sh-edge{stroke:var(--gold);stroke-width:3}
+
+@media (prefers-reduced-motion: no-preference){
+ .tree-play .tree .node{animation:rise .8s var(--ease-out) both;animation-delay:calc(.5s + var(--g)*.6s + var(--i)*6ms);transform-box:fill-box;transform-origin:center}
+ .tree-play .tree .kin,.tree-play .tree .wed{stroke-dasharray:1;stroke-dashoffset:1;animation:draw .9s ease-out forwards;animation-delay:calc(.3s + var(--g)*.6s)}
+ .tree-play .tree .wed.ex{stroke-dasharray:none;animation:fade .9s both;animation-delay:calc(.3s + var(--g)*.6s)}
+ .tree-play .tree .ring{animation:pop .5s cubic-bezier(.3,1.6,.5,1) both;animation-delay:calc(.9s + var(--g)*.6s);transform-box:fill-box;transform-origin:center}
+ .tree-play .tree .genl{animation:fade 1s both;animation-delay:calc(.3s + var(--g)*.6s)}
+ .reveal-on .tree-sec:not(.tree-play):not(.tree-done) .tree .node,.reveal-on .tree-sec:not(.tree-play):not(.tree-done) .tree .ring{opacity:0}
+ .lite.tree-play .tree .node{animation:fade .45s ease-out both;animation-delay:calc(.2s + var(--g)*.3s)}
+ .lite.tree-play .tree .kin,.lite.tree-play .tree .wed{animation-duration:.4s;animation-delay:calc(.1s + var(--g)*.3s)}
+ .play .emblem .sh-edge{stroke-dasharray:1;stroke-dashoffset:1;animation:draw 1.4s ease-in-out forwards;animation-delay:calc(var(--e)*.15s)}
+ .play .emblem .sh-field,.play .emblem .charge{animation:fade .9s both;animation-delay:calc(.9s + var(--e)*.15s)}
+ .play .title-gold{animation:foil 2.6s var(--ease-in-out) .2s both}
+}
+@keyframes rise{from{opacity:0;transform:translateY(14px) scale(.96)}}
+@keyframes draw{to{stroke-dashoffset:0}}
+@keyframes fade{from{opacity:0}}
+@keyframes pop{from{opacity:0;transform:scale(.2)}}
+@keyframes foil{from{background-position:120% 0}to{background-position:-20% 0}}
+/* Layout: грамота на плотной бумаге — заглавие, пояс гербов, древо во всю ширину, справочные разделы узкой колонкой */
+html{-webkit-tap-highlight-color:transparent;-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{background:var(--paper);color:var(--ink);font:500 20px/1.6 var(--serif);font-variant-numeric:lining-nums;font-feature-settings:"lnum" 1;text-wrap:pretty}
+.page{max-width:1240px;margin:0 auto;padding-block:48px 72px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:grid;grid-template-columns:minmax(0,1fr)}
+.page>main{display:grid;grid-template-columns:minmax(0,1fr);gap:40px;min-width:0}
+h1,h2,h3{font-weight:600;margin:0;line-height:1.1;text-wrap:balance}
+h2{font-family:var(--sc);font-size:clamp(1.8rem,3.4vw,2.5rem);font-weight:700;letter-spacing:.05em;color:var(--accent)}
+h3{font-family:var(--sc);font-size:1.35rem;letter-spacing:.05em}
+p{margin:0}
+.skip{position:absolute;left:16px;top:-80px;z-index:50;background:var(--accent);color:var(--on-accent);padding:12px 18px;font-weight:700}
+.skip:focus{top:12px}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.eyebrow{font-family:var(--sc);letter-spacing:.24em;font-size:.95rem;color:var(--gold)}
+.hero{display:grid;gap:12px;justify-items:center;text-align:center;padding-block:24px 8px;border-block:1px solid var(--gold);position:relative}
+.hero::after{content:"";position:absolute;inset:5px 0;border-block:1px solid var(--rule);pointer-events:none}
+.hero h1{font-size:clamp(2.4rem,8vw,6.2rem);font-weight:600;letter-spacing:.01em}
+.title-gold{background:linear-gradient(100deg,var(--gold) 0%,var(--gold) 40%,var(--gold2) 50%,var(--gold) 60%,var(--gold) 100%);background-size:250% 100%;background-position:-20% 0;-webkit-background-clip:text;background-clip:text;color:transparent}
+.sub{font-family:var(--sc);letter-spacing:.12em;font-size:1.2rem}
+.families{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:20px}
+.fam{display:grid;gap:8px;align-content:start;justify-items:center;text-align:center;padding:20px 16px;background:var(--card);border:1px solid var(--rule);min-width:0}
+.shield{width:96px}
+.fam .place{font-style:italic;color:var(--muted);font-size:.95rem;font-weight:500}
+.fam p{font-size:1rem;line-height:1.5;text-align:left;justify-self:stretch;hyphens:auto;-webkit-hyphens:auto;max-width:42ch}
+.fam .first span{display:block;font-family:var(--sc);letter-spacing:.12em;font-size:.9rem;color:var(--gold)}
+.fam .mean{color:var(--ink)}
+.fam .arms{color:var(--muted);font-size:.95rem}
+.fam h3{color:var(--c,var(--ink))}
+.disclaimer{color:var(--muted);text-align:center;max-width:62ch;justify-self:center;margin-top:-32px;font-size:.95rem;font-weight:500;line-height:1.55}
+.tree-sec{display:grid;gap:16px}
+.bar{display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;align-items:end}
+.ctl{display:flex;gap:8px;flex-wrap:wrap}
+button{font:600 1rem var(--serif);color:var(--ink);background:var(--card);border:1.5px solid var(--border-ctl);min-height:48px;padding:8px 16px;cursor:pointer}
+button[aria-pressed="true"]{border-color:var(--gold);color:var(--accent)}
+button:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.legend{display:flex;flex-wrap:wrap;gap:8px 18px;font-size:1rem;color:var(--muted);margin-top:6px}
+.legend span::before{content:"";display:inline-block;width:14px;height:10px;margin-right:6px;background:var(--c);vertical-align:0}
+.legend .lg-ring::before{width:16px;height:9px;border-radius:9px;background:none;border:2px solid var(--gold)}
+.legend .lg-ex::before{width:18px;height:0;background:none;border-top:2px solid var(--muted);vertical-align:4px}
+.legend .f-i::before{background:var(--card);border:2px dashed var(--muted);width:12px;height:8px}
+.legend .f-r::before{background:var(--r);box-shadow:inset 0 0 0 2px var(--gold)}
+.scroller{overflow-x:auto;overscroll-behavior-x:contain;background:var(--card);border:1px solid var(--rule);outline:1px solid var(--gold);outline-offset:4px;padding:12px}
+.scroller:focus-visible{outline:3px solid var(--accent);outline-offset:4px}
+.canvas{width:100%}
+.canvas .tree{touch-action:pan-x pan-y pinch-zoom}
+.lens{position:fixed;left:0;top:0;z-index:20;width:min(380px,72vw);aspect-ratio:1;border-radius:50%;overflow:hidden;pointer-events:none;
+ background:var(--card);border:4px solid var(--gold);box-shadow:0 0 0 2px var(--card),var(--shadow-card)}
+.lens-in{position:absolute;left:0;top:0;transform-origin:0 0}
+.lens-in svg{display:block;height:auto;max-width:none}
+.lens .tree *{animation:none!important}
+.lens .tree path,.mm-in .tree path{stroke-dashoffset:0!important}
+.other ul,.next{margin:12px 0 0;padding-left:20px;display:grid;gap:6px;max-width:80ch}
+.arch{display:grid;gap:14px}
+.arch>p{max-width:75ch;color:var(--muted)}
+.tbl{overflow-x:auto;background:var(--card);border:1px solid var(--rule)}
+table{border-collapse:collapse;width:100%;font-size:1rem}
+table td{font-variant-numeric:lining-nums tabular-nums}
+th,td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--rule);vertical-align:top}
+th{font-family:var(--sc);letter-spacing:.1em;color:var(--gold);font-weight:600}
+tr:last-child td{border-bottom:0}
+a{color:var(--accent)}
+footer{color:var(--muted);font-size:1rem;border-top:1px solid var(--gold);padding-top:14px;line-height:1.55;max-width:62ch}
+.contrib{display:grid;gap:10px;max-width:80ch;background:var(--card);border:1px solid var(--gold);padding:16px 18px}
+.lens-hint{display:flex;gap:12px;align-items:center;border:0;border-left:3px solid var(--gold);background:transparent;padding:4px 0 4px 14px}
+.lens-hint p{font-size:1.1rem;font-weight:500;line-height:1.35;max-width:none}
+.lens-hint b{color:var(--accent)}
+.lens-hint.seen{display:none!important}
+.lh-icon{flex:none;width:34px;height:34px}
+.lh-icon svg{width:100%;height:100%;fill:none;stroke:var(--gold);stroke-width:4;stroke-linecap:round}
+
+/* Блоки разделов */
+.page{gap:40px}
+.block{position:relative;display:grid;grid-template-columns:minmax(0,1fr);gap:18px;background:var(--card);border:1px solid var(--rule);padding:clamp(20px,3.2vw,40px);
+ box-shadow:var(--shadow-card)}
+.block::before,.block::after{content:"";position:absolute;width:34px;height:34px;border:3px solid var(--gold);pointer-events:none}
+.block::before{left:-1px;top:-1px;border-right:0;border-bottom:0}
+.block::after{right:-1px;bottom:-1px;border-left:0;border-top:0}
+.block-head{display:flex;align-items:center;gap:14px;padding-bottom:12px;border-bottom:2px solid var(--gold);position:relative}
+.block-head h2{margin:0}
+.block-no{flex:none;width:14px;height:14px;transform:rotate(45deg);background:var(--gold);box-shadow:0 0 0 4px var(--card),0 0 0 6px var(--gold)}
+.tree-sec .bar{align-items:center}
+.tree-sec .bar .block-head{flex:1 1 320px;border-bottom:0;padding-bottom:0}
+.fam-sec .disclaimer{margin-top:0}
+.families .fam{border-color:var(--rule);background:var(--paper);border-top:3px solid var(--c,var(--gold))}
+.feed-sec .entry,.other ul,.next-sec .next{position:relative}
+.progress{position:fixed;left:0;top:env(safe-area-inset-top,0px);height:3px;width:100%;background:linear-gradient(90deg,var(--accent),var(--gold));transform:scaleX(0);transform-origin:0 50%;z-index:30}
+
+/* Справочные разделы — тише основных */
+.other,.arch,.privacy-sec{box-shadow:none;background:transparent;border-color:var(--rule)}
+.other::before,.other::after,.arch::before,.arch::after,.privacy-sec::before,.privacy-sec::after{display:none}
+.other h2,.arch h2,.privacy-sec h2{font-size:clamp(1.5rem,2.6vw,1.9rem)}
+.arch>p,.privacy,.other ul{color:var(--ink)}
+@media (max-width:640px){
+ .tbl table,.tbl tbody,.tbl tr,.tbl td{display:block;width:auto}
+ .tbl thead{display:none}
+ .tbl tr{padding:12px 14px;border-bottom:1px solid var(--rule)}
+ .tbl td{border:0;padding:2px 0}
+ .tbl td:first-child{font-weight:700;font-size:1.05rem}
+}
+
+/* Движение */
+@media (prefers-reduced-motion: no-preference){
+ html{scroll-behavior:smooth}
+ .reveal-on .reveal{opacity:0;transform:translateY(12px);transition:opacity 400ms ease,transform 500ms var(--ease-out)}
+ .reveal-on .reveal.in{opacity:1;transform:none}
+ .reveal-on .reveal .block-head{clip-path:inset(-14px 100% -14px -14px);transition:clip-path 600ms var(--ease-out) 120ms}
+ .reveal-on .reveal.in .block-head{clip-path:inset(-14px -14px -14px -14px)}
+ .reveal-on .reveal .block-no{transform:rotate(45deg) scale(.6);opacity:0;transition:transform 400ms var(--ease-out) 200ms,opacity 300ms ease 200ms}
+ .reveal-on .reveal.in .block-no{transform:rotate(45deg) scale(1);opacity:1}
+ .reveal-on .fam-sec .fam{opacity:0;transform:translateY(26px) scale(.97);transition:opacity .7s ease,transform .8s var(--ease-out),box-shadow .3s ease}
+ .reveal-on .fam-sec.in .fam{opacity:1;transform:none;transition-delay:calc(.1s + var(--e)*.06s),calc(.1s + var(--e)*.06s),0s}
+ .fam .shield svg{transition:transform .5s cubic-bezier(.3,1.4,.5,1)}
+ .hero::before{content:"";position:absolute;left:50%;top:-1px;width:100%;height:1px;background:var(--gold);transform:translateX(-50%) scaleX(0);animation:rule 1.4s var(--ease-in-out) .1s forwards}
+ .play .hero .sub,.play .hero .pdf{animation:fadeUp .9s ease both}
+ .play .hero .sub{animation-delay:.6s}.play .hero .pdf{animation-delay:1s}
+ .entry{animation:fadeUp .6s ease both}
+ .feed .entry:nth-child(2){animation-delay:.08s}.feed .entry:nth-child(3){animation-delay:.16s}.feed .entry:nth-child(n+4){animation-delay:.24s}
+ .lens:not([hidden]){animation:lensIn .22s cubic-bezier(.3,1.4,.5,1)}
+ .lens-hint .lh-icon svg{animation:peek 3.2s ease-in-out 2.5s 3}
+ .tree .ring circle{transform-box:fill-box;transform-origin:center}
+ .tree .node[data-pid] .card{transition:stroke-width .2s ease,stroke .2s ease}
+}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}}
+@keyframes lensIn{from{opacity:0;scale:.6}}
+@keyframes rule{to{transform:translateX(-50%) scaleX(1)}}
+@keyframes peek{0%,100%{transform:none}30%{transform:translate(-4px,-4px) scale(1.12)}60%{transform:translate(3px,2px) scale(1.04)}}
+
+/* Первый экран: цифры, поиск, шаги */
+.facts{display:flex;flex-wrap:wrap;justify-content:center;gap:6px 22px;font-family:var(--sc);letter-spacing:.06em;font-size:1.15rem;color:var(--ink)}
+.facts b{font-family:var(--serif);font-size:1.6rem;color:var(--accent);margin-right:4px;font-variant-numeric:lining-nums tabular-nums;display:inline-block;min-width:1.2em;text-align:right}
+.ai-badge{display:inline-flex;align-items:center;text-align:center;text-wrap:balance;max-width:100%;min-height:44px;font-family:var(--sc);letter-spacing:.08em;font-weight:700;color:var(--gold);text-decoration:none;border:1px solid var(--gold);padding:6px 16px;border-radius:999px}
+.finder{position:relative;width:min(640px,100%);display:grid;gap:6px;text-align:left;margin-top:6px}
+.finder-label{font-family:var(--sc);letter-spacing:.1em;font-weight:700;color:var(--accent);font-size:1.05rem;text-align:center}
+.finder-row{display:flex;border:2px solid var(--gold);background:var(--card)}
+.finder input{flex:1;min-width:0;font:600 1.2rem var(--serif);color:var(--ink);background:transparent;border:0;padding:12px 14px}
+.finder input:focus{outline:none}
+.finder-row:focus-within{outline:3px solid var(--accent);outline-offset:2px;box-shadow:none}
+.find-btn{border:0;border-left:2px solid var(--gold);background:var(--accent);color:var(--on-accent);font:700 1.1rem var(--serif);padding:0 22px;min-height:52px}
+.find-list{position:absolute;left:0;right:0;top:100%;z-index:25;list-style:none;margin:4px 0 0;padding:4px;background:var(--card);border:1px solid var(--gold);box-shadow:0 16px 36px -12px rgba(30,20,8,.35);max-height:340px;overflow-y:auto}
+.find-list li{display:flex;justify-content:space-between;gap:12px;padding:10px 12px;cursor:pointer;font-size:1.1rem}
+.find-list li[aria-selected="true"]{background:var(--paper);box-shadow:inset 3px 0 0 var(--accent)}
+.find-list li span{color:var(--muted);font-variant-numeric:lining-nums tabular-nums}
+.find-list li.none{color:var(--muted);cursor:default;font-style:italic}
+.steps{list-style:none;counter-reset:s;display:flex;flex-wrap:wrap;justify-content:center;gap:10px 26px;margin:6px 0 0;padding:0;font-size:1.05rem}
+.steps li{counter-increment:s;position:relative;padding-left:40px;min-height:30px;text-align:left;line-height:1.4}
+.steps li::before{content:counter(s);position:absolute;left:0;top:-1px;display:grid;place-items:center;width:30px;height:30px;box-sizing:border-box;border-radius:50%;border:2px solid var(--gold);color:var(--accent);font-weight:700;font-family:var(--serif)}
+/* Масштаб и мини-карта */
+.zoom-level{min-width:7.5em;text-align:center;font-family:var(--sc);font-weight:700;color:var(--accent);align-self:center}
+#zoomIn,#zoomOut{min-width:48px;min-height:48px;padding:0;font-size:1.6rem;line-height:1;font-weight:700;display:inline-grid;place-items:center}
+button:disabled{opacity:1;color:var(--muted);border-style:dashed;background:transparent;cursor:not-allowed}
+.scroll-wrap{position:relative;min-width:0;max-width:100%}
+.minimap{position:absolute;right:10px;bottom:10px;width:min(260px,40%);background:var(--card);border:1px solid var(--gold);box-shadow:0 8px 24px -10px rgba(30,20,8,.4);cursor:pointer;z-index:5;padding:4px}
+.mm-in svg{display:block;width:100%;height:auto;pointer-events:none}
+.mm-in .tree *{animation:none!important}
+.mm-in text{display:none}
+.mm-view{position:absolute;top:4px;bottom:4px;border:2px solid var(--accent);background:var(--accent-tint)}
+@media (pointer:coarse){.minimap{right:auto;left:10px;width:min(200px,46%)}}
+/* Тач и мышь */
+.touch-only{display:none!important}
+@media (hover: none), (pointer: coarse){.mouse-only{display:none!important}.touch-only{display:flex!important}}
+/* Тактильный отклик: hover только у мыши, нажатие видно всем */
+button,a,.cta,.tree .node[data-pid],.find-list li,.minimap{touch-action:manipulation}
+button,.cta,.find-list li,.tree .node[data-pid],.minimap{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+button{transition:transform 140ms var(--ease-out),border-color 200ms ease,background-color 200ms ease,filter 200ms ease}
+button:not(:disabled):active,.cta:active{transform:scale(.97)}
+.find-btn:active,button.primary:active{filter:brightness(.92)}
+.find-list li:active{background:var(--paper)}
+.tree .node[data-pid]:active .card{stroke:var(--accent);stroke-width:6}
+.tree .node[data-pid]:focus-visible .card{stroke:var(--accent);stroke-width:14;paint-order:stroke}
+@media (hover:hover) and (pointer:fine){
+ button:not(:disabled):hover{border-color:var(--gold);transform:translateY(-1px)}
+ .fam:hover{box-shadow:0 18px 36px -18px rgba(40,30,10,.45)}
+ .fam:hover .shield svg{transform:rotate(-5deg) scale(1.08)}
+ .find-list li:hover{background:var(--paper)}
+ button.primary:hover,.find-btn:hover{filter:brightness(1.1)}
+ .tree .node[data-pid]:hover .card{stroke:var(--gold);stroke-width:5}
+ .cta:hover{background:var(--paper);border-color:var(--accent)}
+ .ai-badge:hover{background:var(--card);color:var(--accent)}
+}
+@media (prefers-reduced-motion:reduce){button:not(:disabled):active,.cta:active{transform:none}}
+/* Фамилии на телефоне — карусель */
+@media (max-width:640px){
+ .fam-sec .families{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:12px;padding-bottom:8px;margin-inline:-4px}
+ .fam-sec .fam{flex:0 0 82%;scroll-snap-align:center}
+ .steps{flex-direction:column;align-items:flex-start}
+ .eyebrow{letter-spacing:.14em;font-size:.85rem;text-wrap:balance}
+ .legend{display:grid;grid-template-columns:1fr 1fr;gap:4px 12px}
+}
+.byline{font-family:var(--sc);letter-spacing:.1em;color:var(--gold);font-weight:700}
+.privacy{margin:0;padding-left:20px;display:grid;gap:8px;max-width:80ch}
+
+
+
+[hidden]{display:none!important}
+.readonly .edit-only{display:none!important}
+html:not(.readonly) .ro-note{display:none}
+.pdf a{font-family:var(--sc);letter-spacing:.08em;font-size:1.05rem}
+button.primary{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.tree .node[data-pid]{cursor:pointer}
+.tree .node:focus{outline:none}
+.tree .badge circle{fill:var(--accent);stroke:var(--card);stroke-width:4}
+.tree .badge text{fill:var(--card);font-size:22px;font-weight:700;font-family:var(--serif)}
+.feed-sec{display:grid;gap:12px}
+.feed,.plist{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.feed{grid-template-columns:repeat(auto-fill,minmax(min(300px,100%),1fr))}
+.feed .empty,.feed .empty-cta,.feed .more{grid-column:1/-1}
+.feed .more{justify-self:center}
+.feed .e-text{display:-webkit-box;-webkit-line-clamp:8;-webkit-box-orient:vertical;overflow:hidden}
+.feed .e-text.open{display:block}
+.entry{background:var(--card);border:1px solid var(--rule);border-left:3px solid var(--gold);padding:12px 14px;display:grid;gap:6px;min-width:0}
+.entry .e-head{display:flex;flex-wrap:wrap;gap:8px;align-items:baseline}
+.e-kind{font-family:var(--sc);letter-spacing:.08em;font-size:.95rem;color:var(--gold);font-weight:600}
+.e-kind.k-correction{color:var(--accent)}
+.e-who{font:600 1rem var(--serif);background:none;border:0;min-height:44px;padding:8px 0;display:inline-flex;align-items:center;color:var(--ink);text-decoration:underline;text-decoration-color:var(--rule);text-underline-offset:3px;cursor:pointer}
+.e-name{font-weight:700;font-size:1.08rem}
+.e-meta,.e-foot{color:var(--muted);font-size:1rem}
+.e-meta,.p-meta{font-variant-numeric:lining-nums tabular-nums}
+.e-text{white-space:pre-wrap;overflow-wrap:anywhere}
+.e-foot{display:flex;flex-wrap:wrap;gap:10px;align-items:center;font-style:normal}
+.empty{color:var(--muted);font-style:normal}
+.empty-cta{grid-column:1/-1;display:grid;gap:12px;justify-items:start;padding:22px 24px;background:var(--paper);border:1px dashed var(--gold)}
+.ei-title{font:600 1.5rem/1.2 var(--serif);color:var(--accent)}
+.ei-text{color:var(--ink);max-width:60ch}
+/* Панель человека: прерываемый переход, на телефоне — шторка снизу */
+.panel{position:fixed;inset:0;z-index:40;display:flex;justify-content:flex-end}
+.panel-back{position:absolute;inset:0;background:rgba(20,16,8,.35);opacity:0;transition:opacity 240ms ease;touch-action:none}
+.panel-box{position:relative;width:min(520px,100%);height:100%;overflow-y:auto;overscroll-behavior:contain;background:var(--paper);border-left:2px solid var(--gold);
+ padding-block:max(24px,env(safe-area-inset-top,0px)) 120px;padding-left:24px;padding-right:max(24px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:8px;
+ transform:translateX(100%);transition:transform 320ms var(--ease-drawer)}
+.panel.open .panel-box{transform:none}
+.panel.open .panel-back{opacity:1}
+.panel:not(.open) .panel-box{transition-duration:200ms;transition-timing-function:var(--ease-out)}
+html:has(body.panel-open){overflow:hidden}
+@media (max-width:640px){
+ .panel{align-items:flex-end}
+ .panel-box{box-sizing:border-box;width:100%;height:auto;max-height:92dvh;border-left:0;border-top:2px solid var(--gold);border-radius:18px 18px 0 0;transform:translateY(100%);padding-bottom:calc(120px + env(safe-area-inset-bottom,0px))}
+}
+@media (prefers-reduced-motion:reduce){.panel-box,.panel-back{transition:none}}
+.panel-close{position:absolute;right:max(12px,env(safe-area-inset-right,0px));top:max(10px,env(safe-area-inset-top,0px));min-width:48px;min-height:48px;padding:0;display:grid;place-items:center;font-size:1.8rem;line-height:1}
+.p-sur{font-family:var(--sc);letter-spacing:.14em;color:var(--gold);font-weight:600}
+.p-name{font-family:var(--serif);font-weight:700;font-size:clamp(1.7rem,3.4vw,2.2rem);letter-spacing:0;line-height:1.15;padding-right:52px}
+.p-meta{color:var(--muted);font-style:italic;font-weight:500}
+.panel h4{font-family:var(--sc);letter-spacing:.1em;margin:16px 0 4px;color:var(--accent);font-size:1.05rem}
+.addform{display:grid;gap:6px}
+.addform label{font-size:1.05rem;color:var(--ink);font-weight:600;margin-top:4px}
+.addform .hint{color:var(--muted);font-weight:400;font-style:italic}
+.addform input,.addform select,.addform textarea{font:500 1.15rem/1.4 var(--serif);min-height:48px;padding:10px 12px;color:var(--ink);background:var(--card);border:1.5px solid var(--line);width:100%;box-sizing:border-box}
+.addform ::placeholder{color:var(--muted);opacity:1;font-style:italic}
+.addform input:focus,.addform select:focus,.addform textarea:focus{outline:2px solid var(--gold);outline-offset:0}
+.addform [aria-invalid="true"]{border-color:var(--accent)}
+.addform .pfields{display:none;gap:6px}
+.addform.is-person .pfields{display:grid}
+.addform .two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.addform .hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
+#fSend{justify-self:stretch;min-height:56px;font-size:1.2rem;margin-top:16px;display:inline-flex;justify-content:center;align-items:center;gap:8px}
+#fSend[aria-busy="true"]{opacity:1;cursor:progress}
+#fSend[aria-busy="true"]::before{content:"";width:14px;height:14px;border:2px solid currentColor;border-right-color:transparent;border-radius:50%;animation:spin 600ms linear infinite}
+#fSend.done{background:var(--m);border-color:var(--m)}
+@keyframes spin{to{transform:rotate(360deg)}}
+.form-msg{min-height:1.4em;font-size:1rem}
+.form-msg.ok{color:var(--m);font-weight:700;font-size:1.05rem}
+.form-msg.err{color:var(--accent)}
+body.panel-open{overflow:hidden}
+@media (max-width:520px){.addform .two{grid-template-columns:1fr}}
+.tree .node.added .card{stroke:var(--gold);stroke-dasharray:none}
+.tree .newtag{text-anchor:start;font-family:var(--sc);font-size:20px;letter-spacing:.1em;fill:var(--gold);font-weight:700}
+.tree .kin.dash{stroke-dasharray:10 8}
+.tree .kin.sibl{stroke:var(--line)}
+.add-cta{display:flex;flex-wrap:wrap;align-items:center;gap:12px 18px}
+.cta{display:inline-flex;align-items:center;gap:10px;font:700 1.08rem/1.2 var(--serif);color:var(--accent);min-height:52px;
+ background:var(--card);border:1.5px solid var(--gold);padding:8px 16px 8px 9px;cursor:pointer;transition:background .2s ease,border-color .2s ease,transform 140ms var(--ease-out)}
+.cta:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+.cta-plus{display:grid;place-items:center;width:26px;height:26px;border-radius:50%;background:var(--accent);color:var(--on-accent);font-size:19px;line-height:1;font-weight:700}
+.cta-note{color:var(--muted);font-size:1rem}
+.e-unv,.e-ok{font-size:.9rem;font-weight:700;padding:1px 8px;border:1px solid currentColor}
+.e-unv{color:var(--muted)}.e-ok{color:var(--m)}
+.draft-note{color:var(--muted);font-size:1rem;margin:4px 0 0}
+.disclaimer{font-weight:500}
+/* Поиск: найденный человек и «Ваша линия» */
+.tree .node.found .card{stroke:var(--accent);stroke-width:8}
+@media (prefers-reduced-motion: no-preference){.tree .node.found{animation:found .9s var(--ease-in-out) .5s 2;transform-box:fill-box;transform-origin:center}}
+@keyframes found{50%{transform:scale(1.08)}}
+.tree.has-line .node:not(.anc):not(.found),.tree.has-line .kin:not(.lineage),.tree.has-line .wed{opacity:.3;transition:opacity .6s var(--ease-out)}
+.tree .kin.lineage{stroke:var(--accent);stroke-width:6}
+.tree .node.anc .card{stroke:var(--accent);stroke-width:5}
+@media (prefers-reduced-motion:no-preference){.tree .kin.lineage{stroke-dasharray:1;stroke-dashoffset:1;animation:draw .55s var(--ease-out) forwards;animation-delay:calc(.6s + var(--d)*.4s)}}
+.line-note{display:flex;flex-wrap:wrap;gap:12px;align-items:center;font-weight:600;color:var(--accent)}
+/* Новый человек после «Сохранить» */
+.tree .node.just-added .card{stroke:var(--accent);stroke-width:8}
+@media (prefers-reduced-motion:no-preference){.tree .node.just-added{animation:rise .7s var(--ease-out) .3s both,found .9s var(--ease-in-out) 1.1s 2;transform-box:fill-box;transform-origin:center}}
+</style></head><body>
+<div class="page play" id="page">
+<a class="skip" href="#tree">Перейти к древу</a>
+<div class="progress" id="progress" aria-hidden="true"></div>
+<header class="hero">
+  <div class="eyebrow">Семейный архив · XIX – XXI век</div>
+  <h1><span class="title-gold">Генеалогическое древо</span></h1>
+  <p class="sub">Все роды нашей семьи — в одном древе</p>
+  <p class="facts" id="facts"><span><b id="fPeople">131</b> человек</span><span><b id="fGens">6</b> поколений</span><span><b id="fFams">5</b> <span id="fFamsWord">фамилий</span></span></p>
+  <p><a class="ai-badge" href="#tree">✦ Древо интерактивное — каждый может дополнить его своей информацией</a></p>
+  <form class="finder" id="finder" role="search" autocomplete="off">
+    <label for="findInput" class="finder-label">Найдите себя или родных</label>
+    <div class="finder-row"><input id="findInput" type="search" placeholder="Начните вводить имя или фамилию" role="combobox" aria-expanded="false" aria-controls="findList" aria-autocomplete="list" aria-describedby="findStatus" enterkeyhint="search" autocapitalize="words"><button type="submit" class="find-btn">Найти</button></div>
+    <ul class="find-list" id="findList" role="listbox" hidden></ul>
+    <p id="findStatus" class="sr-only" role="status" aria-live="polite"></p>
+  </form>
+  <ol class="steps"><li><b>Найдите</b> себя, родителей или бабушку с дедушкой</li><li><b>Нажмите</b> на карточку человека</li><li><b>Допишите</b>, что знаете: годы, имена, историю</li></ol>
+  <p class="pdf"><a href="rod-kocherginyh-A1.pdf">Скачать постер A1 для печати (PDF)</a></p>
+</header>
+
+<main id="main">
+<section class="block reveal tree-sec" id="tree">
+  <div class="bar">
+    <div class="block-head"><span class="block-no" aria-hidden="true"></span><h2>Древо</h2></div>
+    <div class="ctl">
+      <button type="button" id="zoomOut" aria-label="Уменьшить схему">−</button>
+      <span class="zoom-level" id="zoomLevel" aria-live="polite">Целиком</span>
+      <button type="button" id="zoomIn" aria-label="Увеличить схему">+</button>
+      <button type="button" id="lensbtn" class="mouse-only" aria-pressed="true">Лупа</button>
+      <button type="button" id="replay">Проиграть заново</button>
+    </div>
+  </div>
+  <div class="add-cta edit-only"><button type="button" id="addAny" class="cta"><span class="cta-plus" aria-hidden="true">+</span>Добавить новые сведения в древо</button><span class="cta-note">Человек, история, дата или исправление — запись сразу увидят все родные</span></div>
+  <div class="lens-hint mouse-only"><span class="lh-icon" aria-hidden="true"><svg viewBox="0 0 48 48"><circle cx="20" cy="20" r="13"/><path d="M30 30 L43 43"/></svg></span><p><b>Режим лупы:</b> наведите курсор на древо — под ним появится увеличительное стекло, и любую карточку можно прочитать крупно.</p></div>
+  <div class="lens-hint touch-only"><span class="lh-icon" aria-hidden="true"><svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="6"/><circle cx="24" cy="24" r="15"/></svg></span><p><b>Коснитесь человека</b> — откроется его карточка. Схему можно листать пальцем, а кнопкой <b>−</b> увидеть её целиком.</p></div>
+  <p class="line-note" id="lineNote" hidden><span></span> <button type="button" id="lineOff">Показать всё древо</button></p>
+  <div class="scroll-wrap"><div class="scroller" id="scroller" tabindex="0" role="region" aria-label="Схема древа, листайте вбок стрелками"><div class="canvas" id="canvas"></div></div>
+  <div class="minimap" id="minimap" hidden aria-hidden="true"><div class="mm-in" id="mmIn"></div><div class="mm-view" id="mmView"></div></div></div>
+  <div class="legend"><span class="f-k">Кочергины</span><span class="f-s">Семенчинские</span><span class="f-m">Максимовы</span><span class="f-r">Резниковы</span><span class="f-l">Львовы</span><span class="f-s">ветви сестёр и брата Нины — справа</span><span class="f-i">вошли в род браком (пунктир)</span><span class="lg-ring">брак</span><span class="lg-ex">бывший брак</span></div>
+  <div class="lens" id="lens" hidden aria-hidden="true"><div class="lens-in" id="lensIn"></div></div>
+</section>
+
+<section class="block reveal fam-sec"><div class="block-head"><span class="block-no" aria-hidden="true"></span><h2>Фамилии рода</h2></div>
+<div class="families"><article class="fam f-k" style="--e:0"><div class="shield"><svg class="emblem e-k" viewBox="0 0 120 148" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path class="sh-field" d="M6,6 H114 V70 Q114,122 60,140 Q6,122 6,70 Z" fill="#7a1f2b"/><g class="charge"><path d="M30,112 L86,40 q8,-10 0,-16 q-6,-4 -12,2" stroke="var(--gold)" stroke-width="6" fill="none" stroke-linecap="round"/><path d="M90,112 L34,40 q-8,-10 0,-16 q6,-4 12,2" stroke="var(--gold)" stroke-width="6" fill="none" stroke-linecap="round"/><path d="M60,58 C46,46 54,34 60,20 C66,34 74,46 60,58 Z" fill="var(--gold)"/><path d="M60,54 C54,47 57,40 60,33 C63,40 66,47 60,54 Z" fill="#7a1f2b"/></g><path class="sh-edge" pathLength="1" d="M6,6 H114 V70 Q114,122 60,140 Q6,122 6,70 Z" fill="none"/></svg></div><h3>Кочергины</h3><div class="place">Рязань → Тамбов → Москва</div><p class="first"><span>Первое упоминание</span>Самые ранние известные носители фамилии — Иван Кочергин, Новгород, 1497, и Косья Яковлев сын Кочергин, новгородский землевладелец, 1504. Это однофамильцы: родство с нашей семьёй не установлено. Данные справочника фамилий, первоисточник не указан.</p><p class="mean">От прозвища «Кочерга» — печной инструмент. Так могли прозвать высокого худого человека или истопника.</p><p class="arms">Исторического герба у фамилии нет. Знак на щите: скрещённые кочерги и огонь очага.</p></article><article class="fam f-s" style="--e:1"><div class="shield"><svg class="emblem e-s" viewBox="0 0 120 148" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path class="sh-field" d="M6,6 H114 V70 Q114,122 60,140 Q6,122 6,70 Z" fill="#23365c"/><g class="charge"><path d="M60,52 C46,44 30,44 20,48 V100 C30,96 46,96 60,104 C74,96 90,96 100,100 V48 C90,44 74,44 60,52 Z" fill="#eef0ee"/><path d="M60,52 V104" stroke="#23365c" stroke-width="2"/><path d="M28,58 Q44,55 54,60 M66,60 Q76,55 92,58" stroke="#23365c" stroke-width="1.4" fill="none"/><path d="M28,67 Q44,64 54,69 M66,69 Q76,64 92,67" stroke="#23365c" stroke-width="1.4" fill="none"/><path d="M28,76 Q44,73 54,78 M66,78 Q76,73 92,76" stroke="#23365c" stroke-width="1.4" fill="none"/><path d="M28,85 Q44,82 54,87 M66,87 Q76,82 92,85" stroke="#23365c" stroke-width="1.4" fill="none"/><path d="M60,24 l4,9 10,1 -8,6 3,10 -9,-6 -9,6 3,-10 -8,-6 10,-1 Z" fill="var(--gold)"/></g><path class="sh-edge" pathLength="1" d="M6,6 H114 V70 Q114,122 60,140 Q6,122 6,70 Z" fill="none"/></svg></div><h3>Семенчинские</h3><div class="place">Сергиев Посад</div><p class="first"><span>Первое упоминание</span>Самая ранняя найденная запись — Иван Яковлевич Семенчинский, около 1863 г. р., вероятный брат Алексея Яковлевича: венчание 1903 года в Ильинской церкви Сергиева посада (ЦГА Москвы, ф. 203, оп. 780, д. 3246). В посаде жили и другие Семенчинские.</p><p class="mean">Вероятно, от имени Семён или от названия места вроде «Семенчино». Окончание -ский часто встречается у фамилий духовенства и в польско-украинских фамилиях.</p><p class="arms">Исторического герба нет. Знак: раскрытая книга — ремесло переплётчика Алексея Яковлевича.</p></article><article class="fam f-m" style="--e:2"><div class="shield"><svg class="emblem e-m" viewBox="0 0 120 148" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path class="sh-field" d="M6,6 H114 V70 Q114,122 60,140 Q6,122 6,70 Z" fill="#2e5a43"/><g class="charge"><path d="M34,86 L30,52 L46,66 L60,44 L74,66 L90,52 L86,86 Z" fill="var(--gold)"/><rect x="34" y="88" width="52" height="8" fill="var(--gold)"/><circle cx="16" cy="30" r="3.2" fill="#eef0ee"/><circle cx="104" cy="30" r="3.2" fill="#eef0ee"/><circle cx="16" cy="50" r="3.2" fill="#eef0ee"/><circle cx="104" cy="50" r="3.2" fill="#eef0ee"/><circle cx="16" cy="70" r="3.2" fill="#eef0ee"/><circle cx="104" cy="70" r="3.2" fill="#eef0ee"/><circle cx="16" cy="90" r="3.2" fill="#eef0ee"/><circle cx="104" cy="90" r="3.2" fill="#eef0ee"/><circle cx="16" cy="110" r="3.2" fill="#eef0ee"/><circle cx="104" cy="110" r="3.2" fill="#eef0ee"/></g><path class="sh-edge" pathLength="1" d="M6,6 H114 V70 Q114,122 60,140 Q6,122 6,70 Z" fill="none"/></svg></div><h3>Максимовы</h3><div class="place">Сергиев Посад</div><p class="first"><span>Первое упоминание</span>Раннее упоминание в открытых источниках не найдено. Фамилия массовая, образована от отчества.</p><p class="mean">От имени Максим — «величайший».</p><p class="arms">Дворянский герб Максимовых (Общий гербовник, ч. XIX, № 59) принадлежит однофамильцам. Знак: корона и десять звёзд — десять детей Натальи Фёдоровны.</p></article><article class="fam f-r" style="--e:3"><div class="shield"><svg class="emblem e-r" viewBox="0 0 120 148" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path class="sh-field" d="M6,6 H114 V70 Q114,122 60,140 Q6,122 6,70 Z" fill="#1d2226"/><g class="charge"><circle cx="60" cy="58" r="13" fill="var(--gold)"/><path d="M78.0,58.0 L90.0,58.0" stroke="var(--gold)" stroke-width="3" stroke-linecap="round"/><path d="M75.6,67.0 L86.0,73.0" stroke="var(--gold)" stroke-width="3" stroke-linecap="round"/><path d="M69.0,73.6 L75.0,84.0" stroke="var(--gold)" stroke-width="3" stroke-linecap="round"/><path d="M60.0,76.0 L60.0,88.0" stroke="var(--gold)" stroke-width="3" stroke-linecap="round"/><path d="M51.0,73.6 L45.0,84.0" stroke="var(--gold)" stroke-width="3" stroke-linecap="round"/><path d="M44.4,67.0 L34.0,73.0" stroke="var(--gold)" stroke-width="3" stroke-linecap="round"/><path d="M42.0,58.0 L30.0,58.0" stroke="var(--gold)" stroke-width="3" stroke-linecap="round"/><path d="M44.4,49.0 L34.0,43.0" stroke="var(--gold)" stroke-width="3" stroke-linecap="round"/><path d="M51.0,42.4 L45.0,32.0" stroke="var(--gold)" stroke-width="3" stroke-linecap="round"/><path d="M60.0,40.0 L60.0,28.0" stroke="var(--gold)" stroke-width="3" stroke-linecap="round"/><path d="M69.0,42.4 L75.0,32.0" stroke="var(--gold)" stroke-width="3" stroke-linecap="round"/><path d="M75.6,49.0 L86.0,43.0" stroke="var(--gold)" stroke-width="3" stroke-linecap="round"/><path d="M30,120 L84,96" stroke="#eef0ee" stroke-width="7" stroke-linecap="round"/><path d="M84,96 L96,92 L88,102 Z" fill="#eef0ee"/></g><path class="sh-edge" pathLength="1" d="M6,6 H114 V70 Q114,122 60,140 Q6,122 6,70 Z" fill="none"/></svg></div><h3>Резниковы</h3><div class="place">Москва</div><p class="first"><span>Первое упоминание</span>Раннее упоминание в открытых источниках не найдено.</p><p class="mean">От слова «резник» — так в еврейских общинах называли шойхета, совершавшего ритуальный забой скота.</p><p class="arms">Дворянский герб Резниковых (Общий гербовник, ч. XVI, № 117) — русский род, к семье не относится. Знак: солнце-светопись и резец — фотограф и типограф.</p></article><article class="fam f-l" style="--e:4"><div class="shield"><svg class="emblem e-l" viewBox="0 0 120 148" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path class="sh-field" d="M6,6 H114 V70 Q114,122 60,140 Q6,122 6,70 Z" fill="#c9a14a"/><g class="charge"><path d="M80.0,70.0 L95.7,74.7 L79.3,75.1 Z" fill="#8a1c1c"/><path d="M79.3,75.2 L93.3,83.7 L77.3,80.0 Z" fill="#8a1c1c"/><path d="M77.3,80.0 L88.6,91.9 L74.2,84.1 Z" fill="#8a1c1c"/><path d="M74.1,84.1 L81.9,98.5 L70.0,87.3 Z" fill="#8a1c1c"/><path d="M70.0,87.3 L73.8,103.2 L65.2,89.3 Z" fill="#8a1c1c"/><path d="M65.2,89.3 L64.7,105.7 L60.0,90.0 Z" fill="#8a1c1c"/><path d="M60.0,90.0 L55.3,105.7 L54.9,89.3 Z" fill="#8a1c1c"/><path d="M54.8,89.3 L46.3,103.3 L50.0,87.3 Z" fill="#8a1c1c"/><path d="M50.0,87.3 L38.1,98.6 L45.9,84.2 Z" fill="#8a1c1c"/><path d="M45.9,84.1 L31.5,91.9 L42.7,80.0 Z" fill="#8a1c1c"/><path d="M42.7,80.0 L26.8,83.8 L40.7,75.2 Z" fill="#8a1c1c"/><path d="M40.7,75.2 L24.3,74.7 L40.0,70.0 Z" fill="#8a1c1c"/><path d="M40.0,70.0 L24.3,65.3 L40.7,64.9 Z" fill="#8a1c1c"/><path d="M40.7,64.8 L26.7,56.3 L42.7,60.0 Z" fill="#8a1c1c"/><path d="M42.7,60.0 L31.4,48.1 L45.8,55.9 Z" fill="#8a1c1c"/><path d="M45.9,55.9 L38.1,41.5 L50.0,52.7 Z" fill="#8a1c1c"/><path d="M50.0,52.7 L46.2,36.8 L54.8,50.7 Z" fill="#8a1c1c"/><path d="M54.8,50.7 L55.3,34.3 L60.0,50.0 Z" fill="#8a1c1c"/><path d="M60.0,50.0 L64.7,34.3 L65.1,50.7 Z" fill="#8a1c1c"/><path d="M65.2,50.7 L73.7,36.7 L70.0,52.7 Z" fill="#8a1c1c"/><path d="M70.0,52.7 L81.9,41.4 L74.1,55.8 Z" fill="#8a1c1c"/><path d="M74.1,55.9 L88.5,48.1 L77.3,60.0 Z" fill="#8a1c1c"/><path d="M77.3,60.0 L93.2,56.2 L79.3,64.8 Z" fill="#8a1c1c"/><path d="M79.3,64.8 L95.7,65.3 L80.0,70.0 Z" fill="#8a1c1c"/><circle cx="60" cy="70" r="22" fill="#8a1c1c"/><circle cx="51" cy="65" r="3" fill="#eef0ee"/><circle cx="69" cy="65" r="3" fill="#eef0ee"/><path d="M56,76 L64,76 L60,82 Z" fill="#eef0ee"/></g><path class="sh-edge" pathLength="1" d="M6,6 H114 V70 Q114,122 60,140 Q6,122 6,70 Z" fill="none"/></svg></div><h3>Львовы</h3><div class="place">Москва</div><p class="first"><span>Первое упоминание</span>Для этой семьи раннее упоминание не найдено. Князья Львовы и тверские Львовы известны с XVI века, но это другие роды.</p><p class="mean">У евреев фамилия обычно идёт от города Львов или от имени Лейб («лев»).</p><p class="arms">Гербы князей Львовых (ч. V, № 3) и тверских Львовых (ч. XI, № 41) к семье не относятся. Знак: голова льва.</p></article><article class="fam f-s" style="--e:5"><div class="shield"><svg class="emblem e-sp" viewBox="0 0 120 148" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path class="sh-field" d="M6,6 H114 V70 Q114,122 60,140 Q6,122 6,70 Z" fill="#1f3b4d"/><g class="charge"><path d="M84,26 C56,40 40,72 36,110 C52,84 70,62 88,44 C92,38 90,30 84,26 Z" fill="var(--gold)"/><path d="M84,30 L38,108" stroke="#1f3b4d" stroke-width="2"/><path d="M36,110 L30,122" stroke="var(--gold)" stroke-width="4" stroke-linecap="round"/></g><path class="sh-edge" pathLength="1" d="M6,6 H114 V70 Q114,122 60,140 Q6,122 6,70 Z" fill="none"/></svg></div><h3>Перовы</h3><div class="place">Москва</div><p class="first"><span>Первое упоминание</span>Екатерина Алексеевна Семенчинская вышла за Виктора Васильевича Перова (1897–1982). В архивах не искали: сведения из семейной схемы.</p><p class="mean">От прозвища «Перо» или от народной формы имени Пётр — Перо.</p><p class="arms">Герба у семьи нет. Знак: золотое перо.</p></article><article class="fam f-s" style="--e:6"><div class="shield"><svg class="emblem e-sb" viewBox="0 0 120 148" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path class="sh-field" d="M6,6 H114 V70 Q114,122 60,140 Q6,122 6,70 Z" fill="#5b2333"/><g class="charge"><path d="M60.0,32.0 L65.4,53.1 L84.0,42.0 L72.9,60.6 L94.0,66.0 L72.9,71.4 L84.0,90.0 L65.4,78.9 L60.0,100.0 L54.6,78.9 L36.0,90.0 L47.1,71.4 L26.0,66.0 L47.1,60.6 L36.0,42.0 L54.6,53.1 Z" fill="#eef0ee"/><circle cx="60" cy="66" r="6" fill="var(--gold)"/></g><path class="sh-edge" pathLength="1" d="M6,6 H114 V70 Q114,122 60,140 Q6,122 6,70 Z" fill="none"/></svg></div><h3>Беликовы</h3><div class="place">Москва</div><p class="first"><span>Первое упоминание</span>Ирина Перова, внучка Алексея Яковлевича, вышла за Сергея Беликова (1928). В архивах не искали: сведения из семейной схемы.</p><p class="mean">От прозвища «Белик» — светловолосый, белолицый.</p><p class="arms">Герба у семьи нет. Знак: серебряная звезда — «светлый».</p></article><article class="fam f-s" style="--e:7"><div class="shield"><svg class="emblem e-sa" viewBox="0 0 120 148" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path class="sh-field" d="M6,6 H114 V70 Q114,122 60,140 Q6,122 6,70 Z" fill="#2c4a3a"/><g class="charge"><path d="M14,108 L40,58 L54,80 L72,40 L106,108 Z" fill="var(--gold)"/><path d="M72,40 L64,56 L72,52 L80,58 Z" fill="#eef0ee"/><path d="M20,118 H100" stroke="#eef0ee" stroke-width="4"/></g><path class="sh-edge" pathLength="1" d="M6,6 H114 V70 Q114,122 60,140 Q6,122 6,70 Z" fill="none"/></svg></div><h3>Алфутовы</h3><div class="place">Екатеринбург → Москва</div><p class="first"><span>Первое упоминание</span>Лидия Алексеевна Семенчинская вышла за Анатолия Николаевича Алфутова (1904–1983). В архивах не искали: сведения из семейной схемы.</p><p class="mean">Редкая фамилия; происхождение не установлено.</p><p class="arms">Герба у семьи нет. Знак: Уральские горы — семья жила в Екатеринбурге.</p></article><article class="fam f-s" style="--e:8"><div class="shield"><svg class="emblem e-sy" viewBox="0 0 120 148" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path class="sh-field" d="M6,6 H114 V70 Q114,122 60,140 Q6,122 6,70 Z" fill="#1e4d3b"/><g class="charge"><path d="M60,22 L84,58 H72 L92,86 H76 L98,114 H22 L44,86 H28 L48,58 H36 Z" fill="var(--gold)"/><rect x="55" y="114" width="10" height="14" fill="var(--gold)"/></g><path class="sh-edge" pathLength="1" d="M6,6 H114 V70 Q114,122 60,140 Q6,122 6,70 Z" fill="none"/></svg></div><h3>Байчиковы</h3><div class="place">г. Урень → Москва</div><p class="first"><span>Первое упоминание</span>Еликонида Алексеевна Семенчинская вышла за Николая Гавриловича Байчикова (1906). В архивах не искали: сведения из семейной схемы.</p><p class="mean">Вероятно, от прозвища «Байчик»; возможна связь с тюркским «бай» — «богатый». Не установлено.</p><p class="arms">Герба у семьи нет. Знак: ель — лесной край Уреня.</p></article><article class="fam f-s" style="--e:9"><div class="shield"><svg class="emblem e-sr" viewBox="0 0 120 148" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path class="sh-field" d="M6,6 H114 V70 Q114,122 60,140 Q6,122 6,70 Z" fill="#6a1b1b"/><g class="charge"><circle cx="60" cy="66" r="32" fill="var(--gold)"/><circle cx="60" cy="66" r="25" fill="none" stroke="#6a1b1b" stroke-width="2.5"/><path d="M52,84 V48 H64 Q74,48 74,58 Q74,68 64,68 H46 M46,76 H66" stroke="#6a1b1b" stroke-width="4" fill="none"/></g><path class="sh-edge" pathLength="1" d="M6,6 H114 V70 Q114,122 60,140 Q6,122 6,70 Z" fill="none"/></svg></div><h3>Рубь</h3><div class="place">Московская обл. → Москва</div><p class="first"><span>Первое упоминание</span>Евгения Алексеевна Семенчинская вышла за Георгия Абрамовича (?) Рубя (1909). В архивах не искали: сведения из семейной схемы.</p><p class="mean">Редкая короткая фамилия; возможно, от слова «рубль» или «рубить». Не установлено.</p><p class="arms">Герба у семьи нет. Знак: монета-рубль.</p></article><article class="fam f-s" style="--e:10"><div class="shield"><svg class="emblem e-so" viewBox="0 0 120 148" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path class="sh-field" d="M6,6 H114 V70 Q114,122 60,140 Q6,122 6,70 Z" fill="#24406b"/><g class="charge"><path d="M60,30 C44,30 38,48 38,70 L30,96 H90 L82,70 C82,48 76,30 60,30 Z" fill="var(--gold)"/><circle cx="60" cy="104" r="7" fill="var(--gold)"/><rect x="56" y="20" width="8" height="12" rx="3" fill="var(--gold)"/></g><path class="sh-edge" pathLength="1" d="M6,6 H114 V70 Q114,122 60,140 Q6,122 6,70 Z" fill="none"/></svg></div><h3>Поповы</h3><div class="place">Москва</div><p class="first"><span>Первое упоминание</span>Татьяна Рубь вышла за Кирилла Попова (1937); Попов Вячеслав Алексеевич — муж Антонины Алексеевны. В архивах не искали: сведения из семейной схемы.</p><p class="mean">От слова «поп» — сын священника. Одна из самых частых русских фамилий.</p><p class="arms">Дворянские гербы Поповых принадлежат другим родам. Знак: колокол.</p></article><article class="fam f-s" style="--e:11"><div class="shield"><svg class="emblem e-sc" viewBox="0 0 120 148" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path class="sh-field" d="M6,6 H114 V70 Q114,122 60,140 Q6,122 6,70 Z" fill="#4a3a26"/><g class="charge"><circle cx="60" cy="44" r="16" fill="none" stroke="#eef0ee" stroke-width="7"/><path d="M60,60 V116 M60,98 H76 M60,110 H72" stroke="#eef0ee" stroke-width="7" stroke-linecap="round"/></g><path class="sh-edge" pathLength="1" d="M6,6 H114 V70 Q114,122 60,140 Q6,122 6,70 Z" fill="none"/></svg></div><h3>Кодцины</h3><div class="place">Московская обл.</div><p class="first"><span>Первое упоминание</span>Наталья, дочь Антонины Алексеевны, вышла за Юрия Кодцина (1934). Фамилия на схеме прочитана предположительно. В архивах не искали: сведения из семейной схемы.</p><p class="mean">Происхождение не установлено — сначала нужно уточнить написание.</p><p class="arms">Герба у семьи нет. Знак: ключ.</p></article><article class="fam f-s" style="--e:12"><div class="shield"><svg class="emblem e-sk" viewBox="0 0 120 148" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path class="sh-field" d="M6,6 H114 V70 Q114,122 60,140 Q6,122 6,70 Z" fill="#3a2f5b"/><g class="charge"><path d="M60,120 C60,96 40,92 40,74 C40,58 58,56 60,68 C62,78 50,80 50,72" stroke="var(--gold)" stroke-width="5" fill="none" stroke-linecap="round"/><path d="M60,96 C60,72 82,70 82,52 C82,36 64,34 62,46 C60,56 72,58 72,50" stroke="var(--gold)" stroke-width="5" fill="none" stroke-linecap="round"/><circle cx="44" cy="100" r="6" fill="#eef0ee"/><circle cx="78" cy="78" r="6" fill="#eef0ee"/></g><path class="sh-edge" pathLength="1" d="M6,6 H114 V70 Q114,122 60,140 Q6,122 6,70 Z" fill="none"/></svg></div><h3>Кудрявцевы</h3><div class="place">Москва</div><p class="first"><span>Первое упоминание</span>Марина, дочь Сергея Алексеевича, вышла за Евгения Кудрявцева (1948). В архивах не искали: сведения из семейной схемы.</p><p class="mean">От прозвища «Кудрявец» — кудрявый.</p><p class="arms">Герба у семьи нет. Знак: кудрявая лоза.</p></article><article class="fam f-s" style="--e:13"><div class="shield"><svg class="emblem e-sf" viewBox="0 0 120 148" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path class="sh-field" d="M6,6 H114 V70 Q114,122 60,140 Q6,122 6,70 Z" fill="#1d4a63"/><g class="charge"><circle cx="60" cy="38" r="12" fill="var(--gold)"/><path d="M18,60 q10,-10 21,0 t21,0 t21,0 t21,0" stroke="#eef0ee" stroke-width="5" fill="none"/><path d="M18,78 q10,-10 21,0 t21,0 t21,0 t21,0" stroke="#eef0ee" stroke-width="5" fill="none"/><path d="M18,96 q10,-10 21,0 t21,0 t21,0 t21,0" stroke="#eef0ee" stroke-width="5" fill="none"/></g><path class="sh-edge" pathLength="1" d="M6,6 H114 V70 Q114,122 60,140 Q6,122 6,70 Z" fill="none"/></svg></div><h3>Фигурины</h3><div class="place">Приозерск</div><p class="first"><span>Первое упоминание</span>Дочь Еликониды Алексеевны (имя на схеме прочитано не полностью) вышла за Сергея Фигурина (1932). В архивах не искали: сведения из семейной схемы.</p><p class="mean">Вероятно, от прозвища, связанного со словом «фигура».</p><p class="arms">Герба у семьи нет. Знак: волны Ладожского озера.</p></article><article class="fam f-s" style="--e:14"><div class="shield"><svg class="emblem e-si" viewBox="0 0 120 148" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path class="sh-field" d="M6,6 H114 V70 Q114,122 60,140 Q6,122 6,70 Z" fill="#7a3b1f"/><g class="charge"><circle cx="60" cy="66" r="32" fill="none" stroke="var(--gold)" stroke-width="7"/><path d="M60,66 L90.0,66.0" stroke="var(--gold)" stroke-width="4"/><path d="M60,66 L81.2,87.2" stroke="var(--gold)" stroke-width="4"/><path d="M60,66 L60.0,96.0" stroke="var(--gold)" stroke-width="4"/><path d="M60,66 L38.8,87.2" stroke="var(--gold)" stroke-width="4"/><path d="M60,66 L30.0,66.0" stroke="var(--gold)" stroke-width="4"/><path d="M60,66 L38.8,44.8" stroke="var(--gold)" stroke-width="4"/><path d="M60,66 L60.0,36.0" stroke="var(--gold)" stroke-width="4"/><path d="M60,66 L81.2,44.8" stroke="var(--gold)" stroke-width="4"/><circle cx="60" cy="66" r="7" fill="var(--gold)"/></g><path class="sh-edge" pathLength="1" d="M6,6 H114 V70 Q114,122 60,140 Q6,122 6,70 Z" fill="none"/></svg></div><h3>Ильины</h3><div class="place">Тверь</div><p class="first"><span>Первое упоминание</span>Татьяна Семенчинская, внучка Антонины Алексеевны, вышла за Юрия Ильина (1956). В архивах не искали: сведения из семейной схемы.</p><p class="mean">От имени Илья.</p><p class="arms">Герба у семьи нет. Знак: колесо колесницы Ильи-пророка.</p></article></div>
+<p class="disclaimer">Гербы в России жаловались конкретным дворянским родам, а не фамилиям. Портные, сторожа, крестьяне и мещане XIX века почти наверняка не родственны носителям гербов. Поэтому на щитах — фамильные знаки, нарисованные для этого издания по смыслу фамилий и истории семьи.</p></section>
+
+<section class="block reveal feed-sec">
+  <div class="block-head"><span class="block-no" aria-hidden="true"></span><h2>Дополнения от родных</h2></div>
+  <p class="ro-note">Здесь появляется всё, что родственники добавляют на семейном сайте.</p>
+  <ul class="feed" id="feed"></ul>
+</section>
+
+<section class="block reveal privacy-sec">
+  <div class="block-head"><span class="block-no" aria-hidden="true"></span><h2>Кто видит сайт и как исправить запись</h2></div>
+  <ul class="privacy">
+    <li><b>Сайт открыт всем, у кого есть ссылка.</b> Поисковикам запрещено его показывать. Годы рождения живых родственников в исходном коде страницы тоже не публикуются.</li>
+    <li><b>Добавить сведения может любой родственник</b> без регистрации. Запись сразу видна всем, у кого есть ссылка, с пометкой «не проверено», пока её не посмотрит владелец сайта.</li>
+    <li><b>Исправить или удалить запись</b> — свою или чужую — можно через владельца сайта: напишите тому, кто прислал вам ссылку.</li>
+    <li><b>Даты рождения живых родственников на сайте скрыты.</b> Пожалуйста, не добавляйте полные даты рождения детей, адреса и номера документов.</li>
+  </ul>
+</section>
+
+<section class="block reveal other">
+  <div class="block-head"><span class="block-no" aria-hidden="true"></span><h2>Другие фамилии нашего рода</h2></div>
+  <ul><li><b>Федуловы</b> — от церковного имени Федул (Феодул). Герба нет.</li><li><b>Шварцман</b> — идиш/нем. «чёрный человек» — прозвище смуглого или черноволосого. Еврейская фамилия. Герба нет.</li><li><b>Мосейкины</b> — от «Мосейка» — уменьшительного от народного «Мосей» (Моисей). Герба нет.</li><li><b>Чижевские</b> — форма на -ский обычно указывает на польское, белорусское или топонимическое происхождение — от названия места. Герба не найдено.</li><li><b>Радзиевские</b> — польская фамилия, вероятно от названия места на Radz-. В польских гербовниках есть Radziejewski, но не Radziewski — герб не подтверждён.</li><li><b>Козловы</b> — от прозвища «Козёл». Ранние упоминания: Иван Козлов, 1495, сопровождал княжну Елену Ивановну в Литву. Дворянские гербы Козловых принадлежат другим родам.</li><li><b>Фокины</b> — от церковного имени Фока. Герба нет.</li><li><b>Ефремовы</b> — от церковного имени Ефрем. Герба нет.</li><li><b>Татьянко</b> — украинская форма от имени Татьяна. Герба нет.</li><li><b>Березицкие</b> — от названия места вроде «Березица». Герба не найдено.</li><li><b>Штерн</b> — идиш/нем. «звезда». Еврейская фамилия. Герба нет.</li><li><b>Исаковы</b> — от имени Исаак. Герба нет.</li><li><b>Сулимовы</b> — от имени Сулим или прозвища «Сулима». Герба нет.</li><li><b>Поршины</b> — вероятно, от прозвища «Порша». Герба нет. Евгений Владимирович Поршин (1908–1937) — муж Антонины Алексеевны Семенчинской.</li><li><b>Мельниковы</b> — от занятия — мельник. Герба нет.</li></ul>
+</section>
+
+<section class="block reveal arch" id="archive">
+  <div class="block-head"><span class="block-no" aria-hidden="true"></span><h2>Что удалось найти в открытых архивах</h2></div>
+  <p class="byline">Отчёт ИИ-помощника, 18–19 октября 2026</p>
+  <p>Поиск проведён 18–19 октября 2026 года. Базы «Память народа», ОБД «Мемориал» и «Бессмертный полк» при автоматическом поиске не открылись: там стоит защита от роботов, искать в них нужно вручную. Проверены «Открытый список», форум ВГД, сайты архивов и открытый веб. Ниже только то, что нашлось, с пометкой уверенности.</p>
+  <div class="tbl"><table><thead><tr><th>Кто</th><th>Где искали</th><th>Результат</th></tr></thead><tbody><tr><td>Семенчинский Иван Яковлевич, ок. 1863 г. р.</td><td><a href="https://cgamos.ru/metric-books/203/203-780/203-780-3246/">Метрическая книга Ильинской церкви Сергиева посада, 1903 (ЦГА Москвы, ф. 203, оп. 780, д. 3246, л. 42)</a> — <a href="https://forum.vgd.ru/4047/107503/">выписка на форуме ВГД</a></td><td>Второй брак, 40 лет, с Вассой Ивановной Шурыгиной, 28 лет (Владимирская губ., с. Титовское). Отчество Яковлев и город совпадают — <b>вероятный брат Алексея Яковлевича</b>, не подтверждено.</td></tr><tr><td>Семенчинские Сергиева посада</td><td><a href="https://forum.vgd.ru/post/13/47331/p1387390.htm">списки жителей посада по улицам</a>, <a href="https://forum.vgd.ru/342/4123/40.htm">Кукуевское кладбище</a></td><td>В посаде жили Семенчинские Егоровичи, Николаевичи и Ивановичи: Василий и Пётр Егоровичи, Иван Николаевич, Александр Николаевич (ум. 1904/05), мещанин Матвей. Это, вероятно, одна большая посадская семья. Как она связана с Яковом, пока неясно.</td></tr><tr><td>Семенчинский Михаил Николаевич, 1870</td><td><a href="https://ru.openlist.wiki/Семенчинский_Михаил_Николаевич_(1870)">Открытый список</a></td><td>Родился в Сергиевом Посаде, иеромонах. Арестован в 1928, реабилитирован в 1991. Однофамилец из того же города, родство не установлено.</td></tr><tr><td>Семенчинский Сергей Егорович, 1878</td><td><a href="https://ru.openlist.wiki/Семенчинский_Сергей_Егорович_(1878)">Открытый список</a></td><td>Медник и священник, Загорск, ул. Широкая, 10. Расстрелян 07.03.1938 в Бутове. Родство не установлено.</td></tr><tr><td>Семенчинский Илья Иванович, 1891</td><td><a href="https://ru.openlist.wiki/Семенчинский_Илья_Иванович_(1891)">Открытый список</a></td><td>Столяр, Загорск, Б. Кукуевский пер., 38. Арестован в 1935, реабилитирован в 2003. Родство не установлено.</td></tr><tr><td>Кочергины: Лаврентий, Василий, Николай, Алексей, Виктор, Лев</td><td>Открытый список, веб-поиск</td><td>Не найдено. Есть только однофамильцы с другими годами и отчествами.</td></tr><tr><td>Резниковы, Львовы, Шварцман</td><td>Открытый список, ВГД «Московские фотографы», веб-поиск</td><td>Не найдено.</td></tr><tr><td>Максимова Наталья Фёдоровна</td><td>Открытый список</td><td>Есть только однофамилица 1891 г. р. из Псковской области — другой человек.</td></tr></tbody></table></div>
+</section>
+
+<section class="block reveal arch next-sec">
+  <div class="block-head"><span class="block-no" aria-hidden="true"></span><h2>Что запросить дальше</h2></div>
+  <div class="contrib"><p><b>Каждый может пополнить древо.</b> Ниже — архивы, где хранятся недостающие сведения о нашей семье: метрические книги, записи ЗАГС, военные документы. Любой из родных может сам отправить запрос в такой архив — по электронной почте или через Госуслуги, если вы прямой потомок.</p>
+  <p>Когда придёт ответ, откройте в древе карточку нужного человека и нажмите на неё. Выберите «Факт» или «Нового родственника», перепишите главное и укажите, откуда сведения: архив, номер фонда, описи и дела. Запись сразу увидят все.</p></div>
+  <ul class="next"><li><b>Тамбов, рождения Алексея (1902) и Николая (1904), смерть Василия (1906).</b> В <a href="https://kaisa.tambovarchiv.ru/db/metricbooks?metric=tu">электронном каталоге Госархива Тамбовской области</a> есть метрические книги всех церквей Тамбова: ф. 1049, оп. 5 — за 1902 год д. 7243, 7600–7607; за 1904 год д. 7317, 7743, 7744; за 1906 год д. 7895, 7896. Сканы открываются после регистрации на сайте каталога. Платный запрос: e-mail gato@arh.tambov.gov.ru, порядок — в разделе «<a href="https://tambovarchiv.ru/node/35">Генеалогические запросы</a>» (50–100% предоплаты, срок 30–60 дней). Метрические книги в архиве хранятся до 1925 года, более поздние записи — в архивах ЗАГС.</li><li><b>Сергиев Посад, Семенчинские и Максимовы.</b> На сайте Главархива Москвы, в сервисе «<a href="https://cgamos.ru/res_help/">Моя семья</a>», выложена <a href="https://cgamos.ru/metric-books/203/203-780/">ф. 203, оп. 780</a> — метрические книги Московской губернии за 1870–1919 годы. <a href="https://cgamos.ru/metric-books/203/203-780/203-780-3246/">Дело 3246</a> — Сергиев Посад, 1903 год; Ильинская церковь там на листах 2–83. Сканы открываются после бесплатной регистрации на cgamos.ru. Те же книги за 1899–1916 годы стоит просмотреть, чтобы найти венчание Алексея и Натальи и рождения их детей.</li><li><b>Рязань, Лаврентий Кочергин.</b> Сайт <a href="https://garo62.ru/execution-requests.html">Госархива Рязанской области</a>: запросы по метрическим книгам принимаются только за 1875–1918 годы, а генеалогические запросы приём приостанавливали с 10 июля по 30 сентября 2026 года. Записи о Лаврентии, скорее всего, раньше 1875 года, поэтому по нему искать придётся самому — в читальном зале или в системе «Архивное наследие Рязанской области» (ЕГИС АНРО), ссылка в меню сайта.</li><li><b>Записи ЗАГС после 1918 года</b> (браки Николая и Нины, Льва, Эмиля и Жанны). На Госуслугах услуга называется «<a href="https://www.gosuslugi.ru/help/faq/Obtaining_repeated_certificates/457455">Получение повторных и первичных свидетельств или справок ЗАГС</a>»: госпошлина 500 ₽ за свидетельство, 350 ₽ за справку, нужна подтверждённая учётная запись. На умерших родственников выдают документы при подтверждённом родстве; полный перечень показывают при подаче.</li><li><b>Военные годы:</b> Кочергин Виктор Алексеевич (1924) и Семенчинский Сергей Алексеевич (1916). Искать на <a href="https://pamyat-naroda.ru/">pamyat-naroda.ru</a> и <a href="https://obd-memorial.ru/">obd-memorial.ru</a> — по фамилии, имени и году рождения. Это бесплатно и занимает 10 минут, хорошая задача для любого из родных.</li><li><b>Иосиф Иванович Львов, Минфин СССР.</b> Минфин СССР хранится в <a href="https://rusarchives.ru/federal/rgae">РГАЭ</a>, есть ли там личные дела сотрудников управлений, нужно уточнить по телефону справочной службы РГАЭ: 8 (495) 580-87-33.</li></ul>
+</section>
+</main>
+
+<div class="panel" id="panel" hidden role="dialog" aria-modal="true" aria-labelledby="pName">
+  <div class="panel-back" id="panelBack"></div>
+  <div class="panel-box">
+    <button type="button" class="panel-close" id="panelClose" aria-label="Закрыть">×</button>
+    <div class="p-sur" id="pSur"></div>
+    <h3 class="p-name" id="pName"></h3>
+    <div class="p-meta" id="pMeta"></div>
+    <h4>Дополнения</h4>
+    <ul class="plist" id="panelList"></ul>
+    <form id="addForm" class="addform edit-only" novalidate>
+      <h4>Добавить</h4>
+      <label for="fKind">Что вы добавляете</label>
+      <select id="fKind" name="kind"><option value="story">Воспоминание или история</option><option value="fact">Факт: даты, места, работа, награды</option><option value="correction">Исправление ошибки</option><option value="person">Нового родственника</option></select>
+      <div class="pfields">
+        <label for="fRel">Кем приходится этому человеку</label>
+        <select id="fRel" name="relation"><option>сын</option><option>дочь</option><option>муж</option><option>жена</option><option>отец</option><option>мать</option><option>брат</option><option>сестра</option><option>внук</option><option>внучка</option><option>другое</option></select>
+        <label for="fName">Фамилия, имя, отчество</label><input id="fName" name="name" maxlength="120" autocomplete="off" autocapitalize="words" enterkeyhint="next">
+        <div class="two"><div><label for="fDates">Годы жизни</label><input id="fDates" name="dates" maxlength="60" placeholder="1931 – 2010 (у живых год рождения не пишите)"></div>
+        <div><label for="fPlace">Где жил</label><input id="fPlace" name="place" maxlength="120" autocapitalize="words" enterkeyhint="next"></div></div>
+        <label for="fOcc">Род занятий</label><input id="fOcc" name="occupation" maxlength="120">
+      </div>
+      <label for="fText">Что вы знаете <span class="hint">— и откуда: помню сам, рассказ бабушки, документ</span></label><textarea id="fText" name="text" rows="4" maxlength="3000"></textarea>
+      <label for="fAuthor">Кто вы</label><input id="fAuthor" name="author" maxlength="80" placeholder="Юлия, внучка Николая" autocomplete="name" autocapitalize="words" enterkeyhint="next">
+      <input class="hp" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <p class="draft-note" id="draftNote" hidden>Черновик сохранён на этом устройстве.</p>
+      <button type="submit" id="fSend" class="primary">Сохранить</button>
+      <p class="form-msg" id="formMsg" role="status" aria-live="polite"></p>
+    </form>
+    <p class="ro-note">Это копия древа только для чтения. Чтобы добавить или исправить сведения, напишите тому, кто прислал вам ссылку.</p>
+  </div>
+</div>
+
+<footer>Источники: три семейные схемы; открытые базы и справочники, перечисленные выше. Неуверенные прочтения рукописи отмечены знаком «?». Октябрь 2026.</footer>
+</div>
+<script>window.FAMILY_BASE={"geom": {"U": 392, "W": 352, "H": 180, "ROW": 340, "X0": 330, "Y0": 40}, "P": {"LAV": [0, 4.5, "k", ["Кочергин", "Лаврентий", "", "портной · Рязань"]], "YAK": [0, 8.35, "s", ["Семенчинский", "Яков", "", "сторож · Сергиев Посад"]], "YAKW": [0, 9.35, "i", ["", "жена Якова", "", "имя не указано"]], "FED": [0, 10.6, "m", ["Максимов", "Фёдор Максимович", "? – 1922", "сторож в больнице"]], "FEK": [0, 11.6, "m", ["Максимова", "Фекла Максимовна", "? – 1912", ""]], "ISA": [0, 13.5, "r", ["", "Исаак", "", ""]], "SON": [0, 14.5, "r", ["", "Соня", "", ""]], "IVA": [0, 15.75, "l", ["Львов", "Иван", "", ""]], "SOL": [0, 16.75, "l", ["Львова", "Соня", "", ""]], "LUB": [1, 3.25, "i", ["Кочергина", "Любовь Ивановна", "", "первая жена?"]], "VAS": [1, 4.5, "k", ["Кочергин", "Василий Лаврентьевич", "† 1906", "портной · Тамбов"]], "MAR": [1, 5.75, "i", ["Федулова", "Мария Семёновна", "† 1914", "крестьянка"]], "YAKS": [1, 6.85, "s", ["Семенчинский", "…ий Яковлевич", "", "столяр · имя на схеме оборвано"]], "YAKD": [1, 7.85, "s", ["Семенчинская", "Александра Яковлевна", "", ""]], "ALS": [1, 8.85, "s", ["Семенчинский", "Алексей Яковлевич", "1871 – 1920", "переплётчик типографии"]], "NAT": [1, 10.1, "m", ["Максимова", "Наталья Фёдоровна", "1881 – 1951", "орден «Материнская слава»"]], "FEDC": [1, 11.6, "m", ["Максимовы", "ещё 2 сына и 5 дочерей", "", "имена не указаны"]], "NOI": [1, 13.25, "r", ["Резников", "Ной Хаимович", "", "руководитель типографии"]], "EVR": [1, 14.25, "r", ["Резникова", "Евгения Исааковна", "", "домохозяйка"]], "IOS": [1, 15.75, "l", ["Львов", "Иосиф Иванович", "", "нач. управления Минфина СССР"]], "ROZ": [1, 16.75, "i", ["Шварцман-Львова", "Розалия Иосифовна", "", "домохозяйка"]], "ALX": [2, 1.0, "k", ["Кочергин", "Алексей Васильевич", "1902 – 19..", "крестьянин · Тамбов"]], "KLA": [2, 2.0, "i", ["Кочергина", "Клавдия", "", "работница"]], "OLG": [2, 3.4, "k", ["Кочергина", "Ольга Васильевна", "1871? – 1946", "крестьянка"]], "NIK": [2, 8.1, "k", ["Кочергин", "Николай Васильевич", "1904 – 1993", "инженер-лесовод"]], "NIN": [2, 9.1, "s", ["Семенчинская", "Нина Алексеевна", "1906 – 1991", "инженер-лесовод"]], "EMI": [2, 13.75, "r", ["Резников", "Эмиль Ефимович", "1922 – 2001", "он же Ноевич · фотограф"]], "ZHA": [2, 14.75, "l", ["Львова", "Жанна Иосифовна", "1925 – 2007", "экономист, речной флот"]], "VIK": [3, 0.0, "k", ["Кочергин", "Виктор Алексеевич", "1924 –", "Донецк"]], "LEN": [3, 1.0, "i", ["Кочергина", "Лена", "", ""]], "TAM": [3, 2.2, "k", ["Кочергина", "Тамара Алексеевна", "1926 –", ""]], "TAMH": [3, 3.2, "i", ["", "муж Тамары", "", "не указан"]], "IRI": [3, 5.6, "i", ["Чижевская", "Ирма Иллиодоровна", "1934", "первая жена · инженер · Москва"]], "LEV": [3, 6.85, "k", ["Кочергин", "Лев Николаевич", "1934 – 2013", "инженер"]], "RIT": [3, 8.1, "i", ["Мосейкина", "Рита Митрофановна", "", "медсестра · Мытищи"]], "EVG": [3, 12.25, "k", ["Кочергин", "Евгений Николаевич", "1950", "инженер-строитель"]], "MRZ": [3, 13.25, "r", ["Резникова", "Марина Эммануиловна", "1955", "к.ю.н., госслужащая"]], "ALR": [4, 0.0, "k", ["Кочергин", "Александр Викторович", "", "Донецк"]], "YUD": [4, 1.0, "k", ["Кочергина", "Юля Викторовна", "", "Донецк"]], "LUD": [4, 2.7, "k", ["", "Люда", "", "дочь Тамары"]], "VER": [4, 5.6, "k", ["Чижевская", "Вера Львовна", "", "Зеленоград"]], "GEO": [4, 6.6, "i", ["Радзиевский", "Георгий", "", "инженер"]], "ARK": [4, 8.1, "k", ["Кочергин", "Аркадий Львович", "", "инженер · Мытищи"]], "MRA": [4, 9.1, "i", ["Кочергина", "Марина", "", "инженер"]], "YUL": [4, 11.25, "k", ["Кочергина", "Юлия Евгеньевна", "1986", "юрист · Израиль"]], "DAN": [4, 12.25, "i", ["Фокин", "Даниил Сергеевич", "", "Израиль"]], "ANT": [4, 13.75, "k", ["Кочергин", "Антон Евгеньевич", "1988", "предприниматель · Обнинск"]], "KAT": [4, 14.75, "i", ["Козлова", "Екатерина Сергеевна", "", "бывшая жена · инженер-строитель"]], "ALI": [5, 5.6, "k", ["Радзиевская", "Алиса", "", "Дубай"]], "LOL": [5, 6.6, "k", ["Радзиевская", "Лолита", "", "Москва"]], "ELE": [5, 8.6, "k", ["Кочергина", "Елена Аркадьевна", "", "Москва"]], "MRT": [5, 11.25, "k", ["Фокин", "Мартин Даниилович", "2016", "Израиль"]], "ZOY": [5, 12.25, "k", ["Фокина", "Зоя Данииловна", "2021", ""]], "ART": [5, 14.25, "k", ["Кочергин", "Артём Антонович", "", "Обнинск"]], "sEKA": [2, 19.7, "s", ["Перова (Семенчинская)", "Екатерина Алексеевна", "1900 – 1985", "Москва"]], "sPER": [2, 20.7, "i", ["Перов", "Виктор Васильевич", "1897 – 1982", "Москва"]], "sYPE": [3, 18.2, "i", ["Перова", "Юля", "1932", "Москва"]], "sNPE": [3, 19.2, "s", ["Перов", "Николай", "1932", "Москва"]], "sIBE": [3, 20.7, "s", ["Беликова (Перова)", "Ирина", "1930", "Москва"]], "sSBE": [3, 21.7, "i", ["Беликов", "Сергей", "1928", "Москва"]], "sOPE": [4, 18.2, "i", ["Перова", "Ольга", "", ""]], "sSPE": [4, 19.2, "s", ["Перов", "Сергей", "", ""]], "sABE": [4, 20.5, "i", ["Беликова", "Анна", "", ""]], "sANB": [4, 21.5, "s", ["Беликов", "Андрей", "", ""]], "sSVB": [4, 22.5, "i", ["Беликова", "Светлана", "", "жена Андрея?"]], "sYU2": [5, 18.7, "s", ["Перова", "Юля", "", ""]], "sPAB": [5, 21.0, "s", ["Беликов", "Павел", "", ""]], "sVAL": [2, 25.2, "s", ["Семенчинская", "Валентина Алексеевна", "1902 – 1986", "Москва"]], "sGES": [3, 24.7, "s", ["Семенчинский", "Георгий", "1926 – 1974", "Москва"]], "sOTA": [3, 25.7, "i", ["Татьянко", "Ольга", "1927", "Москва"]], "sELS": [4, 23.7, "s", ["Семенчинская", "Елена", "", ""]], "sAEF": [4, 24.7, "i", ["Ефремов", "Алексей", "", ""]], "sSES": [4, 25.8, "s", ["Семенчинский", "Сергей", "", ""]], "sNSE": [4, 26.8, "i", ["Семенчинская", "Наталья", "", ""]], "sGEF": [5, 24.2, "s", ["Ефремов", "Георгий", "", ""]], "sANS": [5, 25.8, "s", ["Семенчинская", "Анастасия", "", ""]], "sLES": [5, 26.8, "s", ["Семенчинская", "Лена", "", "дочь Натальи"]], "sAN1": [2, 28.2, "s", ["Семенчинская", "Антонина", "1904 – 1911", "умерла 7 лет от скарлатины"]], "sLID": [2, 29.9, "s", ["Алфутова (Семенчинская)", "Лидия Алексеевна", "1905 – 1989", "Екатеринбург"]], "sALF": [2, 30.9, "i", ["Алфутов", "Анатолий Николаевич", "1904 – 1983", "Екатеринбург"]], "sNAL": [3, 28.9, "s", ["Алфутов", "Николай", "1930", "Москва"]], "sSBR": [3, 29.9, "i", ["Березицкая", "Светлана", "1933", "Москва"]], "sVAF": [3, 31.0, "s", ["Алфутов", "Виталий", "1932", "Екатеринбург"]], "sMSH": [3, 32.0, "i", ["Штерн", "Марина", "", "Екатеринбург"]], "sAAL": [4, 28.9, "s", ["Алфутов", "Александр", "", ""]], "sNAD": [4, 29.9, "i", ["Алфутова", "Надежда", "", ""]], "sAND": [4, 31.5, "s", ["Алфутов", "Андрей", "", ""]], "sNTA": [5, 29.4, "s", ["Алфутова", "Наталья", "", ""]], "sELI": [2, 34.6, "s", ["Байчикова (Семенчинская)", "Еликонида Алексеевна", "1908 – 1996", "г. Урень"]], "sBAI": [2, 35.6, "i", ["Байчиков", "Николай Гаврилович", "1906", "г. Урень"]], "sVEB": [3, 33.1, "i", ["Байчикова", "Вера", "1932", "Москва"]], "sLEB": [3, 34.1, "s", ["Байчиков", "Лев", "1931", "Москва"]], "sNFI": [3, 35.7, "s", ["Фигурина", "Наталья?", "19?2", "Приозерск · имя прочитано не полностью"]], "sSFI": [3, 36.7, "i", ["Фигурин", "Сергей", "1932", "Приозерск"]], "sELB": [4, 33.1, "i", ["Байчикова", "Елена", "", ""]], "sABA": [4, 34.1, "s", ["Байчиков", "Алексей", "", ""]], "sMBA": [4, 35.1, "s", ["Байчиков", "Михаил", "", ""]], "sBFI": [4, 36.2, "s", ["Фигурин", "Борис?", "", "имя прочитано не полностью"]], "sNFG": [4, 37.2, "s", ["Фигурин", "Николай", "", ""]], "sEBA": [5, 33.6, "s", ["Байчикова", "Екатерина", "", ""]], "sEVG": [2, 39.7, "s", ["Рубь (Семенчинская)", "Евгения Алексеевна", "1911 – 1994", "Московская обл."]], "sRUB": [2, 40.7, "i", ["Рубь", "Георгий Абрамович?", "1909", "Московская обл."]], "sTPO": [3, 38.7, "s", ["Попова (Рубь)", "Татьяна", "", "Москва"]], "sKPO": [3, 39.7, "i", ["Попов", "Кирилл", "", "Москва"]], "sORU": [3, 40.9, "s", ["Рубь", "Ольга", "", "Москва"]], "sVIS": [3, 41.9, "i", ["Исаков", "Владимир", "", "Москва"]], "sAPO": [4, 38.2, "s", ["Попова", "Анна", "", ""]], "sFSU": [4, 39.2, "i", ["Сулимов", "Фёдор", "", ""]], "sNPO": [4, 40.3, "s", ["Попов", "Николай", "", ""]], "sERU": [4, 41.4, "s", ["Рубь", "Евгения", "", ""]], "sPOP": [2, 43.4, "i", ["Попов", "Вячеслав Алексеевич", "19..", "Москва"]], "sAN2": [2, 44.4, "s", ["Семенчинская", "Антонина Алексеевна", "1914 – 1956", "Москва"]], "sPOR": [2, 45.4, "i", ["Поршин", "Евгений Владимирович", "1908 – 1937", "Москва"]], "sNKO": [3, 42.9, "s", ["Кодцина", "Наталья", "1932", "Московская обл."]], "sYKO": [3, 43.9, "i", ["Кодцин", "Юрий", "1934", "Московская обл."]], "sASE": [3, 45.4, "s", ["Семенчинский", "Анатолий", "", "Тверь"]], "sLSE": [3, 46.4, "i", ["Семенчинская", "Лидия", "", "Тверь"]], "sDKO": [4, 42.9, "s", ["Кодцин", "Дмитрий", "", ""]], "sAKO": [4, 43.9, "i", ["Кодцина-Мельникова", "Альбина", "", ""]], "sAS2": [4, 45.1, "s", ["Семенчинский", "Алексей", "", ""]], "sYIL": [4, 46.2, "i", ["Ильин", "Юрий", "", ""]], "sTIL": [4, 47.2, "s", ["Ильина (Семенчинская)", "Татьяна", "", ""]], "sEKO": [5, 43.4, "s", ["Кодцина", "Евгения", "", ""]], "sAIL": [5, 46.2, "s", ["Ильина", "Александра", "", ""]], "sATI": [5, 47.2, "s", ["Ильин", "Антон", "", ""]], "sSER": [2, 48.7, "s", ["Семенчинский", "Сергей Алексеевич", "1916 – 1989", "Москва"]], "sLIV": [2, 49.7, "i", ["Семенчинская", "Лидия Ивановна", "1918", "Москва"]], "sMKU": [3, 48.7, "s", ["Кудрявцева", "Марина", "", "Москва"]], "sEKU": [3, 49.7, "i", ["Кудрявцев", "Евгений", "", "Москва"]], "sAKU": [4, 48.2, "s", ["Кудрявцев", "Андрей", "", ""]], "sMAK": [4, 49.2, "i", ["Кудрявцева", "Мария", "", ""]], "sSKU": [4, 50.3, "s", ["Кудрявцев", "Сергей", "", ""]], "sAKD": [5, 48.7, "s", ["Кудрявцева", "Анна", "", ""]], "sTAN": [2, 51.8, "s", ["Семенчинская", "Татьяна («Танечка»)", "1920 – 19..", "умерла в детстве?"]]}, "C": [["LAV", null, ["VAS"], ""], ["YAK", "YAKW", ["YAKS", "YAKD", "ALS"], ""], ["FED", "FEK", ["NAT", "FEDC"], ""], ["ISA", "SON", ["EVR"], ""], ["IVA", "SOL", ["IOS"], ""], ["LUB", "VAS", ["OLG"], ""], ["VAS", "MAR", ["ALX", "NIK"], ""], ["ALS", "NAT", ["sEKA", "sVAL", "sAN1", "sLID", "NIN", "sELI", "sEVG", "sAN2", "sSER", "sTAN"], ""], ["NOI", "EVR", ["EMI"], ""], ["IOS", "ROZ", ["ZHA"], ""], ["ALX", "KLA", ["VIK", "TAM"], ""], ["NIK", "NIN", ["LEV", "EVG"], ""], ["EMI", "ZHA", ["MRZ"], ""], ["VIK", "LEN", ["ALR", "YUD"], ""], ["TAM", "TAMH", ["LUD"], ""], ["IRI", "LEV", ["VER"], ""], ["LEV", "RIT", ["ARK"], ""], ["EVG", "MRZ", ["YUL", "ANT"], ""], ["VER", "GEO", ["ALI", "LOL"], ""], ["ARK", "MRA", ["ELE"], ""], ["YUL", "DAN", ["MRT", "ZOY"], ""], ["ANT", "KAT", ["ART"], "ex"], ["sEKA", "sPER", ["sNPE", "sIBE"], ""], ["sYPE", "sNPE", ["sSPE"], ""], ["sIBE", "sSBE", ["sANB"], ""], ["sOPE", "sSPE", ["sYU2"], ""], ["sABE", "sANB", ["sPAB"], ""], ["sANB", "sSVB", [], ""], ["sVAL", null, ["sGES"], ""], ["sGES", "sOTA", ["sELS", "sSES"], ""], ["sELS", "sAEF", ["sGEF"], ""], ["sSES", "sNSE", ["sANS"], ""], ["sNSE", null, ["sLES"], ""], ["sLID", "sALF", ["sNAL", "sVAF"], ""], ["sNAL", "sSBR", ["sAAL"], ""], ["sVAF", "sMSH", ["sAND"], ""], ["sAAL", "sNAD", ["sNTA"], ""], ["sELI", "sBAI", ["sLEB", "sNFI"], ""], ["sVEB", "sLEB", ["sABA", "sMBA"], ""], ["sNFI", "sSFI", ["sBFI", "sNFG"], ""], ["sELB", "sABA", ["sEBA"], ""], ["sEVG", "sRUB", ["sTPO", "sORU"], ""], ["sTPO", "sKPO", ["sAPO", "sNPO"], ""], ["sORU", "sVIS", ["sERU"], ""], ["sAPO", "sFSU", [], ""], ["sPOP", "sAN2", [], ""], ["sAN2", "sPOR", ["sNKO", "sASE"], ""], ["sNKO", "sYKO", ["sDKO"], ""], ["sASE", "sLSE", ["sAS2", "sTIL"], ""], ["sDKO", "sAKO", ["sEKO"], ""], ["sYIL", "sTIL", ["sAIL", "sATI"], ""], ["sSER", "sLIV", ["sMKU"], ""], ["sMKU", "sEKU", ["sAKU", "sSKU"], ""], ["sAKU", "sMAK", ["sAKD"], ""]], "sib": {"w": 600, "h": 372, "list": []}};window.FAMILY_ENTRIES=[];</script>
+<script>// Раскладка и отрисовка древа. Базовые люди стоят на заданных местах,
+// родственники, добавленные на сайте, встраиваются в общую схему автоматически.
+(function(){
+  var B = window.FAMILY_BASE;
+  var G = B.geom, U = G.U, W = G.W, H = G.H, ROW = G.ROW, X0 = G.X0, Y0 = G.Y0;
+  var ROMAN = ['I','II','III','IV','V','VI','VII','VIII','IX','X','XI','XII'];
+  var IN_FAMILY = {'сын':1,'дочь':1,'брат':1,'сестра':1,'внук':1,'внучка':1};
+
+  // даты живых людей (год рождения без года смерти, после 1935) на открытом сайте не показываем
+  function showDates(){ return !!window.FAMILY_SHOW_DATES; }
+  // у этих людей год рождения показываем открыто — по просьбе владельца древа
+  var OPEN_DATES = {MRT:1, ZOY:1, YUL:1, EVG:1, MRZ:1, ANT:1};
+  function publicDates(d, id){
+    if (showDates() || OPEN_DATES[id] || !d) return d || '';
+    var years = String(d).match(/1[89]\d\d|20\d\d/g) || [];
+    if (/†/.test(d) || years.length >= 2) return d;
+    return years.length && +years[0] >= 1935 ? '' : d;
+  }
+  function esc(s){ return String(s == null ? '' : s).replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+
+  function splitName(full){
+    var w = String(full || '').trim().split(/\s+/);
+    if (w.length >= 3) return [w[0], w.slice(1).join(' ')];
+    if (w.length === 2 && /(ов|ев|ин|ын|ий|ой|ая|на|ова|ева|ина|ская|ский|ман|ич)$/i.test(w[0])) return [w[0], w[1]];
+    return ['', w.join(' ')];
+  }
+
+  function build(entries){
+    var P = {}, order = [];
+    Object.keys(B.P).forEach(function(id){
+      var p = B.P[id];
+      P[id] = {id:id, gen:p[0], x:p[1], fam:p[2], lines:p[3], w: id === 'SIB' ? B.sib.w : W, h: id === 'SIB' ? B.sib.h : H};
+      order.push(id);
+    });
+    var C = B.C.map(function(c){ return {a:c[0], b:c[1], kids:c[2].slice(), kind:c[3]}; });
+    var links = [];
+
+    function parentCouple(id){ for (var i = 0; i < C.length; i++) if (C[i].kids.indexOf(id) >= 0 && C[i].kind !== 'sib') return C[i]; return null; }
+    function ownCouples(id){ return C.filter(function(c){ return (c.a === id || c.b === id) && c.kind !== 'sib'; }); }
+    function rowNodes(gen){ return order.filter(function(id){ return P[id].gen === gen; }); }
+    function free(gen, x, w, skip){
+      var half = w / U / 2;
+      return rowNodes(gen).every(function(id){
+        if (id === skip) return true;
+        var q = P[id], qh = q.w / U / 2;
+        return x + half + 0.08 <= q.x - qh || x - half - 0.08 >= q.x + qh;
+      });
+    }
+    function place(gen, want){
+      for (var d = 0; d <= 12; d += 0.25) {
+        if (free(gen, want + d, W)) return want + d;
+        if (d && free(gen, want - d, W)) return want - d;
+      }
+      var xs = rowNodes(gen).map(function(id){ return P[id].x; });
+      return (xs.length ? Math.max.apply(null, xs) : want) + 1.1;
+    }
+
+    (entries || []).filter(function(e){ return e.kind === 'person' && e.name; })
+      .sort(function(a, b){ return (a.created || 0) - (b.created || 0); })
+      .forEach(function(e){
+        var anchor = P[e.person];
+        if (!anchor) return;
+        var id = 'e:' + e.id, rel = e.relation || 'другое', nm = splitName(e.name);
+        var note = [e.occupation, e.place].filter(Boolean).join(' · ');
+        var n = {id:id, added:true, author:e.author, fam: IN_FAMILY[rel] ? (anchor.fam === 'i' ? 'k' : anchor.fam) : 'i',
+                 lines:[nm[0], nm[1], e.dates || '', note], w:W, h:H, rel:rel};
+        var gen = anchor.gen, want = anchor.x + 1, pc;
+
+        if (rel === 'сын' || rel === 'дочь') {
+          gen = anchor.gen + 1;
+          var own = ownCouples(e.person), c = own[own.length - 1];
+          if (!c) { c = {a:e.person, b:null, kids:[], kind:''}; C.push(c); }
+          var mx = c.b ? (P[c.a].x + P[c.b].x) / 2 : P[c.a].x;
+          want = mx + c.kids.length * 0.5 - 0.25;
+          c.kids.push(id);
+        } else if (rel === 'муж' || rel === 'жена') {
+          C.push({a:e.person, b:id, kids:[], kind:''});
+        } else if (rel === 'отец' || rel === 'мать') {
+          gen = anchor.gen - 1;
+          pc = parentCouple(e.person);
+          if (pc && !pc.b) { pc.b = id; want = P[pc.a].x + 1; }
+          else if (!pc) { C.push({a:id, b:null, kids:[e.person], kind:''}); want = anchor.x; }
+          else { gen = anchor.gen; links.push({from:e.person, to:id, label:rel}); }
+        } else if (rel === 'брат' || rel === 'сестра') {
+          pc = parentCouple(e.person);
+          if (pc) pc.kids.push(id);
+          else {
+            var s = C.filter(function(c){ return c.kind === 'sib' && c.kids.indexOf(e.person) >= 0; })[0];
+            if (s) s.kids.push(id); else C.push({a:null, b:null, kids:[e.person, id], kind:'sib'});
+          }
+        } else if (rel === 'внук' || rel === 'внучка') {
+          gen = anchor.gen + 2; want = anchor.x;
+          links.push({from:e.person, to:id, label:rel, down:true});
+        } else {
+          links.push({from:e.person, to:id, label:'родственник'});
+        }
+        n.gen = gen;
+        n.x = place(gen, want);
+        P[id] = n; order.push(id);
+      });
+
+    // строки и колонки могли уйти в минус — сдвигаем всё
+    var minG = Math.min.apply(null, order.map(function(id){ return P[id].gen; }));
+    var minX = Math.min.apply(null, order.map(function(id){ return P[id].x - P[id].w / U / 2; }));
+    var dx = minX < -0.5 ? -0.5 - minX : 0;
+    order.forEach(function(id){ P[id].gen -= minG; P[id].x += dx; });
+    return {P:P, C:C, links:links, order:order};
+  }
+
+  function render(m){
+    var P = m.P;
+    function cx(id){ return X0 + P[id].x * U; }
+    function top(id){ return Y0 + P[id].gen * ROW; }
+    function marker(c){
+      if (!c.b) return [cx(c.a), top(c.a) + H];
+      return [(cx(c.a) + cx(c.b)) / 2, top(c.a) + H / 2];
+    }
+    // уровни шин детей, чтобы линии разных семей не сливались
+    var bands = {}, level = [];
+    m.C.forEach(function(c, i){
+      if (c.kind === 'sib' || !c.kids.length) return;
+      var g = P[c.a].gen, xs = c.kids.map(cx).concat([marker(c)[0]]);
+      (bands[g] = bands[g] || []).push([Math.min.apply(null, xs), Math.max.apply(null, xs), i]);
+    });
+    Object.keys(bands).forEach(function(g){
+      var placed = [];
+      bands[g].sort(function(a, b){ return a[0] - b[0]; }).forEach(function(s){
+        var lv = 0;
+        while (placed.some(function(p){ return p[2] === lv && !(s[1] < p[0] - 10 || s[0] > p[1] + 10); })) lv++;
+        placed.push([s[0], s[1], lv]); level[s[2]] = lv;
+      });
+    });
+
+    var links = [], rings = [];
+    m.C.forEach(function(c, i){
+      if (c.kind === 'sib') {
+        var ys = Math.min.apply(null, c.kids.map(top)) - 34, xs = c.kids.map(cx);
+        var gs = P[c.kids[0]].gen;
+        links.push('<path class="kin sibl" pathLength="1" style="--g:' + gs + '" d="M' + Math.min.apply(null, xs).toFixed(1) + ',' + ys + ' H' + Math.max.apply(null, xs).toFixed(1) + c.kids.map(function(k){ return ' M' + cx(k).toFixed(1) + ',' + ys + ' V' + top(k); }).join('') + '"/>');
+        return;
+      }
+      var mk = marker(c), mx = mk[0], my = mk[1], g = P[c.a].gen;
+      if (c.b) {
+        var l = Math.min(cx(c.a), cx(c.b)) + W / 2, r = Math.max(cx(c.a), cx(c.b)) - W / 2;
+        links.push('<path class="wed' + (c.kind === 'ex' ? ' ex' : '') + '" pathLength="1" style="--g:' + g + '" d="M' + l.toFixed(1) + ',' + my + ' H' + r.toFixed(1) + '"/>');
+        rings.push(c.kind === 'ex'
+          ? '<g class="ring ex" style="--g:' + g + '"><circle cx="' + (mx - 5).toFixed(1) + '" cy="' + my + '" r="9"/><circle cx="' + (mx + 9).toFixed(1) + '" cy="' + my + '" r="9"/><text class="exl" x="' + mx.toFixed(1) + '" y="' + (my - H / 2 - 12) + '">бывший брак</text></g>'
+          : '<g class="ring" style="--g:' + g + '"><circle cx="' + (mx - 6).toFixed(1) + '" cy="' + my + '" r="9"/><circle cx="' + (mx + 6).toFixed(1) + '" cy="' + my + '" r="9"/></g>');
+      }
+      var bus = Y0 + g * ROW + H + 50 + (level[i] || 0) * 24;
+      c.kids.forEach(function(k){
+        links.push('<path class="kin" data-kid="' + esc(k) + '" data-par="' + esc(c.a) + (c.b ? ' ' + esc(c.b) : '') + '" pathLength="1" style="--g:' + P[k].gen + '" d="M' + mx.toFixed(1) + ',' + (my + (c.b ? 9 : 0)) + ' V' + bus + ' H' + cx(k).toFixed(1) + ' V' + top(k) + '"/>');
+      });
+    });
+    m.links.forEach(function(L){
+      var a = L.from, b = L.to, d, lx, ly;
+      if (L.down) {
+        var mid = top(a) + H + (top(b) - top(a) - H) / 2;
+        d = 'M' + cx(a).toFixed(1) + ',' + (top(a) + H) + ' V' + mid + ' H' + cx(b).toFixed(1) + ' V' + top(b);
+        lx = (cx(a) + cx(b)) / 2; ly = mid - 10;
+      } else {
+        var y = top(a) + H / 2, l = Math.min(cx(a), cx(b)) + W / 2, r = Math.max(cx(a), cx(b)) - W / 2;
+        d = 'M' + l.toFixed(1) + ',' + y + ' H' + r.toFixed(1); lx = (l + r) / 2; ly = y - 14;
+      }
+      links.push('<path class="kin dash" pathLength="1" style="--g:' + P[b].gen + '" d="' + d + '"/><text class="exl" x="' + lx.toFixed(1) + '" y="' + ly + '">' + esc(L.label) + '</text>');
+    });
+
+    var nodes = m.order.map(function(id, idx){
+      var p = P[id], w = p.w, h = p.h, left = cx(id) - w / 2, y = top(id), c = cx(id);
+      var o = '<g class="node f-' + p.fam + (p.added ? ' added' : '') + '" data-pid="' + esc(id) + '" style="--g:' + p.gen + ';--i:' + idx + '">' +
+        '<rect class="card" x="' + left.toFixed(1) + '" y="' + y + '" width="' + w + '" height="' + h + '" rx="6"/>' +
+        '<rect class="stripe" x="' + left.toFixed(1) + '" y="' + y + '" width="' + w + '" height="9" rx="2"/>';
+      if (id === 'SIB') {
+        o += '<text aria-hidden="true" class="sur" x="' + c.toFixed(1) + '" y="' + (y + 48) + '">Семенчинские</text><text aria-hidden="true" class="note" x="' + c.toFixed(1) + '" y="' + (y + 82) + '">сёстры и брат Нины</text>';
+        B.sib.list.forEach(function(s, k){
+          var tx = left + 40 + (k % 2) * (w / 2), ty = y + 140 + Math.floor(k / 2) * 60;
+          o += '<text aria-hidden="true" class="sib" x="' + tx.toFixed(1) + '" y="' + ty + '">' + esc(s[0]) + '</text><text aria-hidden="true" class="sibd" x="' + tx.toFixed(1) + '" y="' + (ty + 28) + '">' + esc(s[1]) + '</text>';
+        });
+      } else {
+        var L = [p.lines[0], p.lines[1], publicDates(p.lines[2], p.id), p.lines[3]], ty = y + 46;
+        if (L[0]) o += '<text aria-hidden="true" class="sur fit" x="' + c.toFixed(1) + '" y="' + ty + '">' + esc(L[0]) + '</text>';
+        o += '<text aria-hidden="true" class="name fit" x="' + c.toFixed(1) + '" y="' + (ty + 40) + '">' + esc(L[1]) + '</text>';
+        if (L[2]) o += '<text aria-hidden="true" class="date fit" x="' + c.toFixed(1) + '" y="' + (ty + 76) + '">' + esc(L[2]) + '</text>';
+        if (L[3]) o += '<text aria-hidden="true" class="note fit" x="' + c.toFixed(1) + '" y="' + (ty + (L[2] ? 110 : 76)) + '">' + esc(L[3]) + '</text>';
+        if (p.added) o += '<text aria-hidden="true" class="newtag" x="' + (left + 14).toFixed(1) + '" y="' + (y + 34) + '">новое</text>';
+      }
+      return o + '</g>';
+    });
+
+    var maxG = Math.max.apply(null, m.order.map(function(id){ return P[id].gen; }));
+    var maxX = Math.max.apply(null, m.order.map(function(id){ return P[id].x + P[id].w / U / 2; }));
+    var gens = '';
+    for (var g = 0; g <= maxG; g++) gens += '<text class="genl" x="70" y="' + (Y0 + g * ROW + H / 2 + 18) + '">' + (ROMAN[g] || g + 1) + '</text>';
+    var wmax = Math.max(X0 + 17.6 * U, X0 + maxX * U + 60), hmax = Y0 + maxG * ROW + H + 60;
+    return '<svg class="tree" viewBox="0 0 ' + Math.round(wmax) + ' ' + hmax + '" xmlns="http://www.w3.org/2000/svg" role="group" aria-label="Генеалогическое древо: ' + m.order.length + ' карточек. Нажмите Tab, чтобы перейти по людям">' +
+      '<g class="gens" aria-hidden="true">' + gens + '</g><g class="links" aria-hidden="true">' + links.join('') + '</g><g class="rings" aria-hidden="true">' + rings.join('') + '</g><g class="nodes">' + nodes.join('') + '</g></svg>';
+  }
+
+  // длинные строки: сначала уменьшаем кегль (не больше чем до 80%), потом обрезаем с многоточием
+  function fit(svg){
+    svg.querySelectorAll('text.fit').forEach(function(t){
+      var max = W - 36, full = t.textContent, len;
+      try { len = t.getComputedTextLength(); } catch(e) { return; }
+      if (len <= max) return;
+      var fs = parseFloat(getComputedStyle(t).fontSize), r = Math.max(.66, max / len);
+      t.style.fontSize = (fs * r).toFixed(1) + 'px';
+      if (t.getComputedTextLength() <= max) return;
+      // имя в родословной не обрезаем: если и после уменьшения не влезает — слегка сжимаем по ширине
+      t.setAttribute('textLength', max); t.setAttribute('lengthAdjust', 'spacingAndGlyphs');
+    });
+  }
+
+  function people(m){
+    var out = {};
+    m.order.forEach(function(id){
+      var p = m.P[id];
+      if (id === 'SIB') out[id] = {sur:'Семенчинские', name:'сёстры и брат Нины', dates:'', note:B.sib.list.map(function(s){ return s[0] + ' ' + s[1]; }).join(', ')};
+      else out[id] = {sur:p.lines[0], name:p.lines[1], dates:publicDates(p.lines[2], id), note:[p.lines[3], p.added ? (p.rel + ' · добавил(а): ' + (p.author || '')) : ''].filter(Boolean).join(' · ')};
+    });
+    return out;
+  }
+
+  window.FamilyTree = {
+    draw: function(host, entries){
+      var m = build(entries);
+      host.innerHTML = render(m);
+      var svg = host.querySelector('svg');
+      fit(svg);
+      window.FAMILY_PEOPLE = people(m);
+      var stub = {YAKW:1, FEDC:1, TAMH:1};
+      var n = m.order.filter(function(id){ return !stub[id]; }).length + B.sib.list.length;
+      var gens = Math.max.apply(null, m.order.map(function(id){ return m.P[id].gen; })) + 1;
+      window.FAMILY_STATS = {people: n, generations: gens};
+      return svg;
+    }
+  };
+})();
+</script>
+<script>(function(){
+  var $ = function(id){ return document.getElementById(id); };
+  var page = $('page'), c = $('canvas'), sc = $('scroller');
+  FamilyTree.draw(c, window.FAMILY_ENTRIES);
+
+  // цифры на первом экране: один раз плавно дорастают до значения
+  var counted = false;
+  function count(el, n){
+    if (!el) return;
+    if (counted || matchMedia('(prefers-reduced-motion: reduce)').matches) { el.textContent = n; return; }
+    var t0 = performance.now() + 400, D = 900;
+    (function step(t){ var k = Math.min(1, Math.max(0, (t - t0) / D)); el.textContent = Math.round(n * (1 - Math.pow(1 - k, 3))); if (k < 1) requestAnimationFrame(step); })(performance.now());
+  }
+  function facts(){ var s = window.FAMILY_STATS || {}; if (s.people) count($('fPeople'), s.people); if (s.generations) count($('fGens'), s.generations); counted = true; }
+  facts();
+
+  // сколько фамилий в древе: Кочергин/Кочергина → один род; новые фамилии от родных тоже считаются
+  function clans(){
+    var P = window.FAMILY_PEOPLE || {}, set = {};
+    Object.keys(P).forEach(function(id){
+      String(P[id].sur || '').split('-').forEach(function(w){
+        w = w.trim().toLowerCase(); if (!w || /\s/.test(w)) return;
+        var m = w.match(/^(.+?)(ский|ская|цкий|цкая|ин|ина|ын|ына|ов|ова|ев|ева|ёв|ёва)$/);
+        if (m) set[m[1] + m[2].replace(/а$/, '').replace('ская', 'ский').replace('цкая', 'цкий')] = 1;
+        else if (!/[аеёиоуыэюяй]$/.test(w)) set[w] = 1;
+      });
+    });
+    var n = Object.keys(set).length, el = $('fFams'), wd = $('fFamsWord');
+    if (el && n) el.textContent = n;
+    if (wd && n) { var a = n % 10, b = n % 100; wd.textContent = a === 1 && b !== 11 ? 'фамилия' : a >= 2 && a <= 4 && (b < 12 || b > 14) ? 'фамилии' : 'фамилий'; }
+  }
+
+  // масштаб схемы: целиком и три ступени увеличения (в долях ширины схемы)
+  var LEVELS = [0, .33, .5, .8], NAMES = ['Целиком', 'Крупнее', 'Крупно', 'Очень крупно'], level = 0;
+  var lastW = 0;
+  function levelPx(n){ var s = c.querySelector('svg'); return Math.round((s ? s.viewBox.baseVal.width : 7200) * LEVELS[n]); }
+  function setLevel(n, keepCenter){
+    n = Math.max(0, Math.min(LEVELS.length - 1, n));
+    var before = c.offsetWidth, mid = (sc.scrollLeft + sc.clientWidth / 2) / (before || 1);
+    level = n; lastW = 0;
+    c.style.width = n ? levelPx(n) + 'px' : '';
+    c.classList.toggle('big', n > 0);
+    $('zoomLevel').textContent = NAMES[n];
+    $('zoomOut').disabled = n === 0; $('zoomIn').disabled = n === LEVELS.length - 1;
+    if (keepCenter !== false) sc.scrollLeft = mid * c.offsetWidth - sc.clientWidth / 2;
+    try { localStorage.setItem('zoomLevel', String(n)); } catch(e) {}
+    mini();
+  }
+  $('zoomIn').onclick = function(){ setLevel(level + 1); };
+  $('zoomOut').onclick = function(){ setLevel(level - 1); };
+
+  // мини-карта: где мы сейчас на большой схеме
+  var mm = $('minimap'), mmIn = $('mmIn'), mmView = $('mmView');
+  function mini(){
+    mm.hidden = level === 0;
+    if (mm.hidden) return;
+    var w = c.offsetWidth || 1;
+    mmView.style.left = (sc.scrollLeft / w * 100) + '%';
+    mmView.style.width = Math.min(100, sc.clientWidth / w * 100) + '%';
+  }
+  sc.addEventListener('scroll', mini, {passive: true});
+  mm.addEventListener('click', function(e){
+    var r = mm.getBoundingClientRect(), f = (e.clientX - r.left) / r.width;
+    sc.scrollTo({left: f * c.offsetWidth - sc.clientWidth / 2, behavior: 'smooth'});
+  });
+
+  // копии схемы в лупе и мини-карте скрыты от экранного диктора и от Tab
+  function quiet(copy){ copy.setAttribute('aria-hidden', 'true'); copy.querySelectorAll('[tabindex]').forEach(function(n){ n.removeAttribute('tabindex'); }); }
+
+  // лупа — только для мыши
+  var lens = $('lens'), lin = $('lensIn'), lb = $('lensbtn'), copy = null, on = true;
+  function src(){ return c.querySelector('svg'); }
+  var lastFound = null, lineOn = false;
+  window.refreshLens = function(){
+    if (lastFound) { var f = c.querySelector('.node[data-pid="' + lastFound + '"]'); if (f) { f.classList.add('found'); if (lineOn && !f.closest('svg').classList.contains('has-line')) lineage(lastFound); } }
+    lin.textContent = ''; copy = src().cloneNode(true); quiet(copy); lin.appendChild(copy); lastW = 0;
+    mmIn.textContent = ''; var m = src().cloneNode(true); m.removeAttribute('id'); quiet(m); mmIn.appendChild(m);
+    if (level && Math.abs(c.offsetWidth - levelPx(level)) > 1) setLevel(level, true); // ширина схемы изменилась после перерисовки
+    facts();
+    clans();
+  };
+  window.refreshLens();
+  lb.onclick = function(){ on = !on; lb.setAttribute('aria-pressed', on); if (!on) lens.hidden = true;
+    try { localStorage.setItem('lens', on ? '1' : '0'); } catch(e) {} };
+  try { if (localStorage.getItem('lens') === '0') lb.onclick(); } catch(e) {}
+
+  // подсказка лупы исчезает после первого использования
+  function hideLensHint(){ document.querySelectorAll('.lens-hint.mouse-only').forEach(function(h){ h.classList.add('seen'); }); }
+  try { if (localStorage.getItem('lensSeen')) hideLensHint(); } catch(e) {}
+
+  // лупа: одно обновление на кадр, ширину копии меняем только при смене масштаба
+  var pend = null, raf = 0;
+  function move(e){
+    if (!on || !copy || e.pointerType !== 'mouse') return;
+    if (!move.seen) { move.seen = 1; try { localStorage.setItem('lensSeen', '1'); } catch(er) {} setTimeout(hideLensHint, 4000); }
+    pend = e; if (!raf) raf = requestAnimationFrame(frame);
+  }
+  function frame(){
+    raf = 0; var e = pend; if (!e) return;
+    var s = src(), r = s.getBoundingClientRect(), x = e.clientX - r.left, y = e.clientY - r.top;
+    if (x < 0 || y < 0 || x > r.width || y > r.height) { lens.hidden = true; return; }
+    var vb = s.viewBox.baseVal.width, z = Math.max(1.3, (level ? 1.1 : .7) * vb / r.width);
+    lens.hidden = false; var R = lens.offsetWidth / 2, w = Math.round(r.width * z);
+    if (w !== lastW) { copy.style.width = w + 'px'; lastW = w; }
+    lens.style.transform = 'translate(' + (e.clientX - R) + 'px,' + (e.clientY - R) + 'px)';
+    lin.style.transform = 'translate(' + (R - x * z) + 'px,' + (R - y * z) + 'px)';
+  }
+  c.addEventListener('pointermove', move);
+  c.addEventListener('pointerleave', function(){ pend = null; lens.hidden = true; });
+  c.addEventListener('pointerdown', function(){ pend = null; lens.hidden = true; });
+
+  // на телефоне по умолчанию «Крупно», если масштаб ещё не выбирали
+  var coarse = matchMedia('(pointer: coarse)').matches, def = coarse ? 2 : 0;
+  try { var saved = localStorage.getItem('zoomLevel'); setLevel(saved !== null ? +saved : def, false); } catch(e) { setLevel(def, false); }
+  if (coarse && level > 0) { var first = c.querySelector('.node[data-pid]'); if (first) { var fr = first.getBoundingClientRect(), sr0 = sc.getBoundingClientRect(); sc.scrollLeft += fr.left - sr0.left - 24; mini(); } }
+
+  // «Ваша линия»: от найденного человека вверх к предкам
+  function lineage(pid){
+    var svg = c.querySelector('svg'); if (!svg) return;
+    svg.querySelectorAll('.lineage,.anc').forEach(function(n){ n.classList.remove('lineage', 'anc'); n.style.removeProperty('--d'); });
+    var q = [[pid, 0]], seen = {}, depth = 0, top = pid; seen[pid] = 1;
+    while (q.length) {
+      var it = q.shift();
+      svg.querySelectorAll('path.kin[data-kid="' + it[0] + '"]').forEach(function(p){
+        p.classList.add('lineage'); p.style.setProperty('--d', it[1]);
+        (p.getAttribute('data-par') || '').split(' ').forEach(function(a){
+          if (a && !seen[a]) {
+            seen[a] = 1; q.push([a, it[1] + 1]);
+            if (it[1] + 1 > depth) { depth = it[1] + 1; top = a; }
+            var n = svg.querySelector('.node[data-pid="' + a + '"]'); if (n) { n.classList.add('anc'); n.style.setProperty('--d', it[1] + 1); }
+          }
+        });
+      });
+    }
+    svg.classList.toggle('has-line', depth > 0);
+    var note = $('lineNote');
+    if (note) {
+      note.hidden = !depth;
+      var P = (window.FAMILY_PEOPLE || {})[top] || {};
+      note.querySelector('span').textContent = 'Ваша линия: ' + depth + ' поколен' + (depth === 1 ? 'ие' : depth < 5 ? 'ия' : 'ий') + ', самый ранний предок — ' + ((P.sur ? P.sur + ' ' : '') + (P.name || '')).trim();
+    }
+  }
+  $('lineOff').onclick = function(){ lineOn = false; var s = c.querySelector('svg'); if (s) s.classList.remove('has-line'); $('lineNote').hidden = true; window.refreshLens(); };
+
+  // перелёт к человеку: увеличить, плавно прокрутить, подсветить, открыть карточку
+  var focusTimer, RM = matchMedia('(prefers-reduced-motion: reduce)').matches, BH = RM ? 'auto' : 'smooth';
+  window.familyFocus = function(pid, opts){
+    clearTimeout(focusTimer);
+    if (level < 2) setLevel(2, false);
+    requestAnimationFrame(function(){
+      var g = c.querySelector('.node[data-pid="' + pid + '"]'); if (!g) return;
+      var r = g.getBoundingClientRect(), sr = sc.getBoundingClientRect();
+      sc.scrollTo({left: sc.scrollLeft + (r.left + r.width / 2) - (sr.left + sr.width / 2), behavior: BH});
+      window.scrollTo({top: window.scrollY + r.top - innerHeight / 2 + r.height / 2, behavior: BH});
+      c.querySelectorAll('.node.found').forEach(function(n){ n.classList.remove('found'); });
+      g.classList.add('found'); lastFound = pid; lineOn = true; lineage(pid); window.refreshLens();
+      if (opts && opts.noOpen) return;
+      focusTimer = setTimeout(function(){ if (window.familyOpen) window.familyOpen(pid); }, RM ? 600 : 2400);
+      sc.addEventListener('pointerdown', function(){ clearTimeout(focusTimer); }, {once: true, passive: true});
+    });
+  };
+
+  // поиск по имени
+  var inp = $('findInput'), list = $('findList'), hits = [], cur = -1;
+  function norm(s){ return String(s || '').toLowerCase().replace(/ё/g, 'е'); }
+  function search(q){
+    var words = norm(q).split(/\s+/).filter(Boolean), P = window.FAMILY_PEOPLE || {}, out = [];
+    if (!words.length) return out;
+    Object.keys(P).forEach(function(id){
+      var p = P[id], hay = norm([p.sur, p.name, id === 'SIB' ? p.note : ''].join(' '));
+      if (words.every(function(w){ return hay.indexOf(w) >= 0; })) out.push(id);
+    });
+    return out;
+  }
+  function show(){
+    var P = window.FAMILY_PEOPLE || {};
+    var all = search(inp.value); hits = all.slice(0, 8); cur = hits.length ? 0 : -1; list.textContent = '';
+    inp.removeAttribute('aria-activedescendant');
+    if (!inp.value.trim()) { list.hidden = true; inp.setAttribute('aria-expanded', 'false'); $('findStatus').textContent = ''; return; }
+    if (!hits.length) { var e = document.createElement('li'); e.className = 'none'; e.textContent = 'Никого не нашли. Попробуйте только фамилию или только имя.'; list.appendChild(e); }
+    hits.forEach(function(id, i){
+      var p = P[id], li = document.createElement('li');
+      li.setAttribute('role', 'option'); li.id = 'hit' + i; li.setAttribute('aria-selected', i === cur);
+      var b = document.createElement('b'); b.textContent = ((p.sur ? p.sur + ' ' : '') + p.name).trim(); li.appendChild(b);
+      if (p.dates) { var d = document.createElement('span'); d.textContent = p.dates; li.appendChild(d); }
+      li.addEventListener('pointerdown', function(ev){ ev.preventDefault(); });
+      li.addEventListener('mousedown', function(ev){ ev.preventDefault(); });
+      li.addEventListener('click', function(){ pick(id); });
+      list.appendChild(li);
+    });
+    if (all.length > 8) { var m = document.createElement('li'); m.className = 'none'; m.textContent = 'Найдено ' + all.length + ', показаны первые 8. Добавьте имя или отчество'; list.appendChild(m); }
+    list.hidden = false;
+    inp.setAttribute('aria-expanded', String(!list.hidden));
+    if (cur >= 0) inp.setAttribute('aria-activedescendant', 'hit' + cur);
+    $('findStatus').textContent = all.length ? 'Найдено: ' + all.length : 'Никого не нашли';
+  }
+  function hideList(){ list.hidden = true; inp.setAttribute('aria-expanded', 'false'); inp.removeAttribute('aria-activedescendant'); }
+  function pick(id){ hideList(); inp.blur(); window.familyFocus(id); }
+  inp.addEventListener('input', show);
+  inp.addEventListener('focus', function(){ if (inp.value) show(); });
+  inp.addEventListener('blur', function(){ setTimeout(hideList, 150); });
+  inp.addEventListener('keydown', function(e){
+    if (e.key === 'Escape') { hideList(); return; }
+    if (list.hidden || !hits.length) return;
+    if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+      e.preventDefault(); cur = (cur + (e.key === 'ArrowDown' ? 1 : -1) + hits.length) % hits.length;
+      [].forEach.call(list.children, function(li, i){ if (li.id) li.setAttribute('aria-selected', i === cur); });
+      inp.setAttribute('aria-activedescendant', 'hit' + cur); var a = $('hit' + cur); if (a) a.scrollIntoView({block: 'nearest'});
+    }
+  });
+  $('finder').addEventListener('submit', function(e){ e.preventDefault(); if (!hits.length) show(); if (hits.length) pick(hits[Math.max(0, cur)]); else inp.focus(); });
+
+  // полоса прочитанного и появление блоков
+  var bar = $('progress');
+  function prog(){ var h = document.documentElement, m = h.scrollHeight - h.clientHeight; bar.style.transform = 'scaleX(' + (m > 0 ? h.scrollTop / m : 0) + ')'; }
+  addEventListener('scroll', prog, {passive: true}); prog();
+  var blocks = [].slice.call(document.querySelectorAll('.reveal'));
+  if ('IntersectionObserver' in window && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    document.documentElement.classList.add('reveal-on');
+    var io = new IntersectionObserver(function(es){ es.forEach(function(e){ if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }); }, {threshold: .05, rootMargin: '0px 0px 10% 0px'});
+    blocks.forEach(function(b){ io.observe(b); });
+    setTimeout(function(){ blocks.forEach(function(b){ b.classList.add('in'); }); }, 2500);
+  } else blocks.forEach(function(b){ b.classList.add('in'); });
+
+  // вступление древа: играет, когда схема на экране и шрифты загружены
+  var treeSec = $('tree');
+  var lite = matchMedia('(pointer: coarse)').matches && ((navigator.deviceMemory || 4) <= 3 || (navigator.hardwareConcurrency || 8) <= 4);
+  if (lite) treeSec.classList.add('lite');
+  function playTree(){ treeSec.classList.remove('tree-play', 'tree-done'); void treeSec.offsetWidth; treeSec.classList.add('tree-play'); }
+  (document.fonts ? document.fonts.ready : Promise.resolve()).then(function(){ setTimeout(function(){
+    if (!('IntersectionObserver' in window)) return playTree();
+    var to = new IntersectionObserver(function(es){ if (es[0].isIntersecting) { to.disconnect(); playTree(); } }, {threshold: .2});
+    to.observe(sc);
+  }, 0); });
+  $('replay').onclick = function(){ page.classList.remove('play'); void page.offsetWidth; page.classList.add('play'); playTree(); };
+})();
+</script>
+<script>(function(){
+  var API = (window.FAMILY_API || '').trim();
+  var KIND = {story:'Воспоминание', fact:'Факт', correction:'Исправление', person:'Новый родственник'};
+  var entries = [];
+  var current = '';
+
+  var $ = function(id){ return document.getElementById(id); };
+  var panel = $('panel'), list = $('panelList'), form = $('addForm'), msg = $('formMsg');
+  var feed = $('feed'), ro = !API;
+  var FEED_STEP = 20, feedShown = FEED_STEP;
+
+  document.documentElement.classList.toggle('readonly', ro);
+
+  function el(tag, cls, text){ var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
+  function fmt(ts){ try { return new Date(ts).toLocaleDateString('ru-RU', {day:'numeric', month:'long', year:'numeric'}); } catch(e){ return ''; } }
+  function personTitle(pid){ var p = (window.FAMILY_PEOPLE || {})[pid]; return p ? ((p.sur ? p.sur + ' ' : '') + p.name).trim() : 'Без привязки к человеку'; }
+
+  // запрос к API: русские ошибки, таймаут 20 секунд, проверка «нет сети»
+  function call(method, query, body){
+    if (navigator.onLine === false) return Promise.reject(new Error('Нет интернета. Текст сохранён на телефоне — отправьте, когда появится связь'));
+    var ctl = window.AbortController ? new AbortController() : null, tm = setTimeout(function(){ if (ctl) ctl.abort(); }, 20000);
+    return fetch(API + (query ? (API.indexOf('?') < 0 ? '?' : '&') + query : ''), {method:method, headers:{'Content-Type':'application/json'}, body: body ? JSON.stringify(body) : undefined, signal: ctl ? ctl.signal : undefined})
+      .catch(function(e){ throw new Error(e && e.name === 'AbortError' ? 'Сеть очень медленная, сервер не ответил за 20 секунд' : 'Нет связи с сайтом. Проверьте интернет'); })
+      .then(function(r){ return r.json().catch(function(){ return {}; }).then(function(j){ if (!r.ok) throw new Error(j.error || (r.status >= 500 ? 'Сайт временно не отвечает' : 'Ошибка ' + r.status)); return j; }); })
+      .finally(function(){ clearTimeout(tm); });
+  }
+
+  function entryNode(e, showWho){
+    var li = el('li', 'entry');
+    var head = el('div', 'e-head');
+    head.appendChild(el('span', 'e-kind k-' + e.kind, KIND[e.kind] || e.kind));
+    head.appendChild(el('span', e.verified ? 'e-ok' : 'e-unv', e.verified ? 'проверено' : 'не проверено'));
+    if (showWho) {
+      var who = el('button', 'e-who', personTitle(e.person));
+      who.type = 'button';
+      who.onclick = function(){ openPanel(e.person); };
+      head.appendChild(who);
+    }
+    li.appendChild(head);
+    if (e.kind === 'person') {
+      var line = [e.relation, e.name].filter(Boolean).join(': ');
+      li.appendChild(el('div', 'e-name', line));
+      var meta = [e.dates, e.place, e.occupation].filter(Boolean).join(' · ');
+      if (meta) li.appendChild(el('div', 'e-meta', meta));
+    }
+    if (e.text) {
+      var tx = el('p', 'e-text', e.text);
+      if (showWho) { tx.title = 'Нажмите, чтобы развернуть'; tx.onclick = function(){ tx.classList.toggle('open'); }; }
+      li.appendChild(tx);
+    }
+    var foot = el('div', 'e-foot', (e.author || 'Без подписи') + ' · ' + fmt(e.created));
+    li.appendChild(foot);
+    return li;
+  }
+
+  function renderFeed(){
+    if (!feed) return;
+    feed.textContent = '';
+    if (!entries.length) {
+      if (ro) { feed.appendChild(el('li', 'empty', 'Дополнения от родных видны на семейном сайте.')); return; }
+      var li = el('li', 'empty-cta');
+      li.appendChild(el('p', 'ei-title', 'Станьте первым, кто допишет историю семьи'));
+      li.appendChild(el('p', 'ei-text', 'Например: где работал дедушка, как познакомились бабушка с дедушкой, чья это фотография.'));
+      var b = el('button', 'cta'); b.type = 'button'; b.innerHTML = '<span class="cta-plus" aria-hidden="true">+</span>Добавить воспоминание'; b.onclick = function(){ openPanel(''); };
+      li.appendChild(b); feed.appendChild(li); return;
+    }
+    var rev = entries.slice().reverse();
+    rev.slice(0, feedShown).forEach(function(e){ feed.appendChild(entryNode(e, true)); });
+    var rest = rev.length - feedShown;
+    if (rest > 0) {
+      var more = el('li', 'more'), mb = el('button', '', 'Показать ещё ' + Math.min(FEED_STEP, rest) + ' из ' + rest);
+      mb.type = 'button'; mb.onclick = function(){ feedShown += FEED_STEP; renderFeed(); };
+      more.appendChild(mb); feed.appendChild(more);
+    }
+  }
+
+  function badge(svg){
+    if (!svg) return;
+    svg.querySelectorAll('.badge').forEach(function(b){ b.remove(); });
+    var counts = {};
+    entries.forEach(function(e){ if (e.person) counts[e.person] = (counts[e.person] || 0) + 1; });
+    Object.keys(counts).forEach(function(pid){
+      var g = svg.querySelector('.node[data-pid="' + pid + '"]'); if (!g) return;
+      var r = g.querySelector('.card'); var x = +r.getAttribute('x') + +r.getAttribute('width') - 6, y = +r.getAttribute('y') + 6;
+      var ns = 'http://www.w3.org/2000/svg', b = document.createElementNS(ns, 'g'); b.setAttribute('class', 'badge'); b.setAttribute('aria-hidden', 'true');
+      var label = counts[pid] > 99 ? '99+' : '+' + counts[pid];
+      var c = document.createElementNS(ns, 'circle'); c.setAttribute('cx', x); c.setAttribute('cy', y); c.setAttribute('r', label.length > 3 ? 28 : 22);
+      var t = document.createElementNS(ns, 'text'); t.setAttribute('x', x); t.setAttribute('y', y + 9); t.textContent = label;
+      b.appendChild(c); b.appendChild(t); g.appendChild(b);
+    });
+  }
+
+  function renderPanel(){
+    if (panel.hidden) return;
+    list.textContent = '';
+    var mine = entries.filter(function(e){ return (e.person || '') === current; });
+    if (!mine.length) list.appendChild(el('li', 'empty', current ? 'Дополнений к этому человеку пока нет.' : 'Общих дополнений пока нет.'));
+    mine.forEach(function(e){ list.appendChild(entryNode(e, false)); });
+  }
+
+  // extra — только что сохранённая запись: ответ GET может прийти из кэша (до 30 с) без неё
+  function load(extra){
+    if (ro) { renderFeed(); return Promise.resolve(); }
+    return call('GET', extra ? 't=' + Date.now() : '').then(function(j){
+      entries = j.entries || [];
+      if (extra && extra.id && !entries.some(function(e){ return e.id === extra.id; })) entries.push(extra);
+      redraw();
+      renderFeed(); renderPanel();
+    }).catch(function(err){
+      if (!feed) return;
+      var old = feed.querySelector('.load-err'); if (old) old.remove();
+      var li = el('li', 'empty load-err', 'Свежие дополнения не загрузились (' + err.message + '). Показаны сохранённые ранее.');
+      feed.insertBefore(li, feed.firstChild);
+    });
+  }
+
+  var drawnKey = null;
+  function redraw(){
+    var key = entries.filter(function(e){ return e.kind === 'person'; }).map(function(e){ return e.id; }).join(',');
+    var canvas = $('canvas');
+    if (key !== drawnKey && window.FamilyTree) {
+      // повторная перерисовка — без вступительной анимации
+      if (drawnKey !== null) { var ts = $('tree'); ts.classList.remove('tree-play'); ts.classList.add('tree-done'); }
+      FamilyTree.draw(canvas, entries);
+      hook(canvas.querySelector('svg'));
+      drawnKey = key;
+    }
+    badge(canvas.querySelector('svg'));
+    if (window.refreshLens) window.refreshLens();
+  }
+
+  // панель человека: плавный вход/выход, фокус внутри, «Назад» на Android закрывает панель
+  var lastFocus = null, closeT;
+  function siblings(){ return document.querySelectorAll('#page > :not(#panel)'); }
+  function openPanel(pid){
+    clearTimeout(closeT);
+    if (panel.hidden) lastFocus = document.activeElement;
+    current = pid || '';
+    var p = (window.FAMILY_PEOPLE || {})[current];
+    $('pSur').textContent = p ? (p.sur || '') : 'Общие сведения';
+    $('pName').textContent = p ? p.name : 'Дополнение к древу';
+    $('pMeta').textContent = p ? [p.dates, p.note].filter(Boolean).join(' · ') : 'Добавьте человека, историю или документ, который не относится к одной карточке.';
+    panel.hidden = false; void panel.offsetWidth; panel.classList.add('open');
+    [].forEach.call(siblings(), function(n){ n.inert = true; });
+    document.body.classList.add('panel-open');
+    if (!history.state || history.state.panel === undefined) { try { history.pushState({panel: current}, ''); } catch(e) {} }
+    msg.textContent = ''; msg.className = 'form-msg';
+    loadDraft();
+    renderPanel();
+    setTimeout(function(){ $('panelClose').focus(); }, 30);
+  }
+  function hidePanel(){
+    panel.classList.remove('open'); document.body.classList.remove('panel-open');
+    [].forEach.call(siblings(), function(n){ n.inert = false; });
+    clearTimeout(closeT);
+    closeT = setTimeout(function(){ if (!panel.classList.contains('open')) panel.hidden = true; }, 220);
+    var back = lastFocus && lastFocus !== document.body && document.contains(lastFocus) ? lastFocus : document.querySelector('#canvas .node[data-pid="' + current + '"]');
+    if (back && back.focus) back.focus({preventScroll: true});
+  }
+  function closePanel(){ if (history.state && history.state.panel !== undefined) history.back(); else hidePanel(); }
+  window.addEventListener('popstate', function(){ if (panel.classList.contains('open')) hidePanel(); });
+  // после перезагрузки страницы с открытой панелью в истории — начинаем с чистого состояния
+  try { if (history.state && history.state.panel !== undefined) history.replaceState(null, ''); } catch(e) {}
+
+  // черновик формы: на случай обрыва связи текст остаётся на устройстве
+  var DRAFT = ['kind','relation','name','dates','place','occupation','text'];
+  function draftKey(){ return 'draft:' + (current || '_'); }
+  function saveDraft(){
+    var d = {}; DRAFT.forEach(function(f){ d[f] = form.elements[f].value; });
+    var has = d.text || d.name;
+    try { if (has) localStorage.setItem(draftKey(), JSON.stringify(d)); else localStorage.removeItem(draftKey()); } catch(e) {}
+    $('draftNote').hidden = !has;
+  }
+  function loadDraft(){
+    var d = null; try { d = JSON.parse(localStorage.getItem(draftKey()) || 'null'); } catch(e) {}
+    DRAFT.forEach(function(f){ if (f !== 'kind' && f !== 'relation') form.elements[f].value = d ? (d[f] || '') : ''; });
+    if (d) { form.elements.kind.value = d.kind || 'story'; form.elements.relation.value = d.relation || 'сын'; }
+    form.querySelectorAll('[aria-invalid]').forEach(function(f){ f.removeAttribute('aria-invalid'); });
+    $('draftNote').hidden = !d; syncKind();
+  }
+  form.addEventListener('input', function(e){ if (e.target.removeAttribute) e.target.removeAttribute('aria-invalid'); saveDraft(); });
+  // поле в фокусе не прячется под клавиатурой телефона
+  form.addEventListener('focusin', function(e){ if (/INPUT|TEXTAREA|SELECT/.test(e.target.tagName)) setTimeout(function(){ e.target.scrollIntoView({block: 'center', behavior: 'smooth'}); }, 300); });
+  window.familyOpen = function(pid){ openPanel(pid); };
+
+  $('panelClose').onclick = closePanel;
+  $('panelBack').onclick = closePanel;
+  document.addEventListener('keydown', function(e){ if (e.key === 'Escape' && panel.classList.contains('open')) closePanel(); });
+  var addAny = $('addAny'); if (addAny) addAny.onclick = function(){ openPanel(''); };
+
+  function hook(svg){
+    if (!svg) return;
+    svg.querySelectorAll('.node[data-pid]').forEach(function(g){
+      g.setAttribute('tabindex', '0'); g.setAttribute('role', 'button');
+      var P = (window.FAMILY_PEOPLE || {})[g.dataset.pid] || {};
+      g.setAttribute('aria-label', personTitle(g.dataset.pid) + (P.dates ? ', ' + P.dates : '') + '. Открыть карточку');
+      g.addEventListener('click', function(){ openPanel(g.dataset.pid); });
+      g.addEventListener('keydown', function(e){ if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openPanel(g.dataset.pid); } });
+    });
+  }
+  drawnKey = (window.FAMILY_ENTRIES || []).filter(function(e){ return e.kind === 'person'; }).map(function(e){ return e.id; }).join(',');
+  entries = window.FAMILY_ENTRIES || [];
+  hook(document.querySelector('#canvas svg'));
+  badge(document.querySelector('#canvas svg'));
+  if (document.fonts) document.fonts.ready.then(function(){ drawnKey = null; redraw(); });
+
+  var kindSel = $('fKind');
+  function syncKind(){ form.classList.toggle('is-person', kindSel.value === 'person'); }
+  kindSel.onchange = syncKind; syncKind();
+  try { $('fAuthor').value = localStorage.getItem('author') || ''; } catch(e) {}
+
+  form.addEventListener('submit', function(ev){
+    ev.preventDefault();
+    if (ro) return;
+    var data = {person: current, personName: current ? personTitle(current) : ''};
+    ['kind','relation','name','dates','place','occupation','text','author','website'].forEach(function(f){
+      var i = form.elements[f]; data[f] = i ? i.value : '';
+    });
+    if (data.kind !== 'person') { data.relation = ''; data.name = ''; data.dates = ''; data.place = ''; data.occupation = ''; }
+    var btn = $('fSend');
+    var bad = data.kind === 'person' ? (!data.name.trim() && 'fName') : (!data.text.trim() && 'fText');
+    if (bad) {
+      var f = $(bad); f.setAttribute('aria-invalid', 'true'); msg.className = 'form-msg err';
+      msg.textContent = bad === 'fName' ? 'Впишите хотя бы имя родственника.' : 'Напишите пару слов — что вы знаете.';
+      f.focus(); return;
+    }
+    try { localStorage.setItem('author', data.author); } catch(e) {}
+    var sentFor = current, sentKey = draftKey(), before = {};
+    entries.forEach(function(e){ before[e.id] = 1; });
+    // одна и та же отправка после таймаута не создаёт дубль
+    var cidKey = 'cid:' + sentKey, cid = null;
+    try { cid = localStorage.getItem(cidKey); } catch(e) {}
+    if (!cid && window.crypto && crypto.getRandomValues) {
+      cid = Array.from(crypto.getRandomValues(new Uint8Array(8)), function(b){ return ('0' + b.toString(16)).slice(-2); }).join('');
+      try { localStorage.setItem(cidKey, cid); } catch(e) {}
+    }
+    if (cid) data.cid = cid;
+    btn.disabled = true; btn.setAttribute('aria-busy', 'true'); btn.classList.remove('done'); btn.textContent = 'Сохраняю';
+    msg.className = 'form-msg'; msg.textContent = '';
+    call('POST', '', data).then(function(res){
+      try { localStorage.removeItem(sentKey); localStorage.removeItem(cidKey); } catch(e) {}
+      var mine = current === sentFor && panel.classList.contains('open');
+      if (mine) {
+        msg.className = 'form-msg ok'; msg.textContent = data.kind === 'person' ? '✓ Сохранено. Человек уже стоит в общем древе, его видят все родные.' : '✓ Сохранено. Дополнение уже видят все родные.';
+        $('draftNote').hidden = true;
+        msg.scrollIntoView({block: 'nearest', behavior: 'smooth'});
+        ['name','dates','place','occupation','text'].forEach(function(f){ form.elements[f].value = ''; });
+        btn.classList.add('done'); btn.textContent = '✓ Сохранено';
+        setTimeout(function(){ btn.classList.remove('done'); btn.textContent = 'Сохранить'; }, 2200);
+      }
+      return load(res && res.entry).then(function(){
+        if (data.kind !== 'person') return;
+        var fresh = entries.filter(function(e){ return e.kind === 'person' && !before[e.id]; })[0]; if (!fresh) return;
+        setTimeout(function(){
+          if (mine && current === sentFor && panel.classList.contains('open')) closePanel();
+          var pid = 'e:' + fresh.id, g = document.querySelector('#canvas .node[data-pid="' + pid + '"]');
+          if (g) g.classList.add('just-added');
+          if (window.familyFocus) window.familyFocus(pid, {noOpen: true});
+        }, 1200);
+      });
+    }).catch(function(err){
+      if (current === sentFor) { msg.className = 'form-msg err'; msg.textContent = 'Не сохранилось: ' + err.message + '. Текст остался в черновике — попробуйте ещё раз.'; }
+    }).then(function(){
+      btn.disabled = false; btn.removeAttribute('aria-busy'); if (!btn.classList.contains('done')) btn.textContent = 'Сохранить';
+    });
+  });
+
+  window.familyRehook = function(svg){ badge(svg); };
+  renderFeed(); // сначала показать снимок, сделанный при сборке
+  addEventListener('online', function(){ load(); });
+  load();
+})();
+</script>
+</body></html>
