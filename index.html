@@ -274,6 +274,14 @@ button:not(:disabled):active,.cta:active{transform:scale(.97)}
 }
 @keyframes hsIn{from{opacity:0;transform:translateY(10px) scale(.9)}}
 
+/* «ладонь» для перетаскивания схемы мышью */
+@media (hover: hover) and (pointer: fine){
+ .scroller{cursor:grab}
+ .scroller .tree .node{cursor:pointer}
+ .scroller.panning,.scroller.panning .tree .node{cursor:grabbing}
+ .scroller.panning{user-select:none}
+}
+
 [hidden]{display:none!important}
 .readonly .edit-only{display:none!important}
 html:not(.readonly) .ro-note{display:none}
@@ -405,7 +413,7 @@ body.panel-open{overflow:hidden}
     </div>
   </div>
   <div class="add-cta edit-only"><button type="button" id="addAny" class="cta"><span class="cta-plus" aria-hidden="true">+</span>Добавить новые сведения в древо</button><span class="cta-note">Человек, история, дата или исправление — запись сразу увидят все родные</span></div>
-  <div class="lens-hint mouse-only"><span class="lh-icon" aria-hidden="true"><svg viewBox="0 0 48 48"><circle cx="20" cy="20" r="13"/><path d="M30 30 L43 43"/></svg></span><p><b>Режим лупы:</b> наведите курсор на древо — под ним появится увеличительное стекло, и любую карточку можно прочитать крупно.</p></div>
+  <div class="lens-hint mouse-only"><span class="lh-icon" aria-hidden="true"><svg viewBox="0 0 48 48"><circle cx="20" cy="20" r="13"/><path d="M30 30 L43 43"/></svg></span><p><b>Режим лупы:</b> наведите курсор на древо — под ним появится увеличительное стекло, и любую карточку можно прочитать крупно. <b>Чтобы сдвинуть схему,</b> зажмите левую кнопку мыши и тяните — курсор станет ладонью.</p></div>
   <div class="lens-hint touch-only"><span class="lh-icon" aria-hidden="true"><svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="6"/><circle cx="24" cy="24" r="15"/></svg></span><p><b>Лупа:</b> нажмите на древо и подержите палец — появится увеличительное стекло, ведите им по карточкам. <b>Коснитесь человека</b> — откроется его карточка. Листайте схему пальцем, кнопкой <b>−</b> увидите её целиком.</p></div>
   <p class="line-note" id="lineNote" hidden><span></span> <button type="button" id="lineOff">Показать всё древо</button></p>
   <div class="scroll-wrap"><div class="scroller" id="scroller" tabindex="0" role="region" aria-label="Схема древа, листайте вбок стрелками"><div class="canvas" id="canvas"></div></div>
@@ -823,7 +831,7 @@ body.panel-open{overflow:hidden}
   // лупа: одно обновление на кадр, ширину копии меняем только при смене масштаба
   var pend = null, raf = 0;
   function move(e){
-    if (!on || !copy || e.pointerType !== 'mouse') return;
+    if (!on || !copy || e.pointerType !== 'mouse' || panning) return;
     if (!move.seen) { move.seen = 1; try { localStorage.setItem('lensSeen', '1'); } catch(er) {} setTimeout(hideLensHint, 4000); }
     pend = e; if (!raf) raf = requestAnimationFrame(frame);
   }
@@ -853,6 +861,36 @@ body.panel-open{overflow:hidden}
   c.addEventListener('pointermove', move);
   c.addEventListener('pointerleave', function(e){ if (e.pointerType === 'mouse') { pend = null; lens.hidden = true; } });
   c.addEventListener('pointerdown', function(e){ if (e.pointerType === 'mouse') { pend = null; lens.hidden = true; } });
+
+  // «ладонь»: зажать левую кнопку мыши на схеме и тянуть — схема едет за курсором (вбок и вверх-вниз).
+  // Короткий щелчок без движения по-прежнему открывает карточку; во время перетаскивания лупа скрыта.
+  var grab = null, panning = false, noClick = false;
+  sc.addEventListener('pointerdown', function(e){
+    if (e.pointerType !== 'mouse' || e.button !== 0) return;
+    grab = {x: e.clientX, y: e.clientY, sl: sc.scrollLeft, sy: window.scrollY, id: e.pointerId};
+  });
+  sc.addEventListener('pointermove', function(e){
+    if (!grab || e.pointerId !== grab.id) return;
+    var dx = e.clientX - grab.x, dy = e.clientY - grab.y;
+    if (!panning) {
+      if (Math.abs(dx) + Math.abs(dy) < 6) return;
+      panning = true; sc.classList.add('panning'); lens.hidden = true; pend = null;
+      try { sc.setPointerCapture(grab.id); } catch(er) {}
+    }
+    e.preventDefault();
+    sc.scrollLeft = grab.sl - dx;
+    window.scrollTo({top: grab.sy - dy, left: window.scrollX, behavior: 'instant'});
+  });
+  function release(e){
+    if (!grab || (e && e.pointerId !== grab.id)) return;
+    if (panning) { noClick = true; setTimeout(function(){ noClick = false; }, 0); }
+    grab = null; panning = false; sc.classList.remove('panning');
+  }
+  sc.addEventListener('pointerup', release);
+  sc.addEventListener('pointercancel', release);
+  sc.addEventListener('lostpointercapture', release);
+  sc.addEventListener('click', function(e){ if (noClick) { e.stopPropagation(); e.preventDefault(); noClick = false; } }, true);
+  sc.addEventListener('dragstart', function(e){ e.preventDefault(); });
 
   // лупа пальцем: нажать и подержать на схеме, затем вести палец; обычное листание не мешает
   var hold = 0, t0 = null, tLens = false, skipClick = false;
