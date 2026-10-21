@@ -379,6 +379,15 @@ body.panel-open{overflow:hidden}
 /* Новый человек после «Сохранить» */
 .tree .node.just-added .card{stroke:var(--accent);stroke-width:8}
 @media (prefers-reduced-motion:no-preference){.tree .node.just-added{animation:rise .7s var(--ease-out) .3s both,found .9s var(--ease-in-out) 1.1s 2;transform-box:fill-box;transform-origin:center}}
+
+/* исправление данных карточки */
+.addform.is-correction .pfields{display:grid}
+.addform.is-correction #fRel,.addform.is-correction label[for="fRel"],.addform.is-correction #fPlace,.addform.is-correction label[for="fPlace"]{display:none}
+.log td{vertical-align:top}
+.log .was{color:var(--muted)}
+.log .now{color:var(--accent);font-weight:600}
+.log .why{font-style:italic;color:var(--muted)}
+.log .empty{color:var(--muted);font-style:italic}
 </style></head><body>
 <div class="page play" id="page">
 <a class="skip" href="#tree">Перейти к древу</a>
@@ -433,12 +442,18 @@ body.panel-open{overflow:hidden}
   <ul class="feed" id="feed"></ul>
 </section>
 
+<section class="block reveal log-sec" id="log">
+  <div class="block-head"><span class="block-no" aria-hidden="true"></span><h2>Журнал правок</h2></div>
+  <p>Любой родственник может исправить имя, годы или подпись в карточке: откройте человека, выберите «Исправить данные этого человека». Исправление сразу появляется в древе, а здесь остаётся запись — кто, когда и что изменил. Если правка ошибочная, напишите владельцу сайта, он её отменит.</p>
+  <div class="tbl"><table class="log"><thead><tr><th>Когда</th><th>Кто</th><th>Человек</th><th>Что изменено</th><th>Почему</th></tr></thead><tbody id="changeLog"></tbody></table></div>
+</section>
+
 <section class="block reveal privacy-sec">
   <div class="block-head"><span class="block-no" aria-hidden="true"></span><h2>Кто видит сайт и как исправить запись</h2></div>
   <ul class="privacy">
     <li><b>Сайт открыт всем, у кого есть ссылка.</b> Поисковикам запрещено его показывать.</li>
     <li><b>Добавить сведения может любой родственник</b> без регистрации. Запись сразу видна всем, у кого есть ссылка, с пометкой «не проверено», пока её не посмотрит владелец сайта.</li>
-    <li><b>Исправить или удалить запись</b> — свою или чужую — можно через владельца сайта: напишите тому, кто прислал вам ссылку.</li>
+    <li><b>Исправить данные в карточке</b> (имя, годы, подпись) может любой родственник сам — правка сразу видна в древе и записывается в «Журнал правок». <b>Удалить запись или отменить правку</b> можно через владельца сайта: напишите тому, кто прислал вам ссылку.</li>
     <li><b>На сайте указаны только годы рождения</b>, без полных дат. Пожалуйста, не добавляйте полные даты рождения детей, адреса и номера документов.</li>
   </ul>
 </section>
@@ -472,12 +487,12 @@ body.panel-open{overflow:hidden}
     <form id="addForm" class="addform edit-only" novalidate>
       <h4>Добавить</h4>
       <label for="fKind">Что вы добавляете</label>
-      <select id="fKind" name="kind"><option value="story">Воспоминание или история</option><option value="fact">Факт: даты, места, работа, награды</option><option value="correction">Исправление ошибки</option><option value="person">Нового родственника</option></select>
+      <select id="fKind" name="kind"><option value="story">Воспоминание или история</option><option value="fact">Факт: даты, места, работа, награды</option><option value="correction">Исправить данные этого человека</option><option value="person">Нового родственника</option></select>
       <div class="pfields">
         <label for="fRel">Кем приходится этому человеку</label>
         <select id="fRel" name="relation"><option>сын</option><option>дочь</option><option>муж</option><option>жена</option><option>отец</option><option>мать</option><option>брат</option><option>сестра</option><option>внук</option><option>внучка</option><option>другое</option></select>
         <label for="fName">Фамилия, имя, отчество</label><input id="fName" name="name" maxlength="120" autocomplete="off" autocapitalize="words" enterkeyhint="next">
-        <div class="two"><div><label for="fDates">Годы жизни</label><input id="fDates" name="dates" maxlength="60" placeholder="1931 – 2010 (у живых год рождения не пишите)"></div>
+        <div class="two"><div><label for="fDates">Годы жизни</label><input id="fDates" name="dates" maxlength="60" placeholder="например, 1931 – 2010"></div>
         <div><label for="fPlace">Где жил</label><input id="fPlace" name="place" maxlength="120" autocapitalize="words" enterkeyhint="next"></div></div>
         <label for="fOcc">Род занятий</label><input id="fOcc" name="occupation" maxlength="120">
       </div>
@@ -590,12 +605,31 @@ body.panel-open{overflow:hidden}
         P[id] = n; order.push(id);
       });
 
+    // исправления родных: сразу меняют карточку (ФИО, годы, подпись), каждое изменение попадает в журнал правок
+    var LABEL = ['Фамилия', 'Имя', 'Годы жизни', 'Подпись'], changes = [];
+    (entries || []).filter(function(e){ return e.kind === 'correction' && P[e.person] && P[e.person].lines && (e.name || e.dates || e.occupation || e.place); })
+      .sort(function(a, b){ return (a.created || 0) - (b.created || 0); })
+      .forEach(function(e){
+        var p = P[e.person], L = p.lines.slice(), was = p.lines.slice();
+        var nm = String(e.name || '').trim().replace(/\s+/g, ' ');
+        if (nm && nm !== ((L[0] ? L[0] + ' ' : '') + L[1]).trim()) {
+          if (L[0] && nm.indexOf(L[0] + ' ') === 0) L[1] = nm.slice(L[0].length + 1);
+          else { var w = nm.split(' '); if (w.length >= 2) { L[0] = w[0]; L[1] = w.slice(1).join(' '); } else L[1] = nm; }
+        }
+        if (String(e.dates || '').trim()) L[2] = String(e.dates).trim();
+        var note = [e.occupation, e.place].map(function(v){ return String(v || '').trim(); }).filter(Boolean).join(' · ');
+        if (note) L[3] = note;
+        for (var i = 0; i < 4; i++) if ((L[i] || '') !== (was[i] || ''))
+          changes.push({entry: e.id, person: e.person, who: e.author, when: e.created, field: LABEL[i], from: was[i] || '', to: L[i] || '', why: e.text || '', pending: !!e.pending});
+        if (changes.length && changes[changes.length - 1].entry === e.id) { p.lines = L; p.edited = true; }
+      });
+
     // строки и колонки могли уйти в минус — сдвигаем всё
     var minG = Math.min.apply(null, order.map(function(id){ return P[id].gen; }));
     var minX = Math.min.apply(null, order.map(function(id){ return P[id].x - P[id].w / U / 2; }));
     var dx = minX < -0.5 ? -0.5 - minX : 0;
     order.forEach(function(id){ P[id].gen -= minG; P[id].x += dx; });
-    return {P:P, C:C, links:links, order:order};
+    return {P:P, C:C, links:links, order:order, changes:changes};
   }
 
   function render(m){
@@ -674,6 +708,7 @@ body.panel-open{overflow:hidden}
         if (L[2]) o += '<text aria-hidden="true" class="date fit" x="' + c.toFixed(1) + '" y="' + (ty + 76) + '">' + esc(L[2]) + '</text>';
         if (L[3]) o += '<text aria-hidden="true" class="note fit" x="' + c.toFixed(1) + '" y="' + (ty + (L[2] ? 110 : 76)) + '">' + esc(L[3]) + '</text>';
         if (p.added) o += '<text aria-hidden="true" class="newtag" x="' + (left + 14).toFixed(1) + '" y="' + (y + 34) + '">новое</text>';
+        else if (p.edited) o += '<text aria-hidden="true" class="newtag" x="' + (left + 14).toFixed(1) + '" y="' + (y + 34) + '">исправлено</text>';
       }
       return o + '</g>';
     });
@@ -723,6 +758,7 @@ body.panel-open{overflow:hidden}
       var svg = host.querySelector('svg');
       fit(svg);
       window.FAMILY_PEOPLE = people(m);
+      window.FAMILY_CHANGES = m.changes;
       var stub = {YAKW:1, FEDC:1, TAMH:1};
       var n = m.order.filter(function(id){ return !stub[id]; }).length + B.sib.list.length;
       var gens = Math.max.apply(null, m.order.map(function(id){ return m.P[id].gen; })) + 1;
@@ -1128,6 +1164,23 @@ body.panel-open{overflow:hidden}
     return li;
   }
 
+  // журнал правок: кто, когда и что исправил в карточках
+  function renderLog(){
+    var tb = $('changeLog'); if (!tb) return;
+    tb.textContent = '';
+    var ch = (window.FAMILY_CHANGES || []).slice().reverse();
+    if (!ch.length) { var tr0 = el('tr'), td0 = el('td', 'empty', 'Правок пока не было.'); td0.colSpan = 5; tr0.appendChild(td0); tb.appendChild(tr0); return; }
+    ch.forEach(function(c){
+      var tr = el('tr');
+      tr.appendChild(el('td', '', fmt(c.when) + (c.pending ? ' · отправлено, скоро увидят все' : '')));
+      tr.appendChild(el('td', '', c.who || 'Без подписи'));
+      var tp = el('td'), b = el('button', 'e-who', personTitle(c.person)); b.type = 'button'; b.onclick = function(){ openPanel(c.person); }; tp.appendChild(b); tr.appendChild(tp);
+      var td = el('td'); td.appendChild(el('b', '', c.field + ': ')); td.appendChild(el('s', 'was', c.from || '—')); td.appendChild(document.createTextNode(' → ')); td.appendChild(el('span', 'now', c.to || '—')); tr.appendChild(td);
+      tr.appendChild(el('td', 'why', c.why));
+      tb.appendChild(tr);
+    });
+  }
+
   function renderFeed(){
     if (!feed) return;
     feed.textContent = '';
@@ -1191,7 +1244,7 @@ body.panel-open{overflow:hidden}
 
   var drawnKey = null;
   function redraw(){
-    var key = entries.filter(function(e){ return e.kind === 'person'; }).map(function(e){ return e.id; }).join(',');
+    var key = entries.filter(function(e){ return e.kind === 'person' || e.kind === 'correction'; }).map(function(e){ return e.id; }).join(',');
     var canvas = $('canvas');
     if (key !== drawnKey && window.FamilyTree) {
       // повторная перерисовка — без вступительной анимации
@@ -1201,6 +1254,7 @@ body.panel-open{overflow:hidden}
       drawnKey = key;
     }
     badge(canvas.querySelector('svg'));
+    renderLog();
     if (window.refreshLens) window.refreshLens();
   }
 
@@ -1220,6 +1274,7 @@ body.panel-open{overflow:hidden}
     document.body.classList.add('panel-open');
     if (!history.state || history.state.panel === undefined) { try { history.pushState({panel: current}, ''); } catch(e) {} }
     msg.textContent = ''; msg.className = 'form-msg';
+    if (typeof syncKind === 'function') { delete form.dataset.prefill; syncKind(); }
     loadDraft();
     renderPanel();
     setTimeout(function(){ $('panelClose').focus(); }, 30);
@@ -1286,7 +1341,27 @@ body.panel-open{overflow:hidden}
   }
 
   var kindSel = $('fKind');
-  function syncKind(){ form.classList.toggle('is-person', kindSel.value === 'person'); }
+  // «Исправление»: поля карточки заполнены текущими данными — родственник правит их сам, без одобрения владельца
+  function syncKind(){
+    var corr = kindSel.value === 'correction' && !!current;
+    form.classList.toggle('is-person', kindSel.value === 'person');
+    form.classList.toggle('is-correction', corr);
+    if (corr && form.dataset.prefill !== current) {
+      var p = (window.FAMILY_PEOPLE || {})[current] || {};
+      form.elements.name.value = ((p.sur ? p.sur + ' ' : '') + (p.name || '')).trim();
+      form.elements.dates.value = p.dates || '';
+      form.elements.occupation.value = String(p.note || '').split(' · добавил')[0];
+      form.elements.place.value = '';
+      form.dataset.prefill = current;
+    }
+    var occL = form.querySelector('label[for="fOcc"]'), txtL = form.querySelector('label[for="fText"]');
+    if (occL) occL.textContent = corr ? 'Подпись под именем: род занятий, город' : 'Род занятий';
+    if (txtL) txtL.innerHTML = corr ? 'Почему исправляете <span class="hint">— и откуда знаете: документ, помню сам, рассказ родных</span>' : 'Что вы знаете <span class="hint">— и откуда: помню сам, рассказ бабушки, документ</span>';
+    if (!corr && form.dataset.prefill) {
+      ['name','dates','occupation','place'].forEach(function(f){ form.elements[f].value = ''; });
+      delete form.dataset.prefill;
+    }
+  }
   kindSel.onchange = syncKind; syncKind();
   try { $('fAuthor').value = localStorage.getItem('author') || ''; } catch(e) {}
 
@@ -1297,7 +1372,8 @@ body.panel-open{overflow:hidden}
     ['kind','relation','name','dates','place','occupation','text','author','website'].forEach(function(f){
       var i = form.elements[f]; data[f] = i ? i.value : '';
     });
-    if (data.kind !== 'person') { data.relation = ''; data.name = ''; data.dates = ''; data.place = ''; data.occupation = ''; }
+    if (data.kind === 'correction') data.relation = '';
+    else if (data.kind !== 'person') { data.relation = ''; data.name = ''; data.dates = ''; data.place = ''; data.occupation = ''; }
     var btn = $('fSend');
     var bad = data.kind === 'person' ? (!data.name.trim() && 'fName') : (!data.text.trim() && 'fText');
     if (!bad && !data.author.trim()) bad = 'fAuthor';
@@ -1329,6 +1405,7 @@ body.panel-open{overflow:hidden}
         $('draftNote').hidden = true;
         msg.scrollIntoView({block: 'nearest', behavior: 'smooth'});
         ['name','dates','place','occupation','text'].forEach(function(f){ form.elements[f].value = ''; });
+        if (data.kind === 'correction') { kindSel.value = 'story'; delete form.dataset.prefill; syncKind(); }
         btn.classList.add('done'); btn.textContent = '✓ Сохранено';
         setTimeout(function(){ btn.classList.remove('done'); btn.textContent = 'Сохранить'; }, 2200);
       }
