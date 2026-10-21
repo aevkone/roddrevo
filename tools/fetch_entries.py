@@ -1,5 +1,5 @@
 """Свежие дополнения родных для копии сайта: берёт их с сервера дополнений и пишет entries.json.
-Годы рождения живых (после 1935, без года смерти) не публикуются — то же правило, что на сайте.
+Годы жизни публикуются как есть — так решил владелец древа.
 Печатает changed=true|false для GitHub Actions."""
 import json, os, re, urllib.request
 
@@ -14,10 +14,8 @@ def get(url):
 
 
 def public_dates(d):
-    years = re.findall(r"1[89]\d\d|20\d\d", d or "")
-    if not d or "\u2020" in d or len(years) >= 2:
-        return d or ""
-    return "" if years and int(years[0]) >= 1935 else d
+    # с 21.10.2026 годы жизни показываем у всех — решение владельца древа
+    return d or ""
 
 
 try:
