@@ -282,6 +282,31 @@ button:not(:disabled):active,.cta:active{transform:scale(.97)}
  .scroller.panning{user-select:none}
 }
 
+/* масштаб: − уровень + одной группой */
+.zoom-grp{display:inline-flex;align-items:stretch;gap:0}
+.zoom-grp button{min-width:48px}
+.zoom-grp .zoom-level{display:flex;align-items:center;justify-content:center;padding:0 10px;border-block:1px solid var(--border-ctl);min-width:7.5em}
+/* схема — окно с прокруткой в обе стороны, а не лист на несколько экранов */
+.scroller{max-height:min(78svh,920px);overflow:auto;overscroll-behavior-x:contain;overscroll-behavior-y:auto}
+
+/* телефон: аккуратная компоновка */
+@media (max-width:640px){
+ .facts{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;width:100%;max-width:420px;font-size:.92rem;letter-spacing:.04em}
+ .facts>span{display:flex;flex-direction:column;align-items:center;line-height:1.15;padding:6px 2px;border-inline-start:1px solid var(--rule)}
+ .facts>span:first-child{border-inline-start:0}
+ .facts b{margin:0;min-width:0;text-align:center;font-size:1.9rem;line-height:1.05}
+ .tree-sec .bar{display:grid;gap:10px}
+ .tree-sec .ctl{display:grid;grid-template-columns:1fr 1fr;gap:8px;width:100%}
+ .tree-sec .zoom-grp{grid-column:1/-1;display:grid;grid-template-columns:56px 1fr 56px;width:100%}
+ .tree-sec .zoom-grp .zoom-level{min-width:0}
+ .tree-sec .ctl>button{width:100%;min-height:48px}
+ .add-cta{display:grid;gap:6px}
+ .add-cta .cta{width:100%;justify-content:center}
+ .scroller{max-height:68svh;padding:8px}
+ .legend{display:grid;grid-template-columns:1fr 1fr;gap:6px 12px}
+}
+@media (max-width:640px){.tree-sec .ctl>button{font-size:.95rem;white-space:nowrap;padding-inline:8px}}
+
 [hidden]{display:none!important}
 .readonly .edit-only{display:none!important}
 html:not(.readonly) .ro-note{display:none}
@@ -388,6 +413,42 @@ body.panel-open{overflow:hidden}
 .log .now{color:var(--accent);font-weight:600}
 .log .why{font-style:italic;color:var(--muted)}
 .log .empty{color:var(--muted);font-style:italic}
+
+/* кнопка тура в шапке */
+.tour-btn{display:inline-flex;align-items:center;gap:10px;background:none;border:0;border-bottom:1px solid var(--gold);padding:6px 2px;font:inherit;font-size:1.05rem;color:var(--accent);cursor:pointer}
+.tour-btn span{display:inline-grid;place-items:center;width:26px;height:26px;border-radius:50%;background:var(--accent);color:var(--on-accent);font-weight:700;font-size:.95rem}
+.tour-btn:hover{color:var(--ink)}
+/* тур: затемнение с «окном» над нужной частью страницы и карточка с объяснением */
+.tour-shade{position:fixed;inset:0;z-index:60;background:transparent}
+.tour-shade.dim{background:rgba(15,20,19,.62)}
+.tour-hole{position:fixed;left:0;top:0;z-index:61;border-radius:12px;pointer-events:none;box-shadow:0 0 0 3px var(--gold),0 0 0 9999px rgba(15,20,19,.62);
+ transition:transform .45s cubic-bezier(.23,1,.32,1),width .45s cubic-bezier(.23,1,.32,1),height .45s cubic-bezier(.23,1,.32,1),opacity .3s}
+.tour-card{box-sizing:border-box;position:fixed;z-index:62;width:min(400px,calc(100vw - 24px));background:var(--card);color:var(--ink);border:1px solid var(--gold);border-radius:14px;
+ box-shadow:0 24px 60px -18px rgba(10,10,6,.55);padding:18px 20px 16px;font-size:1.06rem;line-height:1.45}
+.tour-card.center{left:50%;top:50%;transform:translate(-50%,-50%)}
+.tour-card.sheet{left:12px;right:12px;width:auto}
+.tour-card.sheet.down{bottom:calc(12px + env(safe-area-inset-bottom,0px))}
+.tour-card.sheet.up{top:calc(12px + env(safe-area-inset-top,0px))}
+.tour-card h3{margin:2px 0 6px;font-size:1.45rem;color:var(--accent);line-height:1.15}
+.tour-card p{margin:0 0 12px}
+.tour-step{font-family:var(--sc);letter-spacing:.12em;font-size:.85rem;color:var(--gold)}
+.tour-dots{display:flex;gap:6px;margin:0 0 12px}
+.tour-dots i{width:7px;height:7px;border-radius:50%;background:var(--rule)}
+.tour-dots i.on{background:var(--accent);width:20px;border-radius:4px}
+.tour-btns{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.tour-nav{display:flex;gap:8px}
+.tour-btns button{font:inherit;min-height:44px;padding:0 16px;border-radius:999px;cursor:pointer}
+.tour-skip{background:none;border:0;color:var(--muted);text-decoration:underline;padding:0 4px!important}
+.tour-back{background:none;border:1px solid var(--border-ctl);color:var(--ink)}
+.tour-next{background:var(--accent);border:1px solid var(--accent);color:var(--on-accent);font-weight:700}
+.tour-next:focus-visible,.tour-back:focus-visible{outline:3px solid var(--focus-ring);outline-offset:2px}
+.tour-shade[hidden],.tour-hole[hidden],.tour-card[hidden]{display:none}
+@media (prefers-reduced-motion: no-preference){
+ .tour-card.in{animation:tourIn .35s cubic-bezier(.23,1,.32,1)}
+ .tour-card.center.in{animation:tourInC .35s cubic-bezier(.23,1,.32,1)}
+}
+@keyframes tourIn{from{opacity:0;transform:translateY(10px)}}
+@keyframes tourInC{from{opacity:0;transform:translate(-50%,-46%)}}
 </style></head><body>
 <div class="page play" id="page">
 <a class="skip" href="#tree">Перейти к древу</a>
@@ -398,6 +459,7 @@ body.panel-open{overflow:hidden}
   <p class="sub">Все роды нашей семьи — в одном древе</p>
   <p class="facts" id="facts"><span><b id="fPeople">135</b> <span id="fPeopleWord">человек</span></span><span><b id="fGens">7</b> <span id="fGensWord">поколений</span></span><span><b>31</b> <span>фамилия</span></span></p>
   <nav class="hero-shields" aria-label="Знаки фамилий рода"><a class="hs" href="#fams" style="--i:0" title="Кочергины" aria-label="Кочергины"><svg class="emblem e-k" viewBox="0 0 120 148" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path class="sh-field" d="M6,6 H114 V70 Q114,122 60,140 Q6,122 6,70 Z" fill="#7a1f2b"/><g class="charge"><path d="M30,112 L86,40 q8,-10 0,-16 q-6,-4 -12,2" stroke="var(--gold)" stroke-width="6" fill="none" stroke-linecap="round"/><path d="M90,112 L34,40 q-8,-10 0,-16 q6,-4 12,2" stroke="var(--gold)" stroke-width="6" fill="none" stroke-linecap="round"/><path d="M60,58 C46,46 54,34 60,20 C66,34 74,46 60,58 Z" fill="var(--gold)"/><path d="M60,54 C54,47 57,40 60,33 C63,40 66,47 60,54 Z" fill="#7a1f2b"/></g><path class="sh-edge" pathLength="1" d="M6,6 H114 V70 Q114,122 60,140 Q6,122 6,70 Z" fill="none"/></svg></a><a class="hs" href="#fams" style="--i:1" title="Семенчинские" aria-label="Семенчинские"><svg class="emblem e-s" viewBox="0 0 120 148" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path class="sh-field" d="M6,6 H114 V70 Q114,122 60,140 Q6,122 6,70 Z" fill="#23365c"/><g class="charge"><path d="M60,52 C46,44 30,44 20,48 V100 C30,96 46,96 60,104 C74,96 90,96 100,100 V48 C90,44 74,44 60,52 Z" fill="#eef0ee"/><path d="M60,52 V104" stroke="#23365c" stroke-width="2"/><path d="M28,58 Q44,55 54,60 M66,60 Q76,55 92,58" stroke="#23365c" stroke-width="1.4" fill="none"/><path d="M28,67 Q44,64 54,69 M66,69 Q76,64 92,67" stroke="#23365c" stroke-width="1.4" fill="none"/><path d="M28,76 Q44,73 54,78 M66,78 Q76,73 92,76" stroke="#23365c" stroke-width="1.4" fill="none"/><path d="M28,85 Q44,82 54,87 M66,87 Q76,82 92,85" stroke="#23365c" stroke-width="1.4" fill="none"/><path d="M60,24 l4,9 10,1 -8,6 3,10 -9,-6 -9,6 3,-10 -8,-6 10,-1 Z" fill="var(--gold)"/></g><path class="sh-edge" pathLength="1" d="M6,6 H114 V70 Q114,122 60,140 Q6,122 6,70 Z" fill="none"/></svg></a><a class="hs" href="#fams" style="--i:2" title="Максимовы" aria-label="Максимовы"><svg class="emblem e-m" viewBox="0 0 120 148" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path class="sh-field" d="M6,6 H114 V70 Q114,122 60,140 Q6,122 6,70 Z" fill="#2e5a43"/><g class="charge"><path d="M34,86 L30,52 L46,66 L60,44 L74,66 L90,52 L86,86 Z" fill="var(--gold)"/><rect x="34" y="88" width="52" height="8" fill="var(--gold)"/><circle cx="16" cy="30" r="3.2" fill="#eef0ee"/><circle cx="104" cy="30" r="3.2" fill="#eef0ee"/><circle cx="16" cy="50" r="3.2" fill="#eef0ee"/><circle cx="104" cy="50" r="3.2" fill="#eef0ee"/><circle cx="16" cy="70" r="3.2" fill="#eef0ee"/><circle cx="104" cy="70" r="3.2" fill="#eef0ee"/><circle cx="16" cy="90" r="3.2" fill="#eef0ee"/><circle cx="104" cy="90" r="3.2" fill="#eef0ee"/><circle cx="16" cy="110" r="3.2" fill="#eef0ee"/><circle cx="104" cy="110" r="3.2" fill="#eef0ee"/><circle cx="60" cy="28" r="3.6" fill="#eef0ee"/></g><path class="sh-edge" pathLength="1" d="M6,6 H114 V70 Q114,122 60,140 Q6,122 6,70 Z" fill="none"/></svg></a><a class="hs" href="#fams" style="--i:3" title="Резниковы" aria-label="Резниковы"><svg class="emblem e-r" viewBox="0 0 120 148" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path class="sh-field" d="M6,6 H114 V70 Q114,122 60,140 Q6,122 6,70 Z" fill="#1d2226"/><g class="charge"><circle cx="60" cy="58" r="13" fill="var(--gold)"/><path d="M78.0,58.0 L90.0,58.0" stroke="var(--gold)" stroke-width="3" stroke-linecap="round"/><path d="M75.6,67.0 L86.0,73.0" stroke="var(--gold)" stroke-width="3" stroke-linecap="round"/><path d="M69.0,73.6 L75.0,84.0" stroke="var(--gold)" stroke-width="3" stroke-linecap="round"/><path d="M60.0,76.0 L60.0,88.0" stroke="var(--gold)" stroke-width="3" stroke-linecap="round"/><path d="M51.0,73.6 L45.0,84.0" stroke="var(--gold)" stroke-width="3" stroke-linecap="round"/><path d="M44.4,67.0 L34.0,73.0" stroke="var(--gold)" stroke-width="3" stroke-linecap="round"/><path d="M42.0,58.0 L30.0,58.0" stroke="var(--gold)" stroke-width="3" stroke-linecap="round"/><path d="M44.4,49.0 L34.0,43.0" stroke="var(--gold)" stroke-width="3" stroke-linecap="round"/><path d="M51.0,42.4 L45.0,32.0" stroke="var(--gold)" stroke-width="3" stroke-linecap="round"/><path d="M60.0,40.0 L60.0,28.0" stroke="var(--gold)" stroke-width="3" stroke-linecap="round"/><path d="M69.0,42.4 L75.0,32.0" stroke="var(--gold)" stroke-width="3" stroke-linecap="round"/><path d="M75.6,49.0 L86.0,43.0" stroke="var(--gold)" stroke-width="3" stroke-linecap="round"/><path d="M30,120 L84,96" stroke="#eef0ee" stroke-width="7" stroke-linecap="round"/><path d="M84,96 L96,92 L88,102 Z" fill="#eef0ee"/></g><path class="sh-edge" pathLength="1" d="M6,6 H114 V70 Q114,122 60,140 Q6,122 6,70 Z" fill="none"/></svg></a><a class="hs" href="#fams" style="--i:4" title="Львовы" aria-label="Львовы"><svg class="emblem e-l" viewBox="0 0 120 148" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path class="sh-field" d="M6,6 H114 V70 Q114,122 60,140 Q6,122 6,70 Z" fill="#c9a14a"/><g class="charge"><path d="M80.0,70.0 L95.7,74.7 L79.3,75.1 Z" fill="#8a1c1c"/><path d="M79.3,75.2 L93.3,83.7 L77.3,80.0 Z" fill="#8a1c1c"/><path d="M77.3,80.0 L88.6,91.9 L74.2,84.1 Z" fill="#8a1c1c"/><path d="M74.1,84.1 L81.9,98.5 L70.0,87.3 Z" fill="#8a1c1c"/><path d="M70.0,87.3 L73.8,103.2 L65.2,89.3 Z" fill="#8a1c1c"/><path d="M65.2,89.3 L64.7,105.7 L60.0,90.0 Z" fill="#8a1c1c"/><path d="M60.0,90.0 L55.3,105.7 L54.9,89.3 Z" fill="#8a1c1c"/><path d="M54.8,89.3 L46.3,103.3 L50.0,87.3 Z" fill="#8a1c1c"/><path d="M50.0,87.3 L38.1,98.6 L45.9,84.2 Z" fill="#8a1c1c"/><path d="M45.9,84.1 L31.5,91.9 L42.7,80.0 Z" fill="#8a1c1c"/><path d="M42.7,80.0 L26.8,83.8 L40.7,75.2 Z" fill="#8a1c1c"/><path d="M40.7,75.2 L24.3,74.7 L40.0,70.0 Z" fill="#8a1c1c"/><path d="M40.0,70.0 L24.3,65.3 L40.7,64.9 Z" fill="#8a1c1c"/><path d="M40.7,64.8 L26.7,56.3 L42.7,60.0 Z" fill="#8a1c1c"/><path d="M42.7,60.0 L31.4,48.1 L45.8,55.9 Z" fill="#8a1c1c"/><path d="M45.9,55.9 L38.1,41.5 L50.0,52.7 Z" fill="#8a1c1c"/><path d="M50.0,52.7 L46.2,36.8 L54.8,50.7 Z" fill="#8a1c1c"/><path d="M54.8,50.7 L55.3,34.3 L60.0,50.0 Z" fill="#8a1c1c"/><path d="M60.0,50.0 L64.7,34.3 L65.1,50.7 Z" fill="#8a1c1c"/><path d="M65.2,50.7 L73.7,36.7 L70.0,52.7 Z" fill="#8a1c1c"/><path d="M70.0,52.7 L81.9,41.4 L74.1,55.8 Z" fill="#8a1c1c"/><path d="M74.1,55.9 L88.5,48.1 L77.3,60.0 Z" fill="#8a1c1c"/><path d="M77.3,60.0 L93.2,56.2 L79.3,64.8 Z" fill="#8a1c1c"/><path d="M79.3,64.8 L95.7,65.3 L80.0,70.0 Z" fill="#8a1c1c"/><circle cx="60" cy="70" r="22" fill="#8a1c1c"/><circle cx="51" cy="65" r="3" fill="#eef0ee"/><circle cx="69" cy="65" r="3" fill="#eef0ee"/><path d="M56,76 L64,76 L60,82 Z" fill="#eef0ee"/></g><path class="sh-edge" pathLength="1" d="M6,6 H114 V70 Q114,122 60,140 Q6,122 6,70 Z" fill="none"/></svg></a><a class="hs" href="#fams" style="--i:5" title="Перовы" aria-label="Перовы"><svg class="emblem e-sp" viewBox="0 0 120 148" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path class="sh-field" d="M6,6 H114 V70 Q114,122 60,140 Q6,122 6,70 Z" fill="#1f3b4d"/><g class="charge"><path d="M84,26 C56,40 40,72 36,110 C52,84 70,62 88,44 C92,38 90,30 84,26 Z" fill="var(--gold)"/><path d="M84,30 L38,108" stroke="#1f3b4d" stroke-width="2"/><path d="M36,110 L30,122" stroke="var(--gold)" stroke-width="4" stroke-linecap="round"/></g><path class="sh-edge" pathLength="1" d="M6,6 H114 V70 Q114,122 60,140 Q6,122 6,70 Z" fill="none"/></svg></a><a class="hs" href="#fams" style="--i:6" title="Беликовы" aria-label="Беликовы"><svg class="emblem e-sb" viewBox="0 0 120 148" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path class="sh-field" d="M6,6 H114 V70 Q114,122 60,140 Q6,122 6,70 Z" fill="#5b2333"/><g class="charge"><path d="M60.0,32.0 L65.4,53.1 L84.0,42.0 L72.9,60.6 L94.0,66.0 L72.9,71.4 L84.0,90.0 L65.4,78.9 L60.0,100.0 L54.6,78.9 L36.0,90.0 L47.1,71.4 L26.0,66.0 L47.1,60.6 L36.0,42.0 L54.6,53.1 Z" fill="#eef0ee"/><circle cx="60" cy="66" r="6" fill="var(--gold)"/></g><path class="sh-edge" pathLength="1" d="M6,6 H114 V70 Q114,122 60,140 Q6,122 6,70 Z" fill="none"/></svg></a><a class="hs" href="#fams" style="--i:7" title="Алфутовы" aria-label="Алфутовы"><svg class="emblem e-sa" viewBox="0 0 120 148" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path class="sh-field" d="M6,6 H114 V70 Q114,122 60,140 Q6,122 6,70 Z" fill="#2c4a3a"/><g class="charge"><path d="M14,108 L40,58 L54,80 L72,40 L106,108 Z" fill="var(--gold)"/><path d="M72,40 L64,56 L72,52 L80,58 Z" fill="#eef0ee"/><path d="M20,118 H100" stroke="#eef0ee" stroke-width="4"/></g><path class="sh-edge" pathLength="1" d="M6,6 H114 V70 Q114,122 60,140 Q6,122 6,70 Z" fill="none"/></svg></a><a class="hs" href="#fams" style="--i:8" title="Байчиковы" aria-label="Байчиковы"><svg class="emblem e-sy" viewBox="0 0 120 148" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path class="sh-field" d="M6,6 H114 V70 Q114,122 60,140 Q6,122 6,70 Z" fill="#1e4d3b"/><g class="charge"><path d="M60,22 L84,58 H72 L92,86 H76 L98,114 H22 L44,86 H28 L48,58 H36 Z" fill="var(--gold)"/><rect x="55" y="114" width="10" height="14" fill="var(--gold)"/></g><path class="sh-edge" pathLength="1" d="M6,6 H114 V70 Q114,122 60,140 Q6,122 6,70 Z" fill="none"/></svg></a><a class="hs" href="#fams" style="--i:9" title="Рудь" aria-label="Рудь"><svg class="emblem e-sr" viewBox="0 0 120 148" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path class="sh-field" d="M6,6 H114 V70 Q114,122 60,140 Q6,122 6,70 Z" fill="#a04a22"/><g class="charge"><g transform="rotate(-35 60 70)"><path d="M60,30 V112" stroke="var(--gold)" stroke-width="7" stroke-linecap="round"/><path d="M42,30 H78 L74,42 H46 Z" fill="var(--gold)"/></g><g transform="rotate(35 60 70)"><path d="M60,30 V112" stroke="var(--gold)" stroke-width="7" stroke-linecap="round"/><path d="M42,30 H78 L74,42 H46 Z" fill="var(--gold)"/></g><circle cx="60" cy="118" r="6" fill="#eef0ee"/></g><path class="sh-edge" pathLength="1" d="M6,6 H114 V70 Q114,122 60,140 Q6,122 6,70 Z" fill="none"/></svg></a><a class="hs" href="#fams" style="--i:10" title="Поповы" aria-label="Поповы"><svg class="emblem e-so" viewBox="0 0 120 148" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path class="sh-field" d="M6,6 H114 V70 Q114,122 60,140 Q6,122 6,70 Z" fill="#24406b"/><g class="charge"><path d="M60,30 C44,30 38,48 38,70 L30,96 H90 L82,70 C82,48 76,30 60,30 Z" fill="var(--gold)"/><circle cx="60" cy="104" r="7" fill="var(--gold)"/><rect x="56" y="20" width="8" height="12" rx="3" fill="var(--gold)"/></g><path class="sh-edge" pathLength="1" d="M6,6 H114 V70 Q114,122 60,140 Q6,122 6,70 Z" fill="none"/></svg></a><a class="hs" href="#fams" style="--i:11" title="Кадцины" aria-label="Кадцины"><svg class="emblem e-sc" viewBox="0 0 120 148" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path class="sh-field" d="M6,6 H114 V70 Q114,122 60,140 Q6,122 6,70 Z" fill="#4a3a26"/><g class="charge"><circle cx="60" cy="44" r="16" fill="none" stroke="#eef0ee" stroke-width="7"/><path d="M60,60 V116 M60,98 H76 M60,110 H72" stroke="#eef0ee" stroke-width="7" stroke-linecap="round"/></g><path class="sh-edge" pathLength="1" d="M6,6 H114 V70 Q114,122 60,140 Q6,122 6,70 Z" fill="none"/></svg></a><a class="hs" href="#fams" style="--i:12" title="Кудрявцевы" aria-label="Кудрявцевы"><svg class="emblem e-sk" viewBox="0 0 120 148" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path class="sh-field" d="M6,6 H114 V70 Q114,122 60,140 Q6,122 6,70 Z" fill="#3a2f5b"/><g class="charge"><path d="M60,120 C60,96 40,92 40,74 C40,58 58,56 60,68 C62,78 50,80 50,72" stroke="var(--gold)" stroke-width="5" fill="none" stroke-linecap="round"/><path d="M60,96 C60,72 82,70 82,52 C82,36 64,34 62,46 C60,56 72,58 72,50" stroke="var(--gold)" stroke-width="5" fill="none" stroke-linecap="round"/><circle cx="44" cy="100" r="6" fill="#eef0ee"/><circle cx="78" cy="78" r="6" fill="#eef0ee"/></g><path class="sh-edge" pathLength="1" d="M6,6 H114 V70 Q114,122 60,140 Q6,122 6,70 Z" fill="none"/></svg></a><a class="hs" href="#fams" style="--i:13" title="Фигурины" aria-label="Фигурины"><svg class="emblem e-sf" viewBox="0 0 120 148" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path class="sh-field" d="M6,6 H114 V70 Q114,122 60,140 Q6,122 6,70 Z" fill="#1d4a63"/><g class="charge"><circle cx="60" cy="38" r="12" fill="var(--gold)"/><path d="M18,60 q10,-10 21,0 t21,0 t21,0 t21,0" stroke="#eef0ee" stroke-width="5" fill="none"/><path d="M18,78 q10,-10 21,0 t21,0 t21,0 t21,0" stroke="#eef0ee" stroke-width="5" fill="none"/><path d="M18,96 q10,-10 21,0 t21,0 t21,0 t21,0" stroke="#eef0ee" stroke-width="5" fill="none"/></g><path class="sh-edge" pathLength="1" d="M6,6 H114 V70 Q114,122 60,140 Q6,122 6,70 Z" fill="none"/></svg></a><a class="hs" href="#fams" style="--i:14" title="Ильины" aria-label="Ильины"><svg class="emblem e-si" viewBox="0 0 120 148" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path class="sh-field" d="M6,6 H114 V70 Q114,122 60,140 Q6,122 6,70 Z" fill="#7a3b1f"/><g class="charge"><circle cx="60" cy="66" r="32" fill="none" stroke="var(--gold)" stroke-width="7"/><path d="M60,66 L90.0,66.0" stroke="var(--gold)" stroke-width="4"/><path d="M60,66 L81.2,87.2" stroke="var(--gold)" stroke-width="4"/><path d="M60,66 L60.0,96.0" stroke="var(--gold)" stroke-width="4"/><path d="M60,66 L38.8,87.2" stroke="var(--gold)" stroke-width="4"/><path d="M60,66 L30.0,66.0" stroke="var(--gold)" stroke-width="4"/><path d="M60,66 L38.8,44.8" stroke="var(--gold)" stroke-width="4"/><path d="M60,66 L60.0,36.0" stroke="var(--gold)" stroke-width="4"/><path d="M60,66 L81.2,44.8" stroke="var(--gold)" stroke-width="4"/><circle cx="60" cy="66" r="7" fill="var(--gold)"/></g><path class="sh-edge" pathLength="1" d="M6,6 H114 V70 Q114,122 60,140 Q6,122 6,70 Z" fill="none"/></svg></a><a class="hs" href="#fams" style="--i:15" title="Федуловы" aria-label="Федуловы"><svg class="emblem e-ifd" viewBox="0 0 120 148" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path class="sh-field" d="M6,6 H114 V70 Q114,122 60,140 Q6,122 6,70 Z" fill="#3d5a2a"/><g class="charge"><path d="M60,30 V124" stroke="var(--gold)" stroke-width="4"/><ellipse cx="51" cy="40" rx="6" ry="10" transform="rotate(-25 51 40)" fill="var(--gold)"/><ellipse cx="69" cy="40" rx="6" ry="10" transform="rotate(25 69 40)" fill="var(--gold)"/><ellipse cx="51" cy="54" rx="6" ry="10" transform="rotate(-25 51 54)" fill="var(--gold)"/><ellipse cx="69" cy="54" rx="6" ry="10" transform="rotate(25 69 54)" fill="var(--gold)"/><ellipse cx="51" cy="68" rx="6" ry="10" transform="rotate(-25 51 68)" fill="var(--gold)"/><ellipse cx="69" cy="68" rx="6" ry="10" transform="rotate(25 69 68)" fill="var(--gold)"/><ellipse cx="51" cy="82" rx="6" ry="10" transform="rotate(-25 51 82)" fill="var(--gold)"/><ellipse cx="69" cy="82" rx="6" ry="10" transform="rotate(25 69 82)" fill="var(--gold)"/><ellipse cx="60" cy="30" rx="5" ry="9" fill="var(--gold)"/></g><path class="sh-edge" pathLength="1" d="M6,6 H114 V70 Q114,122 60,140 Q6,122 6,70 Z" fill="none"/></svg></a><a class="hs" href="#fams" style="--i:16" title="Шварцман" aria-label="Шварцман"><svg class="emblem e-ish" viewBox="0 0 120 148" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path class="sh-field" d="M6,6 H114 V70 Q114,122 60,140 Q6,122 6,70 Z" fill="#1a1a1a"/><g class="charge"><circle cx="60" cy="66" r="30" fill="#eef0ee"/><circle cx="72" cy="58" r="26" fill="#1a1a1a"/><path d="M46.0,91.0 L47.8,95.6 L52.7,95.8 L48.9,98.9 L50.1,103.7 L46.0,101.0 L41.9,103.7 L43.1,98.9 L39.3,95.8 L44.2,95.6 Z" fill="var(--gold)"/></g><path class="sh-edge" pathLength="1" d="M6,6 H114 V70 Q114,122 60,140 Q6,122 6,70 Z" fill="none"/></svg></a><a class="hs" href="#fams" style="--i:17" title="Мосейкины" aria-label="Мосейкины"><svg class="emblem e-imo" viewBox="0 0 120 148" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path class="sh-field" d="M6,6 H114 V70 Q114,122 60,140 Q6,122 6,70 Z" fill="#2a3f5f"/><g class="charge"><path d="M22,116 V48 Q22,32 40,32 Q58,32 58,48 V116 Z" fill="#eef0ee"/><path d="M62,116 V48 Q62,32 80,32 Q98,32 98,48 V116 Z" fill="#eef0ee"/><path d="M30,58 H50" stroke="#2a3f5f" stroke-width="2"/><path d="M30,70 H50" stroke="#2a3f5f" stroke-width="2"/><path d="M30,82 H50" stroke="#2a3f5f" stroke-width="2"/><path d="M30,94 H50" stroke="#2a3f5f" stroke-width="2"/><path d="M70,58 H90" stroke="#2a3f5f" stroke-width="2"/><path d="M70,70 H90" stroke="#2a3f5f" stroke-width="2"/><path d="M70,82 H90" stroke="#2a3f5f" stroke-width="2"/><path d="M70,94 H90" stroke="#2a3f5f" stroke-width="2"/></g><path class="sh-edge" pathLength="1" d="M6,6 H114 V70 Q114,122 60,140 Q6,122 6,70 Z" fill="none"/></svg></a><a class="hs" href="#fams" style="--i:18" title="Чижевские" aria-label="Чижевские"><svg class="emblem e-ich" viewBox="0 0 120 148" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path class="sh-field" d="M6,6 H114 V70 Q114,122 60,140 Q6,122 6,70 Z" fill="#2f5236"/><g class="charge"><path d="M30,100 Q60,92 96,100" stroke="var(--gold)" stroke-width="4" fill="none"/><path d="M40,88 C40,62 62,52 76,58 L90,52 L82,64 C84,80 70,92 52,92 L36,100 Z" fill="var(--gold)"/><circle cx="76" cy="62" r="2.5" fill="#2f5236"/></g><path class="sh-edge" pathLength="1" d="M6,6 H114 V70 Q114,122 60,140 Q6,122 6,70 Z" fill="none"/></svg></a><a class="hs" href="#fams" style="--i:19" title="Радзиевские" aria-label="Радзиевские"><svg class="emblem e-ira" viewBox="0 0 120 148" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path class="sh-field" d="M6,6 H114 V70 Q114,122 60,140 Q6,122 6,70 Z" fill="#8a1f24"/><g class="charge"><path d="M36,110 V68 A24,24 0 0 1 84,68 V110" stroke="#eef0ee" stroke-width="12" fill="none"/><path d="M60.0,43.0 L62.0,48.5 L67.8,47.5 L64.0,52.0 L67.8,56.5 L62.0,55.5 L60.0,61.0 L58.0,55.5 L52.2,56.5 L56.0,52.0 L52.2,47.5 L58.0,48.5 Z" fill="var(--gold)"/></g><path class="sh-edge" pathLength="1" d="M6,6 H114 V70 Q114,122 60,140 Q6,122 6,70 Z" fill="none"/></svg></a><a class="hs" href="#fams" style="--i:20" title="Козловы" aria-label="Козловы"><svg class="emblem e-iko" viewBox="0 0 120 148" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path class="sh-field" d="M6,6 H114 V70 Q114,122 60,140 Q6,122 6,70 Z" fill="#2d3f66"/><g class="charge"><path d="M58,104 C40,96 28,74 34,48 C38,36 48,32 54,38" stroke="var(--gold)" stroke-width="8" fill="none" stroke-linecap="round"/><path d="M62,104 C80,96 92,74 86,48 C82,36 72,32 66,38" stroke="var(--gold)" stroke-width="8" fill="none" stroke-linecap="round"/></g><path class="sh-edge" pathLength="1" d="M6,6 H114 V70 Q114,122 60,140 Q6,122 6,70 Z" fill="none"/></svg></a><a class="hs" href="#fams" style="--i:21" title="Фокины" aria-label="Фокины"><svg class="emblem e-ifo" viewBox="0 0 120 148" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path class="sh-field" d="M6,6 H114 V70 Q114,122 60,140 Q6,122 6,70 Z" fill="#1f4766"/><g class="charge"><circle cx="60" cy="34" r="8" fill="none" stroke="#eef0ee" stroke-width="5"/><path d="M60,42 V112 M42,56 H78 M30,92 Q36,114 60,114 Q84,114 90,92" stroke="#eef0ee" stroke-width="6" fill="none" stroke-linecap="round"/></g><path class="sh-edge" pathLength="1" d="M6,6 H114 V70 Q114,122 60,140 Q6,122 6,70 Z" fill="none"/></svg></a><a class="hs" href="#fams" style="--i:22" title="Ефремовы" aria-label="Ефремовы"><svg class="emblem e-ief" viewBox="0 0 120 148" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path class="sh-field" d="M6,6 H114 V70 Q114,122 60,140 Q6,122 6,70 Z" fill="#4b2a55"/><g class="charge"><path d="M60,40 V26 Q70,22 78,28" stroke="var(--gold)" stroke-width="3" fill="none"/><circle cx="39" cy="48" r="7" fill="var(--gold)"/><circle cx="53" cy="48" r="7" fill="var(--gold)"/><circle cx="67" cy="48" r="7" fill="var(--gold)"/><circle cx="81" cy="48" r="7" fill="var(--gold)"/><circle cx="46" cy="61" r="7" fill="var(--gold)"/><circle cx="60" cy="61" r="7" fill="var(--gold)"/><circle cx="74" cy="61" r="7" fill="var(--gold)"/><circle cx="53" cy="74" r="7" fill="var(--gold)"/><circle cx="67" cy="74" r="7" fill="var(--gold)"/><circle cx="60" cy="87" r="7" fill="var(--gold)"/></g><path class="sh-edge" pathLength="1" d="M6,6 H114 V70 Q114,122 60,140 Q6,122 6,70 Z" fill="none"/></svg></a><a class="hs" href="#fams" style="--i:23" title="Татьянко" aria-label="Татьянко"><svg class="emblem e-ita" viewBox="0 0 120 148" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path class="sh-field" d="M6,6 H114 V70 Q114,122 60,140 Q6,122 6,70 Z" fill="#7a2730"/><g class="charge"><path d="M40,116 V54 H46 V44 H54 V54 H66 V44 H74 V54 H80 V116 Z" fill="var(--gold)"/><path d="M54,116 V92 Q60,84 66,92 V116 Z" fill="#7a2730"/></g><path class="sh-edge" pathLength="1" d="M6,6 H114 V70 Q114,122 60,140 Q6,122 6,70 Z" fill="none"/></svg></a><a class="hs" href="#fams" style="--i:24" title="Березицкие" aria-label="Березицкие"><svg class="emblem e-ibe" viewBox="0 0 120 148" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path class="sh-field" d="M6,6 H114 V70 Q114,122 60,140 Q6,122 6,70 Z" fill="#2f5d3f"/><g class="charge"><path d="M60,28 C84,48 88,80 60,110 C32,80 36,48 60,28 Z" fill="#eef0ee"/><path d="M60,34 V124 M60,60 L74,50 M60,76 L76,64 M60,60 L46,50 M60,76 L44,64" stroke="#2f5d3f" stroke-width="2.5"/></g><path class="sh-edge" pathLength="1" d="M6,6 H114 V70 Q114,122 60,140 Q6,122 6,70 Z" fill="none"/></svg></a><a class="hs" href="#fams" style="--i:25" title="Штерн" aria-label="Штерн"><svg class="emblem e-ist" viewBox="0 0 120 148" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path class="sh-field" d="M6,6 H114 V70 Q114,122 60,140 Q6,122 6,70 Z" fill="#22385e"/><g class="charge"><path d="M60.0,30.0 L68.8,53.9 L94.2,54.9 L74.3,70.6 L81.2,95.1 L60.0,81.0 L38.8,95.1 L45.7,70.6 L25.8,54.9 L51.2,53.9 Z" fill="var(--gold)"/></g><path class="sh-edge" pathLength="1" d="M6,6 H114 V70 Q114,122 60,140 Q6,122 6,70 Z" fill="none"/></svg></a><a class="hs" href="#fams" style="--i:26" title="Исаковы" aria-label="Исаковы"><svg class="emblem e-iis" viewBox="0 0 120 148" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path class="sh-field" d="M6,6 H114 V70 Q114,122 60,140 Q6,122 6,70 Z" fill="#7a4a1f"/><g class="charge"><path d="M36,92 A24,24 0 0 1 84,92 Z" fill="var(--gold)"/><path d="M20,100 H100" stroke="#eef0ee" stroke-width="4"/><path d="M85.9,81.3 L98.8,75.9" stroke="var(--gold)" stroke-width="4" stroke-linecap="round"/><path d="M79.8,72.2 L89.7,62.3" stroke="var(--gold)" stroke-width="4" stroke-linecap="round"/><path d="M70.7,66.1 L76.1,53.2" stroke="var(--gold)" stroke-width="4" stroke-linecap="round"/><path d="M60.0,64.0 L60.0,50.0" stroke="var(--gold)" stroke-width="4" stroke-linecap="round"/><path d="M49.3,66.1 L43.9,53.2" stroke="var(--gold)" stroke-width="4" stroke-linecap="round"/><path d="M40.2,72.2 L30.3,62.3" stroke="var(--gold)" stroke-width="4" stroke-linecap="round"/><path d="M34.1,81.3 L21.2,75.9" stroke="var(--gold)" stroke-width="4" stroke-linecap="round"/></g><path class="sh-edge" pathLength="1" d="M6,6 H114 V70 Q114,122 60,140 Q6,122 6,70 Z" fill="none"/></svg></a><a class="hs" href="#fams" style="--i:27" title="Сулимовы" aria-label="Сулимовы"><svg class="emblem e-isu" viewBox="0 0 120 148" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path class="sh-field" d="M6,6 H114 V70 Q114,122 60,140 Q6,122 6,70 Z" fill="#6b1f2a"/><g class="charge"><path d="M34,112 L86,40 M86,112 L34,40" stroke="var(--gold)" stroke-width="5" stroke-linecap="round"/><path d="M86,40 L74,44 L82,52 Z M34,40 L46,44 L38,52 Z" fill="var(--gold)" stroke="var(--gold)" stroke-width="3"/></g><path class="sh-edge" pathLength="1" d="M6,6 H114 V70 Q114,122 60,140 Q6,122 6,70 Z" fill="none"/></svg></a><a class="hs" href="#fams" style="--i:28" title="Поршины" aria-label="Поршины"><svg class="emblem e-ipo" viewBox="0 0 120 148" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path class="sh-field" d="M6,6 H114 V70 Q114,122 60,140 Q6,122 6,70 Z" fill="#3a3f47"/><g class="charge"><path d="M14,108 L60,52 L106,108 L92,108 L60,70 L28,108 Z" fill="#eef0ee"/><path d="M60.0,24.0 L62.4,30.8 L69.5,30.9 L63.8,35.2 L65.9,42.1 L60.0,38.0 L54.1,42.1 L56.2,35.2 L50.5,30.9 L57.6,30.8 Z" fill="var(--gold)"/></g><path class="sh-edge" pathLength="1" d="M6,6 H114 V70 Q114,122 60,140 Q6,122 6,70 Z" fill="none"/></svg></a><a class="hs" href="#fams" style="--i:29" title="Мельниковы" aria-label="Мельниковы"><svg class="emblem e-ime" viewBox="0 0 120 148" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path class="sh-field" d="M6,6 H114 V70 Q114,122 60,140 Q6,122 6,70 Z" fill="#24527a"/><g class="charge"><path d="M60,66 L86.9,92.9" stroke="#eef0ee" stroke-width="9" stroke-linecap="square"/><path d="M60,66 L33.1,92.9" stroke="#eef0ee" stroke-width="9" stroke-linecap="square"/><path d="M60,66 L33.1,39.1" stroke="#eef0ee" stroke-width="9" stroke-linecap="square"/><path d="M60,66 L86.9,39.1" stroke="#eef0ee" stroke-width="9" stroke-linecap="square"/><circle cx="60" cy="66" r="9" fill="var(--gold)"/></g><path class="sh-edge" pathLength="1" d="M6,6 H114 V70 Q114,122 60,140 Q6,122 6,70 Z" fill="none"/></svg></a><a class="hs" href="#fams" style="--i:30" title="Николаевы" aria-label="Николаевы"><svg class="emblem e-ink" viewBox="0 0 120 148" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path class="sh-field" d="M6,6 H114 V70 Q114,122 60,140 Q6,122 6,70 Z" fill="#3b3f4a"/><g class="charge"><rect x="30" y="34" width="60" height="10" fill="var(--gold)"/><rect x="56" y="44" width="8" height="30" fill="var(--gold)"/><path d="M36,30 H84" stroke="var(--gold)" stroke-width="5" stroke-linecap="round"/><rect x="38" y="74" width="44" height="10" fill="var(--gold)"/><path d="M30,44 V112 M90,44 V112 M22,112 H98" stroke="var(--gold)" stroke-width="6" stroke-linecap="round"/><rect x="42" y="90" width="36" height="14" fill="#eef0ee"/></g><path class="sh-edge" pathLength="1" d="M6,6 H114 V70 Q114,122 60,140 Q6,122 6,70 Z" fill="none"/></svg></a></nav>
+  <p class="tour-start"><button type="button" id="tourBtn" class="tour-btn"><span aria-hidden="true">?</span>Как пользоваться сайтом — короткий тур</button></p>
   <p><a class="ai-badge" href="#tree">✦ Древо интерактивное — каждый может дополнить его своей информацией</a></p>
   <form class="finder" id="finder" role="search" autocomplete="off">
     <label for="findInput" class="finder-label">Найдите себя или родных</label>
@@ -414,9 +476,11 @@ body.panel-open{overflow:hidden}
   <div class="bar">
     <div class="block-head"><span class="block-no" aria-hidden="true"></span><h2>Древо</h2></div>
     <div class="ctl">
+      <div class="zoom-grp" role="group" aria-label="Масштаб схемы">
       <button type="button" id="zoomOut" aria-label="Уменьшить схему">−</button>
       <span class="zoom-level" id="zoomLevel" aria-live="polite">Целиком</span>
       <button type="button" id="zoomIn" aria-label="Увеличить схему">+</button>
+      </div>
       <button type="button" id="lensbtn" aria-pressed="true">Лупа</button>
       <button type="button" id="replay">Проиграть заново</button>
     </div>
@@ -905,7 +969,7 @@ body.panel-open{overflow:hidden}
   var grab = null, panning = false, noClick = false;
   sc.addEventListener('pointerdown', function(e){
     if (e.pointerType !== 'mouse' || e.button !== 0) return;
-    grab = {x: e.clientX, y: e.clientY, sl: sc.scrollLeft, sy: window.scrollY, id: e.pointerId};
+    grab = {x: e.clientX, y: e.clientY, sl: sc.scrollLeft, st: sc.scrollTop, sy: window.scrollY, id: e.pointerId};
   });
   sc.addEventListener('pointermove', function(e){
     if (!grab || e.pointerId !== grab.id) return;
@@ -917,7 +981,10 @@ body.panel-open{overflow:hidden}
     }
     e.preventDefault();
     sc.scrollLeft = grab.sl - dx;
-    window.scrollTo({top: grab.sy - dy, left: window.scrollX, behavior: 'instant'});
+    // по вертикали — сначала внутри окна схемы, а когда оно кончилось, двигаем страницу
+    var want = grab.st - dy, st = Math.max(0, Math.min(sc.scrollHeight - sc.clientHeight, want));
+    sc.scrollTop = st;
+    window.scrollTo({top: grab.sy + (want - st), left: window.scrollX, behavior: 'instant'});
   });
   function release(e){
     if (!grab || (e && e.pointerId !== grab.id)) return;
@@ -1435,9 +1502,134 @@ body.panel-open{overflow:hidden}
   });
 
   window.familyRehook = function(svg){ badge(svg); };
+  window.familyOpenPanel = openPanel;
+  window.familyHidePanel = closePanel;
   renderFeed(); // сначала показать снимок, сделанный при сборке
   addEventListener('online', function(){ load(); });
   load();
+})();
+</script>
+<script>// Тур по сайту: запускается сам при первом визите, повторяется кнопкой «Как пользоваться сайтом».
+// Подсвечивает часть страницы, рядом — карточка с объяснением. Главное — показать, как дописать и исправить данные.
+(function(){
+  var $ = function(id){ return document.getElementById(id); };
+  var KEY = 'tourSeen', canEdit = !document.documentElement.classList.contains('readonly');
+  var DEMO = 'NIK'; // на ком показываем карточку человека
+
+  function panelOpen(){ var p = $('panel'); return p && !p.hidden; }
+  function openDemo(){ if (!panelOpen() && window.familyOpenPanel) window.familyOpenPanel(DEMO); }
+  function closeDemo(){ setKind('story'); if (panelOpen() && window.familyHidePanel) window.familyHidePanel(); }
+  function setKind(v){ var k = $('fKind'); if (k && k.value !== v) { k.value = v; k.dispatchEvent(new Event('change')); } }
+
+  var STEPS = [
+    {title: 'Добро пожаловать!', text: 'Это общее древо всех наших родов. За минуту покажу, как найти себя, посмотреть схему и самому дописать или исправить сведения.', center: true, before: closeDemo},
+    {sel: '#finder', title: 'Найдите себя', text: 'Начните вводить имя или фамилию — сайт найдёт человека на схеме и покажет вашу линию до самых ранних предков.', before: closeDemo},
+    {sel: '.tree-sec .bar', title: 'Масштаб схемы', text: 'Кнопками − и + схему можно уменьшить целиком или увеличить. Двигайте её пальцем, а на компьютере — зажмите кнопку мыши и тяните.'},
+    {sel: '#lensbtn', title: 'Лупа', text: 'Наведите курсор на схему — под ним появится увеличительное стекло. На телефоне нажмите на схему и подержите палец.'},
+    {sel: '#scroller', title: 'Карточка человека', text: 'Нажмите на любого человека — откроется его карточка: годы, подпись и всё, что дописали родные.', before: closeDemo},
+    {sel: '#fKind', title: 'Что можно добавить', text: 'Воспоминание или историю, факт (даты, места, работа, награды), нового родственника — или исправить данные этого человека.', edit: true, before: function(){ openDemo(); setKind('story'); }},
+    {sel: '#addForm .pfields', title: 'Исправить данные', text: 'Выберите «Исправить данные этого человека» — поля уже заполнены. Поправьте имя, годы или подпись: правка сразу появится в древе, одобрение не нужно.', edit: true, before: function(){ openDemo(); setKind('correction'); }},
+    {sel: '#fText', title: 'Откуда вы знаете', text: 'Коротко напишите, почему исправляете или откуда сведения: документ, помню сам, рассказ бабушки.', edit: true, before: function(){ openDemo(); setKind('correction'); }},
+    {sel: '#fAuthor', title: 'Кто вы', text: 'Подпишитесь, например «Юлия, внучка Николая», и нажмите «Сохранить». Нового родственника добавляют так же: выберите «Нового родственника» и укажите, кем он приходится.', edit: true, before: function(){ openDemo(); setKind('correction'); }},
+    {sel: '#addAny', title: 'Общее дополнение', text: 'Если сведения не про одного человека — история семьи, фотография, документ, — нажмите эту кнопку.', edit: true, before: closeDemo},
+    {sel: '#log', title: 'Журнал правок', text: 'Здесь видно, кто, когда и что исправил. Если правка ошибочная, напишите владельцу сайта — он её отменит.', edit: true, before: closeDemo},
+    {sel: '.feed-sec', title: 'Дополнения от родных', text: 'Сюда попадает всё, что пишут родные. Тур можно повторить кнопкой «Как пользоваться сайтом» в начале страницы.', before: closeDemo}
+  ].filter(function(s){ return canEdit || !s.edit; });
+
+  var shade, hole, card, i = 0, raf = 0, active = false, lastFocus = null;
+
+  function build(){
+    shade = document.createElement('div'); shade.className = 'tour-shade';
+    hole = document.createElement('div'); hole.className = 'tour-hole';
+    card = document.createElement('div'); card.className = 'tour-card'; card.setAttribute('role', 'dialog'); card.setAttribute('aria-modal', 'true'); card.setAttribute('aria-labelledby', 'tourTitle');
+    card.innerHTML = '<div class="tour-step" id="tourStep"></div><h3 id="tourTitle"></h3><p id="tourText"></p>' +
+      '<div class="tour-dots" id="tourDots" aria-hidden="true"></div>' +
+      '<div class="tour-btns"><button type="button" class="tour-skip" id="tourSkip">Пропустить</button>' +
+      '<span class="tour-nav"><button type="button" class="tour-back" id="tourBack">Назад</button><button type="button" class="tour-next" id="tourNext">Далее</button></span></div>';
+    document.body.appendChild(shade); document.body.appendChild(hole); document.body.appendChild(card);
+    $('tourSkip').onclick = finish; $('tourBack').onclick = function(){ go(i - 1); }; $('tourNext').onclick = function(){ i < STEPS.length - 1 ? go(i + 1) : finish(); };
+    shade.onclick = function(){}; // клики мимо карточки не уходят на страницу
+    document.addEventListener('keydown', key);
+    addEventListener('resize', place); addEventListener('scroll', place, true);
+  }
+  function key(e){
+    if (!active) return;
+    if (e.key === 'Escape') { e.preventDefault(); e.stopPropagation(); finish(); }
+    else if (e.key === 'ArrowRight') go(i + 1);
+    else if (e.key === 'ArrowLeft') go(i - 1);
+  }
+
+  function target(){ var s = STEPS[i]; return s && s.sel ? document.querySelector(s.sel) : null; }
+
+  function go(n){
+    if (n < 0 || n >= STEPS.length) return;
+    i = n; var s = STEPS[i];
+    if (s.before) s.before();
+    $('tourStep').textContent = 'Шаг ' + (i + 1) + ' из ' + STEPS.length;
+    $('tourTitle').textContent = s.title; $('tourText').textContent = s.text;
+    $('tourBack').hidden = i === 0;
+    $('tourNext').textContent = i === 0 ? 'Показать' : i === STEPS.length - 1 ? 'Готово' : 'Далее';
+    $('tourSkip').textContent = i === 0 ? 'Не сейчас' : 'Пропустить';
+    $('tourDots').innerHTML = STEPS.map(function(_, k){ return '<i' + (k === i ? ' class="on"' : '') + '></i>'; }).join('');
+    card.classList.remove('in'); void card.offsetWidth; card.classList.add('in');
+    setTimeout(function(){
+      var t = target();
+      if (t) { try { t.scrollIntoView({block: 'center', inline: 'nearest', behavior: 'instant'}); } catch(e) { t.scrollIntoView(); } }
+      place(); $('tourNext').focus({preventScroll: true});
+    }, s.before ? 380 : 30);
+  }
+
+  function place(){
+    if (!active) return;
+    cancelAnimationFrame(raf);
+    raf = requestAnimationFrame(function(){
+      var t = target(), vw = innerWidth, vh = innerHeight, phone = vw < 640;
+      if (!t || STEPS[i].center) {
+        hole.style.opacity = '0'; shade.classList.add('dim');
+        card.className = 'tour-card in center'; card.style.left = card.style.top = ''; return;
+      }
+      shade.classList.remove('dim'); hole.style.opacity = '1';
+      var r = t.getBoundingClientRect(), pad = 8;
+      var top = Math.max(4, r.top - pad), left = Math.max(4, r.left - pad);
+      var bottom = Math.min(vh - 4, r.bottom + pad), right = Math.min(vw - 4, r.right + pad);
+      hole.style.transform = 'translate(' + left + 'px,' + top + 'px)';
+      hole.style.width = Math.max(0, right - left) + 'px'; hole.style.height = Math.max(0, bottom - top) + 'px';
+      var ch = card.offsetHeight, cw = card.offsetWidth;
+      if (phone) {
+        // на телефоне — листок внизу или вверху экрана, там, где не закрывает подсвеченное
+        card.className = 'tour-card in sheet ' + ((r.top + r.bottom) / 2 > vh * 0.55 ? 'up' : 'down');
+        card.style.left = card.style.top = '';
+        return;
+      }
+      card.className = 'tour-card in float';
+      var y = bottom + 14 + ch < vh ? bottom + 14 : top - 14 - ch >= 4 ? top - 14 - ch : Math.max(8, vh - ch - 8);
+      var x = Math.min(Math.max(12, (left + right) / 2 - cw / 2), vw - cw - 12);
+      card.style.left = x + 'px'; card.style.top = y + 'px';
+    });
+  }
+
+  function start(){
+    if (active) return;
+    if (!shade) build();
+    active = true; lastFocus = document.activeElement;
+    document.documentElement.classList.add('touring');
+    shade.hidden = hole.hidden = card.hidden = false;
+    go(0);
+  }
+  function finish(){
+    active = false; closeDemo();
+    try { localStorage.setItem(KEY, '1'); } catch(e) {}
+    document.documentElement.classList.remove('touring');
+    shade.hidden = hole.hidden = card.hidden = true;
+    if (lastFocus && lastFocus.focus) try { lastFocus.focus({preventScroll: true}); } catch(e) {}
+  }
+
+  var btn = $('tourBtn'); if (btn) btn.onclick = start;
+  window.familyTour = start;
+
+  // первый визит: тур сам, когда страница отрисовалась (не мешаем, если человек пришёл по ссылке на конкретного родственника)
+  var seen = false; try { seen = !!localStorage.getItem(KEY); } catch(e) { seen = true; }
+  if (!seen && !/[?&#](p|person)=/.test(location.href) && !navigator.webdriver) setTimeout(start, 1600);
 })();
 </script>
 </body></html>
