@@ -21,25 +21,43 @@ def public_dates(d):
 def split_photos(entries, outdir):
     import base64, os, re as _re
     os.makedirs(os.path.join(str(outdir), "photos"), exist_ok=True)
+
+    def save(e, ext, data):
+        try:
+            raw = base64.b64decode(data)
+        except Exception:
+            raw = b""
+        good = (ext == "webp" and raw[:4] == b"RIFF" and raw[8:12] == b"WEBP") or (ext == "jpeg" and raw[:2] == bytes([255, 216]))
+        if not good or len(raw) > 30000:
+            e["text"] = "Фото не удалось прочитать"
+            return
+        name = _re.sub("[^A-Za-z0-9_-]", "_", str(e.get("person") or "x"))
+        with open(os.path.join(str(outdir), "photos", name + (".webp" if ext == "webp" else ".jpg")), "wb") as f:
+            f.write(raw)
+        e["text"] = "§PHOTO1@" + ext
+
+    # крупные фото приходят частями «§PHOTO2:группа:номер:всего:формат:данные»
+    groups = {}
+    for e in entries:
+        m = _re.match("^§PHOTO2:([0-9a-f]{8}):([0-9]+):([0-9]+):(webp|jpeg):", e.get("text") or "")
+        if e.get("kind") == "fact" and m:
+            g = groups.setdefault(m.group(1), {"n": int(m.group(3)), "ext": m.group(4), "parts": {}, "first": None})
+            g["parts"][int(m.group(2))] = (e, (e.get("text") or "")[m.end():])
+    for g in sorted(groups.values(), key=lambda g: min(p[0].get("created") or 0 for p in g["parts"].values())):
+        if len(g["parts"]) != g["n"] or 0 not in g["parts"]:
+            continue  # не все части дошли — подождём следующего обновления
+        save(g["parts"][0][0], g["ext"], "".join(g["parts"][i][1] for i in range(g["n"])))
+        for i in range(1, g["n"]):
+            g["parts"][i][0]["text"] = "§PHOTOX"
+
+    # прежний формат: одно дополнение «§PHOTO1:формат:данные» (+ хвост в occupation/place/name)
     for e in sorted(entries, key=lambda x: x.get("created") or 0):
         t = e.get("text") or ""
         if e.get("kind") != "fact" or not t.startswith("§PHOTO1:"):
             continue
         parts = t.split(":", 2)
         ext = parts[1] if len(parts) == 3 else ""
-        data = (parts[2] if len(parts) == 3 else "") + (e.get("occupation") or "") + (e.get("place") or "") + (e.get("name") or "")
-        try:
-            raw = base64.b64decode(data)
-        except Exception:
-            raw = b""
-        good = (ext == "webp" and raw[:4] == b"RIFF" and raw[8:12] == b"WEBP") or (ext == "jpeg" and raw[:2] == bytes([255, 216]))
-        if not good or len(raw) > 8000:
-            e["text"] = "Фото не удалось прочитать"
-        else:
-            name = _re.sub("[^A-Za-z0-9_-]", "_", str(e.get("person") or "x"))
-            with open(os.path.join(str(outdir), "photos", name + (".webp" if ext == "webp" else ".jpg")), "wb") as f:
-                f.write(raw)
-            e["text"] = "§PHOTO1@" + ext
+        save(e, ext, (parts[2] if len(parts) == 3 else "") + (e.get("occupation") or "") + (e.get("place") or "") + (e.get("name") or ""))
         e["occupation"] = e["place"] = e["name"] = ""
     return entries
 
