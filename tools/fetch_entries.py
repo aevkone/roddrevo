@@ -18,6 +18,32 @@ def public_dates(d):
     return d or ""
 
 
+def split_photos(entries, outdir):
+    import base64, os, re as _re
+    os.makedirs(os.path.join(str(outdir), "photos"), exist_ok=True)
+    for e in sorted(entries, key=lambda x: x.get("created") or 0):
+        t = e.get("text") or ""
+        if e.get("kind") != "fact" or not t.startswith("§PHOTO1:"):
+            continue
+        parts = t.split(":", 2)
+        ext = parts[1] if len(parts) == 3 else ""
+        data = (parts[2] if len(parts) == 3 else "") + (e.get("occupation") or "") + (e.get("place") or "") + (e.get("name") or "")
+        try:
+            raw = base64.b64decode(data)
+        except Exception:
+            raw = b""
+        good = (ext == "webp" and raw[:4] == b"RIFF" and raw[8:12] == b"WEBP") or (ext == "jpeg" and raw[:2] == bytes([255, 216]))
+        if not good or len(raw) > 8000:
+            e["text"] = "Фото не удалось прочитать"
+        else:
+            name = _re.sub("[^A-Za-z0-9_-]", "_", str(e.get("person") or "x"))
+            with open(os.path.join(str(outdir), "photos", name + (".webp" if ext == "webp" else ".jpg")), "wb") as f:
+                f.write(raw)
+            e["text"] = "§PHOTO1@" + ext
+        e["occupation"] = e["place"] = e["name"] = ""
+    return entries
+
+
 try:
     items = get(SRC).get("entries", [])
     out = []
@@ -26,7 +52,7 @@ try:
         if e.get("dates"):
             e["dates"] = public_dates(e["dates"])
         out.append(e)
-    data = {"entries": out}
+    data = {"entries": split_photos(out, ".")}
     with open("entries.json", "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False)
 except Exception as err:

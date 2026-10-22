@@ -449,6 +449,28 @@ body.panel-open{overflow:hidden}
 }
 @keyframes tourIn{from{opacity:0;transform:translateY(10px)}}
 @keyframes tourInC{from{opacity:0;transform:translate(-50%,-46%)}}
+
+/* фото на древе: медальон над карточкой */
+.tree .ph-bg{fill:var(--card);stroke:var(--frame);stroke-width:3}
+.tree .ph-ring{fill:none;stroke:var(--gold);stroke-width:4}
+/* фото в карточке человека */
+.p-photo{flex:none;aspect-ratio:1;width:132px;height:132px;min-height:132px;border-radius:50%;overflow:hidden;border:3px solid var(--gold);box-shadow:0 10px 24px -14px rgba(30,20,8,.5);margin:0 0 10px}
+.p-photo img{display:block;width:100%;height:100%;object-fit:cover}
+.ph-sec{margin:12px 0 4px}
+.ph-pick{display:inline-flex;align-items:center;gap:10px;min-height:46px;padding:0 16px;border:1px dashed var(--gold);background:transparent;color:var(--accent);font:inherit;font-weight:600;cursor:pointer;border-radius:999px}
+.ph-pick svg{width:22px;height:22px}
+.ph-box{margin-top:12px;display:grid;gap:10px;justify-items:center;padding:14px;border:1px solid var(--rule);background:var(--paper)}
+.ph-stage{display:grid;gap:10px;justify-items:center;width:100%}
+.ph-frame{position:relative;width:min(280px,100%);aspect-ratio:1;touch-action:none}
+.ph-frame canvas{display:block;width:100%;height:100%;cursor:grab;border-radius:6px}
+.ph-frame::after{content:"";position:absolute;inset:0;border-radius:50%;box-shadow:0 0 0 999px rgba(242,237,227,.72);outline:3px solid var(--gold);outline-offset:-3px;pointer-events:none;
+ -webkit-mask:linear-gradient(#000 0 0);clip-path:inset(0 round 6px)}
+.ph-zoom{display:grid;gap:4px;width:min(280px,100%);font-size:.95rem}
+.ph-zoom input{width:100%}
+.ph-link{background:none;border:0;color:var(--muted);text-decoration:underline;font:inherit;cursor:pointer;min-height:40px}
+.ph-btns{display:flex;gap:12px;align-items:center;flex-wrap:wrap;justify-content:center}
+.e-photo{width:88px;height:88px;border-radius:50%;border:2px solid var(--gold);object-fit:cover;margin:6px 0}
+.ph-zoom input{accent-color:var(--accent)}
 </style></head><body>
 <div class="page play" id="page">
 <a class="skip" href="#tree">Перейти к древу</a>
@@ -543,9 +565,23 @@ body.panel-open{overflow:hidden}
   <div class="panel-back" id="panelBack"></div>
   <div class="panel-box">
     <button type="button" class="panel-close" id="panelClose" aria-label="Закрыть">×</button>
+    <div class="p-photo" id="pPhoto" hidden><img id="pPhotoImg" alt=""></div>
     <div class="p-sur" id="pSur"></div>
     <h3 class="p-name" id="pName"></h3>
     <div class="p-meta" id="pMeta"></div>
+    <div class="ph-sec edit-only" id="phSec">
+      <button type="button" id="phPick" class="ph-pick"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><circle cx="12" cy="13" r="3.6" fill="none" stroke="currentColor" stroke-width="1.6"/></svg><span id="phPickText">Добавить фото этого человека</span></button>
+      <input type="file" id="phFile" accept="image/*" hidden>
+      <div class="ph-box" id="photoBox" hidden>
+        <div class="ph-stage" id="phStage" hidden>
+          <div class="ph-frame"><canvas id="phCanvas" width="280" height="280" aria-label="Предпросмотр фото: двигайте, чтобы голова встала в круг"></canvas></div>
+          <label class="ph-zoom">Приблизить<input type="range" id="phZoom" min="-60" max="110" value="0"></label>
+          <button type="button" id="phReset" class="ph-link">Вернуть как предложил сайт</button>
+        </div>
+        <p class="form-msg" id="phMsg" role="status" aria-live="polite"></p>
+        <div class="ph-btns"><button type="button" id="phSave" class="primary">Сохранить фото</button><button type="button" id="phCancel" class="ph-link">Отмена</button></div>
+      </div>
+    </div>
     <h4>Дополнения</h4>
     <ul class="plist" id="panelList"></ul>
     <form id="addForm" class="addform edit-only" novalidate>
@@ -593,6 +629,17 @@ body.panel-open{overflow:hidden}
     if (w.length >= 3) return [w[0], w.slice(1).join(' ')];
     if (w.length === 2 && /(ов|ев|ин|ын|ий|ой|ая|на|ова|ева|ина|ская|ский|ман|ич)$/i.test(w[0])) return [w[0], w[1]];
     return ['', w.join(' ')];
+  }
+
+  // фото человека: приходит как дополнение «§PHOTO1:формат:данные» (данные разбиты по полям — у сервера лимит длины),
+  // а на сайте, после обработки на GitHub, — как «§PHOTO1@формат» и отдельный лёгкий файл photos/<код>.<формат>
+  function photoOf(e){
+    if (!e || e.kind !== 'fact' || typeof e.text !== 'string' || e.text.indexOf('§PHOTO1') !== 0) return null;
+    var ext;
+    if (e.text.charAt(7) === '@') { ext = e.text.slice(8) === 'jpeg' ? 'jpeg' : 'webp'; return {src: 'photos/' + String(e.person).replace(/[^A-Za-z0-9_-]/g, '_') + '.' + (ext === 'jpeg' ? 'jpg' : 'webp') + '?v=' + e.id, ext: ext}; }
+    var m = e.text.match(/^§PHOTO1:(webp|jpeg):/); if (!m) return null;
+    var data = e.text.slice(m[0].length) + (e.occupation || '') + (e.place || '') + (e.name || '');
+    return {src: 'data:image/' + m[1] + ';base64,' + data, ext: m[1]};
   }
 
   function build(entries){
@@ -669,8 +716,14 @@ body.panel-open{overflow:hidden}
         P[id] = n; order.push(id);
       });
 
+    // фото: последнее загруженное для человека
+    var photoLog = [];
+    (entries || []).slice().sort(function(a, b){ return (a.created || 0) - (b.created || 0); }).forEach(function(e){
+      var ph = photoOf(e); if (ph && P[e.person]) { photoLog.push({entry: e.id, person: e.person, who: e.author, when: e.created, field: 'Фото', from: P[e.person].photo ? 'прежнее фото' : '', to: 'новое фото', why: '', pending: !!e.pending}); P[e.person].photo = ph.src; P[e.person].photoBy = e.author; }
+    });
+
     // исправления родных: сразу меняют карточку (ФИО, годы, подпись), каждое изменение попадает в журнал правок
-    var LABEL = ['Фамилия', 'Имя', 'Годы жизни', 'Подпись'], changes = [];
+    var LABEL = ['Фамилия', 'Имя', 'Годы жизни', 'Подпись'], changes = photoLog.slice();
     (entries || []).filter(function(e){ return e.kind === 'correction' && P[e.person] && P[e.person].lines && (e.name || e.dates || e.occupation || e.place); })
       .sort(function(a, b){ return (a.created || 0) - (b.created || 0); })
       .forEach(function(e){
@@ -693,6 +746,7 @@ body.panel-open{overflow:hidden}
     var minX = Math.min.apply(null, order.map(function(id){ return P[id].x - P[id].w / U / 2; }));
     var dx = minX < -0.5 ? -0.5 - minX : 0;
     order.forEach(function(id){ P[id].gen -= minG; P[id].x += dx; });
+    changes.sort(function(a, b){ return (a.when || 0) - (b.when || 0); });
     return {P:P, C:C, links:links, order:order, changes:changes};
   }
 
@@ -759,6 +813,14 @@ body.panel-open{overflow:hidden}
       var o = '<g class="node f-' + p.fam + (p.added ? ' added' : '') + '" data-pid="' + esc(id) + '" style="--g:' + p.gen + ';--i:' + idx + '">' +
         '<rect class="card" x="' + left.toFixed(1) + '" y="' + y + '" width="' + w + '" height="' + h + '" rx="6"/>' +
         '<rect class="stripe" x="' + left.toFixed(1) + '" y="' + y + '" width="' + w + '" height="9" rx="2"/>';
+      if (p.photo) {
+        // медальон с фото над карточкой: круг, золотая рамка, лицо по центру
+        var pr = 50, pcx = c, pcy = y - 26, cid = 'ph' + idx;
+        o += '<clipPath id="' + cid + '"><circle cx="' + pcx.toFixed(1) + '" cy="' + pcy + '" r="' + pr + '"/></clipPath>' +
+          '<circle class="ph-bg" cx="' + pcx.toFixed(1) + '" cy="' + pcy + '" r="' + (pr + 4) + '"/>' +
+          '<image class="ph" href="' + esc(p.photo) + '" x="' + (pcx - pr).toFixed(1) + '" y="' + (pcy - pr) + '" width="' + (2 * pr) + '" height="' + (2 * pr) + '" preserveAspectRatio="xMidYMid slice" clip-path="url(#' + cid + ')"/>' +
+          '<circle class="ph-ring" cx="' + pcx.toFixed(1) + '" cy="' + pcy + '" r="' + pr + '"/>';
+      }
       if (id === 'SIB') {
         o += '<text aria-hidden="true" class="sur" x="' + c.toFixed(1) + '" y="' + (y + 48) + '">Семенчинские</text><text aria-hidden="true" class="note" x="' + c.toFixed(1) + '" y="' + (y + 82) + '">сёстры и брат Нины</text>';
         B.sib.list.forEach(function(s, k){
@@ -809,13 +871,14 @@ body.panel-open{overflow:hidden}
     m.order.forEach(function(id){
       var p = m.P[id];
       if (id === 'SIB') out[id] = {sur:'Семенчинские', name:'сёстры и брат Нины', dates:'', note:B.sib.list.map(function(s){ return s[0] + ' ' + s[1]; }).join(', ')};
-      else out[id] = {sur:p.lines[0], name:p.lines[1], dates:publicDates(p.lines[2], id), note:[p.lines[3], p.added ? (p.rel + ' · добавил(а): ' + (p.author || '')) : ''].filter(Boolean).join(' · ')};
+      else out[id] = {photo:p.photo || '', sur:p.lines[0], name:p.lines[1], dates:publicDates(p.lines[2], id), note:[p.lines[3], p.added ? (p.rel + ' · добавил(а): ' + (p.author || '')) : ''].filter(Boolean).join(' · ')};
     });
     return out;
   }
 
   window.FamilyTree = {
     fit: fit,
+    photoOf: photoOf,
     draw: function(host, entries){
       var m = build(entries);
       host.innerHTML = render(m);
@@ -1156,7 +1219,8 @@ body.panel-open{overflow:hidden}
   // простым запросом без ответа, а список дополнений сайт читает из своего entries.json, который
   // обновляется по расписанию. Пока запись не попала в список, её видит отправитель (из памяти браузера).
   var RELAY = window.FAMILY_RELAY || null;
-  var KIND = {story:'Воспоминание', fact:'Факт', correction:'Исправление', person:'Новый родственник'};
+  var KIND = {story:'Воспоминание', fact:'Факт', correction:'Исправление', person:'Новый родственник', photo:'Фото'};
+  function photoOf(e){ return window.FamilyTree && FamilyTree.photoOf ? FamilyTree.photoOf(e) : null; }
   var entries = [];
   var current = '';
 
@@ -1214,7 +1278,8 @@ body.panel-open{overflow:hidden}
   function entryNode(e, showWho){
     var li = el('li', 'entry');
     var head = el('div', 'e-head');
-    head.appendChild(el('span', 'e-kind k-' + e.kind, KIND[e.kind] || e.kind));
+    var ph = photoOf(e);
+    head.appendChild(el('span', 'e-kind k-' + (ph ? 'photo' : e.kind), ph ? KIND.photo : (KIND[e.kind] || e.kind)));
     head.appendChild(el('span', e.verified ? 'e-ok' : 'e-unv', e.verified ? 'проверено' : e.pending ? 'отправлено · видно только вам, скоро увидят все' : 'не проверено'));
     if (showWho) {
       var who = el('button', 'e-who', personTitle(e.person));
@@ -1229,7 +1294,8 @@ body.panel-open{overflow:hidden}
       var meta = [e.dates, e.place, e.occupation].filter(Boolean).join(' · ');
       if (meta) li.appendChild(el('div', 'e-meta', meta));
     }
-    if (e.text) {
+    if (ph) { var im = el('img', 'e-photo'); im.src = ph.src; im.alt = 'Фото: ' + personTitle(e.person); im.loading = 'lazy'; li.appendChild(im); }
+    else if (e.text) {
       var tx = el('p', 'e-text', e.text);
       if (showWho) { tx.title = 'Нажмите, чтобы развернуть'; tx.onclick = function(){ tx.classList.toggle('open'); }; }
       li.appendChild(tx);
@@ -1319,7 +1385,7 @@ body.panel-open{overflow:hidden}
 
   var drawnKey = null;
   function redraw(){
-    var key = entries.filter(function(e){ return e.kind === 'person' || e.kind === 'correction'; }).map(function(e){ return e.id; }).join(',');
+    var key = entries.filter(function(e){ return e.kind === 'person' || e.kind === 'correction' || photoOf(e); }).map(function(e){ return e.id; }).join(',');
     var canvas = $('canvas');
     if (key !== drawnKey && window.FamilyTree) {
       // повторная перерисовка — без вступительной анимации
@@ -1344,6 +1410,9 @@ body.panel-open{overflow:hidden}
     $('pSur').textContent = p ? (p.sur || '') : 'Общие сведения';
     $('pName').textContent = p ? p.name : 'Дополнение к древу';
     $('pMeta').textContent = p ? [p.dates, p.note].filter(Boolean).join(' · ') : 'Добавьте человека, историю или документ, который не относится к одной карточке.';
+    var pp = $('pPhoto'); if (pp) { pp.hidden = !(p && p.photo); if (p && p.photo) $('pPhotoImg').src = p.photo; $('pPhotoImg').alt = p ? 'Фото: ' + personTitle(current) : ''; }
+    var phs = $('phSec'); if (phs) { phs.hidden = !current; var pt = $('phPickText'); if (pt) pt.textContent = p && p.photo ? 'Заменить фото' : 'Добавить фото этого человека'; }
+    if (window.familyPhotoReset) window.familyPhotoReset();
     panel.hidden = false; void panel.offsetWidth; panel.classList.add('open');
     [].forEach.call(siblings(), function(n){ n.inert = true; });
     document.body.classList.add('panel-open');
@@ -1503,10 +1572,140 @@ body.panel-open{overflow:hidden}
 
   window.familyRehook = function(svg){ badge(svg); };
   window.familyOpenPanel = openPanel;
+  window.familyCurrent = function(){ return current; };
+  // отправка дополнения из других частей сайта (фото): та же очередь, черновик и обновление древа
+  window.familySend = function(data){
+    return call('POST', '', data).then(function(res){ return load(res && res.entry); }).then(function(){ if (!panel.hidden) openPanel(current); });
+  };
   window.familyHidePanel = closePanel;
   renderFeed(); // сначала показать снимок, сделанный при сборке
   addEventListener('online', function(){ load(); });
   load();
+})();
+</script>
+<script>// Фото человека: выбрать снимок → сайт сам находит лицо и ставит его по центру в одинаковом масштабе →
+// можно подвинуть и приблизить → сохраняется маленький медальон 112×112 (около 2 КБ, WebP или JPEG).
+(function(){
+  var $ = function(id){ return document.getElementById(id); };
+  if (document.documentElement.classList.contains('readonly')) return;
+  var OUT = 112;               // размер медальона, px
+  var FACE = 0.50;             // высота лица — половина медальона: у всех головы одного масштаба
+  var FACE_Y = 0.47;           // центр лица чуть выше середины
+  var MAX = 3340;              // столько знаков base64 помещается в одно дополнение
+  var LIB = 'https://cdn.jsdelivr.net/npm/@vladmandic/face-api@1.7.14/';
+  var libP = null, img = null, view = {s: 1, x: 0, y: 0}, auto = null, drag = null;
+  var box = $('photoBox'), cv = $('phCanvas'), ctx = cv && cv.getContext('2d'), msg = $('phMsg');
+  if (!box || !ctx) return;
+
+  // библиотека распознавания лиц грузится только когда человек выбрал фото
+  function loadLib(){
+    if (libP) return libP;
+    libP = new Promise(function(ok, no){
+      if (window.faceapi) return ok(window.faceapi);
+      var s = document.createElement('script'); s.src = LIB + 'dist/face-api.js'; s.async = true;
+      s.onload = function(){ ok(window.faceapi); }; s.onerror = function(){ no(new Error('lib')); };
+      document.head.appendChild(s);
+    }).then(function(fa){ return fa.nets.tinyFaceDetector.loadFromUri(LIB + 'model/').then(function(){ return fa; }); });
+    libP.catch(function(){ libP = null; });
+    return libP;
+  }
+
+  function say(t, cls){ msg.textContent = t; msg.className = 'form-msg' + (cls ? ' ' + cls : ''); }
+
+  // кадр: масштаб s (px исходника на px предпросмотра) и центр (x, y) в координатах исходника
+  function fitFace(f){
+    var size = cv.width;
+    if (f) {
+      var faceH = f.height * 1.25;                          // рамка детектора уже лица — берём с лбом и подбородком
+      view.s = faceH / (size * FACE);
+      view.x = f.x + f.width / 2;
+      view.y = f.y + f.height / 2 + (0.5 - FACE_Y) * size * view.s;
+    } else {
+      var side = Math.min(img.width, img.height);           // лица не нашли — центр снимка, верхняя часть
+      view.s = side / size; view.x = img.width / 2; view.y = Math.min(img.height / 2, side / 2 + img.height * 0.05);
+    }
+    auto = {s: view.s, x: view.x, y: view.y};
+    $('phZoom').value = 0;
+    draw();
+  }
+  function draw(target, size){
+    var c = target || ctx, n = size || cv.width;
+    var k = n / cv.width, s = view.s / k;
+    c.save(); c.fillStyle = '#efe8da'; c.fillRect(0, 0, n, n);
+    c.imageSmoothingEnabled = true; c.imageSmoothingQuality = 'high';
+    c.drawImage(img, view.x - n / 2 * s, view.y - n / 2 * s, n * s, n * s, 0, 0, n, n);
+    c.restore();
+  }
+
+  function open(file){
+    if (!file || !/^image\//.test(file.type)) { say('Выберите файл с фотографией (JPG, PNG, HEIC с телефона — тоже можно).', 'err'); return; }
+    box.hidden = false; $('phStage').hidden = true; say('Ищу лицо на фото…');
+    var url = URL.createObjectURL(file), im = new Image();
+    im.onload = function(){
+      // большие снимки уменьшаем до 1600 px — так быстрее и экономнее
+      var k = Math.min(1, 1600 / Math.max(im.width, im.height));
+      var c = document.createElement('canvas'); c.width = Math.round(im.width * k); c.height = Math.round(im.height * k);
+      c.getContext('2d').drawImage(im, 0, 0, c.width, c.height); URL.revokeObjectURL(url);
+      img = c; $('phStage').hidden = false; fitFace(null);
+      loadLib().then(function(fa){
+        return fa.detectAllFaces(img, new fa.TinyFaceDetectorOptions({inputSize: 416, scoreThreshold: 0.4}));
+      }).then(function(found){
+        if (!found || !found.length) { say('Лицо не нашлось — подвиньте фото пальцем или мышью и приблизьте ползунком, чтобы голова встала в круг.'); return; }
+        var best = found.map(function(d){ return d.box; }).sort(function(a, b){ return b.width * b.height - a.width * a.height; })[0];
+        fitFace(best);
+        say(found.length > 1 ? 'Нашёл несколько лиц, взял самое крупное. Если нужен другой человек — подвиньте фото.' : 'Лицо найдено и поставлено по центру. При желании поправьте положение.', 'ok');
+      }).catch(function(){ say('Не удалось загрузить распознавание лиц — поставьте голову в круг вручную.'); });
+    };
+    im.onerror = function(){ say('Этот формат фото браузер не открыл. Попробуйте сделать снимок экрана с фото и загрузить его.', 'err'); };
+    im.src = url;
+  }
+
+  // перетаскивание и приближение
+  cv.addEventListener('pointerdown', function(e){ if (!img) return; drag = {x: e.clientX, y: e.clientY, vx: view.x, vy: view.y}; cv.setPointerCapture(e.pointerId); e.preventDefault(); });
+  cv.addEventListener('pointermove', function(e){
+    if (!drag) return; var r = cv.getBoundingClientRect(), k = cv.width / r.width * view.s;
+    view.x = drag.vx - (e.clientX - drag.x) * k; view.y = drag.vy - (e.clientY - drag.y) * k; draw();
+  });
+  ['pointerup', 'pointercancel'].forEach(function(t){ cv.addEventListener(t, function(){ drag = null; }); });
+  $('phZoom').addEventListener('input', function(){ if (!auto) return; view.s = auto.s * Math.pow(2, -this.value / 50); draw(); });
+  $('phReset').onclick = function(){ if (auto) { view.s = auto.s; view.x = auto.x; view.y = auto.y; $('phZoom').value = 0; draw(); } };
+
+  // сжатие: WebP, а где браузер его не умеет (старый Safari) — JPEG; качество снижаем, пока не поместится
+  function encode(){
+    var sizes = [OUT, 100, 88], q = [0.82, 0.72, 0.62, 0.52, 0.42, 0.34];
+    var test = document.createElement('canvas').toDataURL('image/webp').indexOf('data:image/webp') === 0;
+    var type = test ? 'image/webp' : 'image/jpeg';
+    for (var i = 0; i < sizes.length; i++) {
+      var c = document.createElement('canvas'); c.width = c.height = sizes[i]; draw(c.getContext('2d'), sizes[i]);
+      for (var j = 0; j < q.length; j++) {
+        var d = c.toDataURL(type, q[j]), b64 = d.slice(d.indexOf(',') + 1);
+        if (b64.length <= MAX) return {ext: type === 'image/webp' ? 'webp' : 'jpeg', b64: b64};
+      }
+    }
+    return null;
+  }
+
+  $('phSave').onclick = function(){
+    var pid = window.familyCurrent ? window.familyCurrent() : '';
+    if (!img || !pid) return;
+    var author = ($('fAuthor').value || '').trim();
+    if (!author) { say('Напишите внизу в поле «Кто вы», кто добавляет фото — например, «Юлия, внучка Николая».', 'err'); $('fAuthor').focus(); return; }
+    var enc = encode(); if (!enc) { say('Не получилось сжать фото. Попробуйте другой снимок.', 'err'); return; }
+    var d = enc.b64, head = '§PHOTO1:' + enc.ext + ':', cut = 3000 - head.length;
+    var data = {kind: 'fact', person: pid, personName: '', relation: '', author: author, website: '',
+      text: head + d.slice(0, cut), occupation: d.slice(cut, cut + 120), place: d.slice(cut + 120, cut + 240), name: d.slice(cut + 240, cut + 360), dates: ''};
+    try { localStorage.setItem('author', author); } catch(e) {}
+    $('phSave').disabled = true; say('Сохраняю…');
+    window.familySend(data).then(function(){
+      say('✓ Фото сохранено. Вы уже видите его в древе, у всех родных оно появится в течение 10–20 минут.', 'ok');
+      setTimeout(function(){ box.hidden = true; img = null; $('phFile').value = ''; }, 1600);
+    }).catch(function(err){ say('Не сохранилось: ' + err.message, 'err'); })
+      .then(function(){ $('phSave').disabled = false; });
+  };
+  $('phCancel').onclick = function(){ box.hidden = true; img = null; $('phFile').value = ''; say(''); };
+  $('phFile').addEventListener('change', function(){ open(this.files && this.files[0]); });
+  $('phPick').onclick = function(){ $('phFile').click(); };
+  window.familyPhotoReset = function(){ box.hidden = true; img = null; if ($('phFile')) $('phFile').value = ''; say(''); };
 })();
 </script>
 <script>// Тур по сайту: запускается сам при первом визите, повторяется кнопкой «Как пользоваться сайтом».
@@ -1528,6 +1727,7 @@ body.panel-open{overflow:hidden}
     {sel: '#lensbtn', title: 'Лупа', text: 'Наведите курсор на схему — под ним появится увеличительное стекло. На телефоне нажмите на схему и подержите палец.'},
     {sel: '#scroller', title: 'Карточка человека', text: 'Нажмите на любого человека — откроется его карточка: годы, подпись и всё, что дописали родные.', before: closeDemo},
     {sel: '#fKind', title: 'Что можно добавить', text: 'Воспоминание или историю, факт (даты, места, работа, награды), нового родственника — или исправить данные этого человека.', edit: true, before: function(){ openDemo(); setKind('story'); }},
+    {sel: '#phPick', title: 'Фото человека', text: 'Добавьте фото: сайт сам найдёт лицо, поставит его по центру и сделает голову того же размера, что у всех. Положение можно поправить пальцем или мышью.', edit: true, before: function(){ openDemo(); setKind('story'); }},
     {sel: '#addForm .pfields', title: 'Исправить данные', text: 'Выберите «Исправить данные этого человека» — поля уже заполнены. Поправьте имя, годы или подпись: правка сразу появится в древе, одобрение не нужно.', edit: true, before: function(){ openDemo(); setKind('correction'); }},
     {sel: '#fText', title: 'Откуда вы знаете', text: 'Коротко напишите, почему исправляете или откуда сведения: документ, помню сам, рассказ бабушки.', edit: true, before: function(){ openDemo(); setKind('correction'); }},
     {sel: '#fAuthor', title: 'Кто вы', text: 'Подпишитесь, например «Юлия, внучка Николая», и нажмите «Сохранить». Нового родственника добавляют так же: выберите «Нового родственника» и укажите, кем он приходится.', edit: true, before: function(){ openDemo(); setKind('correction'); }},
