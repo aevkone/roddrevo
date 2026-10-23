@@ -22,6 +22,42 @@ def split_photos(entries, outdir):
     import base64, os, re as _re
     os.makedirs(os.path.join(str(outdir), "photos"), exist_ok=True)
 
+    # подстраховка к photo.js: если ч/б фото пришло со старой (закэшированной) страницы без белого фона —
+    # делаем то же здесь: голова резкая, вокруг размытие, плавно уходящее в белый
+    def whiten(raw, ext):
+        try:
+            import io, math
+            from PIL import Image, ImageFilter
+            im = Image.open(io.BytesIO(raw)).convert("RGB")
+        except Exception:
+            return raw, ext
+        n = im.size[0]
+        if n < 64 or im.size[1] != n:
+            return raw, ext
+        px = im.load(); c = n / 2; sat = cnt = 0; edge = []
+        for y in range(0, n, 2):
+            for x in range(0, n, 2):
+                d = math.hypot(x + .5 - c, y + .5 - c) / n
+                r, g, b = px[x, y]
+                if d < 0.44:
+                    mx = max(r, g, b); sat += (mx - min(r, g, b)) / mx if mx else 0; cnt += 1
+                elif d < 0.5:
+                    edge.append((r + g + b) / 3)
+        if not cnt or sat / cnt >= 0.14 or (edge and sum(edge) / len(edge) > 210 and min(edge) > 110):
+            return raw, ext  # цветное — не трогаем; края уже белые — уже обработано
+
+        def oval(r0, r1):
+            m = Image.new("L", (n, n)); mp = m.load()
+            for y in range(n):
+                for x in range(n):
+                    t = (math.hypot((x + .5 - c) / n, (y + .5 - c) / (n * 1.15)) - r0) / (r1 - r0)
+                    t = min(1, max(0, t)); mp[x, y] = round(255 * (1 - t * t * (3 - 2 * t)))
+            return m
+        out = Image.composite(im.filter(ImageFilter.GaussianBlur(n / 40)), Image.new("RGB", im.size, "white"), oval(0.26, 0.5))
+        out = Image.composite(im, out, oval(0.24, 0.40))
+        buf = io.BytesIO(); out.save(buf, "JPEG", quality=88)
+        return buf.getvalue(), "jpeg"
+
     def save(e, ext, data):
         try:
             raw = base64.b64decode(data)
@@ -31,6 +67,7 @@ def split_photos(entries, outdir):
         if not good or len(raw) > 30000:
             e["text"] = "Фото не удалось прочитать"
             return
+        raw, ext = whiten(raw, ext)
         name = _re.sub("[^A-Za-z0-9_-]", "_", str(e.get("person") or "x"))
         with open(os.path.join(str(outdir), "photos", name + (".webp" if ext == "webp" else ".jpg")), "wb") as f:
             f.write(raw)

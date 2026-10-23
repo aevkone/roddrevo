@@ -21,6 +21,7 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
+      - run: python3 -m pip install --quiet pillow || true
       - id: fetch
         run: python3 tools/fetch_entries.py
       - if: github.event_name != 'schedule' || steps.fetch.outputs.changed == 'true'
