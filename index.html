@@ -323,8 +323,10 @@ button:not(:disabled):active,.cta:active{transform:scale(.97)}
 .faces-title{font-size:clamp(2rem,6vw,3.4rem);line-height:1.1;letter-spacing:.04em;margin:0}
 .faces-sub{font-family:var(--sc);letter-spacing:.08em;font-size:clamp(1.05rem,2.4vw,1.35rem);color:var(--accent);margin:0}
 .faces-text{max-width:60ch;color:var(--muted);font-size:1.02rem;line-height:1.55;margin:4px 0 0}
-.faces-rows{display:grid;gap:14px;-webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
-.faces-row{overflow:hidden}
+.faces-rows{display:grid;gap:14px}
+.faces-row{overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent)}
+.faces-row.still .face-track{animation:none;margin-inline:auto}
+.faces-row.still{-webkit-mask-image:none;mask-image:none}
 .face-track{display:flex;width:max-content;gap:18px;padding:6px 9px;animation:faceRun calc(var(--n) * 4.5s) linear infinite;animation-play-state:paused}
 .face-dup{display:contents}
 .faces-on .face-track{animation-play-state:running}
@@ -544,7 +546,6 @@ body.panel-open{overflow:hidden}
   </div>
   <div class="faces-rows">
     <div class="faces-row" id="facesA"></div>
-    <div class="faces-row rev" id="facesB"></div>
   </div>
   <div class="faces-cta"><button type="button" class="cta" id="facesAdd"><span class="cta-plus" aria-hidden="true">+</span>Добавить фото или сведения</button><button type="button" class="faces-find" id="facesFind">Найти себя в древе</button></div>
 </section>
@@ -1999,7 +2000,7 @@ body.panel-open{overflow:hidden}
 (function(){
   var $ = function(id){ return document.getElementById(id); };
   var sec = $('faces'); if (!sec) return;
-  var rowA = $('facesA'), rowB = $('facesB'), count = $('facesCount');
+  var rowA = $('facesA'), count = $('facesCount'), current = '';
   var last = '';
 
   function esc(s){ return String(s).replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
@@ -2010,14 +2011,23 @@ body.panel-open{overflow:hidden}
       '<span class="face-n"><span class="face-sur">' + esc(p.sur || '') + '</span><span class="face-name">' + esc(p.name) + '</span>' +
       (p.dates ? '<span class="face-d">' + esc(p.dates) + '</span>' : '') + '</span></button>';
   }
-  // лента бесконечная: содержимое повторяется дважды, анимация сдвигает ровно на половину
+  // одна лента, каждый человек — один раз. Если фото не помещаются в ширину, лента едет по кругу:
+  // для бесшовного круга к ней приставлена её же копия, но она всегда за краем экрана — повторов на виду нет
   function fill(row, list){
     var one = list.map(function(x){ return card(x[0], x[1]); }).join('');
-    // лента должна быть шире самого широкого экрана: пока фото мало, повторяем их; с ростом числа фото повторов становится меньше
-    var reps = Math.max(1, Math.ceil(14 / list.length)), html = '';
-    for (var i = 0; i < reps; i++) html += one;
-    row.innerHTML = '<div class="face-track" style="--n:' + list.length * reps + '">' + html + '<span class="face-dup" aria-hidden="true">' + html + '</span></div>';
-    row.querySelectorAll('.face-dup .face').forEach(function(b){ b.tabIndex = -1; });
+    row.innerHTML = '<div class="face-track" style="--n:' + list.length + '">' + one + '</div>';
+    fit(row, one);
+  }
+  function fit(row, one){
+    var track = row.firstChild; if (!track) return;
+    var dup = track.querySelector('.face-dup');
+    if (dup) dup.remove();
+    var moving = track.scrollWidth > row.clientWidth + 2;
+    row.classList.toggle('still', !moving);
+    if (moving) {
+      track.insertAdjacentHTML('beforeend', '<span class="face-dup" aria-hidden="true">' + one + '</span>');
+      track.querySelectorAll('.face-dup .face').forEach(function(b){ b.tabIndex = -1; });
+    }
   }
   // в анонсе — только чёрно-белые (старые) снимки: сайт сам меряет насыщенность центра медальона, как при загрузке фото
   var bw = {};
@@ -2050,14 +2060,13 @@ body.panel-open{overflow:hidden}
     last = key;
     sec.hidden = !list.length;
     if (!list.length) return;
-    // две ленты навстречу друг другу; когда фото мало — в обеих все, во второй в обратном порядке
-    var half = Math.ceil(list.length / 2);
-    if (list.length < 16) { fill(rowA, list); fill(rowB, list.slice(Math.floor(list.length / 2)).concat(list.slice(0, Math.floor(list.length / 2))).reverse()); }
-    else { fill(rowA, list.slice(0, half)); fill(rowB, list.slice(half)); }
+    fill(rowA, list);
+    current = list.map(function(x){ return card(x[0], x[1]); }).join('');
     if (count) count.textContent = list.length;
   }
   update();
   setInterval(update, 3000);
+  var rt; addEventListener('resize', function(){ clearTimeout(rt); rt = setTimeout(function(){ if (current) fit(rowA, current); }, 200); });
 
   sec.addEventListener('click', function(e){
     var b = e.target.closest('.face'); if (!b) return;
