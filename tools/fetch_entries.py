@@ -34,16 +34,23 @@ def split_photos(entries, outdir):
         n = im.size[0]
         if n < 64 or im.size[1] != n:
             return raw, ext
-        px = im.load(); c = n / 2; sat = cnt = 0; edge = []
+        px = im.load(); c = n / 2; sat = cnt = 0; edge = []; hx = hy = sw = 0.0
         for y in range(0, n, 2):
             for x in range(0, n, 2):
                 d = math.hypot(x + .5 - c, y + .5 - c) / n
                 r, g, b = px[x, y]
                 if d < 0.44:
-                    mx = max(r, g, b); sat += (mx - min(r, g, b)) / mx if mx else 0; cnt += 1
+                    mx, mn = max(r, g, b), min(r, g, b); s = (mx - mn) / mx if mx else 0; sat += s; cnt += 1
+                    if mx - mn > 8:
+                        h = ((g - b) / (mx - mn)) % 6 if mx == r else ((b - r) / (mx - mn) + 2 if mx == g else (r - g) / (mx - mn) + 4)
+                        hx += s * math.cos(h * math.pi / 3); hy += s * math.sin(h * math.pi / 3); sw += s
                 elif d < 0.5:
                     edge.append((r + g + b) / 3)
-        if not cnt or sat / cnt >= 0.14 or (edge and sum(edge) / len(edge) > 210 and min(edge) > 110):
+        s0 = sat / cnt if cnt else 1
+        conc = math.hypot(hx, hy) / sw if sw else 1
+        hue = math.degrees(math.atan2(hy, hx)) % 360 if sw else 0
+        mono = s0 < 0.14 or (s0 < 0.30 and conc >= 0.96 and (hue <= 50 or hue >= 345))  # ч/б или сепия
+        if not cnt or not mono or (edge and sum(edge) / len(edge) > 210 and min(edge) > 110):
             return raw, ext  # цветное — не трогаем; края уже белые — уже обработано
 
         def oval(r0, r1):
