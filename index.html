@@ -404,6 +404,9 @@ html,body{overflow-x:clip}
 .add-cta{justify-content:center;text-align:center}
 /* на узком экране выравнивание по ширине даёт дыры между словами — там текст по левому краю, но тоже на всю ширину */
 @media (max-width:640px){.arch>p,.privacy,.other ul,.next,.contrib,.disclaimer,footer,.fam-sec .disclaimer,.wide-note,.privacy li,.other li,.next li,.contrib p{text-align:left}}
+/* «Во весь экран»: мини-карта всегда у нижнего края экрана (на телефоне схема выше экрана) */
+.tree-sec.tree-full .minimap{position:fixed;bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:61}
+.tree-sec.tree-full .mem-note{display:none}
 
 [hidden]{display:none!important}
 .readonly .edit-only{display:none!important}
@@ -1266,8 +1269,8 @@ body.cin-open{overflow:hidden}
   var coarseUI = matchMedia('(pointer: coarse)').matches;
   var mm = $('minimap'), mmIn = $('mmIn'), mmView = $('mmView');
   function mini(){
-    // на сенсорных экранах мини-карта закрывала карточки — там её нет
-    mm.hidden = level === 0 || coarseUI;
+    // на сенсорных экранах мини-карта закрывала карточки — там она только в режиме «Во весь экран»
+    mm.hidden = level === 0 || (coarseUI && !$('tree').classList.contains('tree-full'));
     if (mm.hidden) return;
     var w = c.offsetWidth || 1;
     mmView.style.left = (sc.scrollLeft / w * 100) + '%';
