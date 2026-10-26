@@ -1,0 +1,750 @@
+[
+ {
+  "id": "ryazan1821",
+  "file": "images/ryazan1821.webp",
+  "caption_title": "План губернского города Рязани (В. Невин)",
+  "caption_year": "1821",
+  "caption_why": "Рязань времён Лаврентия Кочергина, родоначальника рязанской ветви.",
+  "size": "M",
+  "people": [
+   "LAV"
+  ],
+  "place": "Рязань",
+  "source_url": "https://commons.wikimedia.org/wiki/File:%D0%9F%D0%BB%D0%B0%D0%BD_%D0%B3%D0%BE%D1%80%D0%BE%D0%B4%D0%B0_%D0%A0%D1%8F%D0%B7%D0%B0%D0%BD%D0%B8_1821.jpg",
+  "license": "Public domain (Wikimedia Commons; первоисточник — etomesto.ru)",
+  "island": "path",
+  "seq": 0,
+  "links": [
+   "ryazan_pochtovaya_1900"
+  ],
+  "aspect": 1.29
+ },
+ {
+  "id": "ryazan_pochtovaya_1900",
+  "file": "images/ryazan_pochtovaya_1900.webp",
+  "caption_title": "Рязань, Почтовая улица (фототипия Шерер, Набгольц и К°)",
+  "caption_year": "1900–1905",
+  "caption_why": "Главная торговая улица Рязани с лавками и мастерскими — город ремесленников, откуда вышел портной Лаврентий Кочергин.",
+  "size": "L",
+  "people": [
+   "LAV"
+  ],
+  "place": "Рязань, Почтовая улица",
+  "source_url": "https://pastvu.com/p/1856337",
+  "license": "Общественное достояние по сроку давности (pastvu.com; при публикации ставить ссылку на страницу фото); открытка 1905 г., фототипия Шерер, Набгольц и К°",
+  "island": "path",
+  "seq": 1,
+  "links": [
+   "ryazan_kreml_1897"
+  ],
+  "aspect": 1.818
+ },
+ {
+  "id": "ryazan_kreml_1897",
+  "file": "images/ryazan_kreml_1897.webp",
+  "caption_title": "Вид на Рязанский кремль: Кафедральный собор и Спасский монастырь, открытка",
+  "caption_year": "1895–1899",
+  "caption_why": "Рязань XIX в. — родина Лаврентия Кочергина.",
+  "size": "L",
+  "people": [
+   "LAV"
+  ],
+  "place": "Рязань",
+  "source_url": "https://pastvu.com/p/1857493",
+  "license": "Общественное достояние по сроку давности (pastvu.com; при публикации ставить ссылку на страницу фото); автор неизвестен",
+  "island": "path",
+  "seq": 2,
+  "links": [
+   "tambov_gimnazicheskaya_1912"
+  ],
+  "aspect": 1.583
+ },
+ {
+  "id": "tambov_gimnazicheskaya_1912",
+  "file": "images/tambov_gimnazicheskaya_1912.webp",
+  "caption_title": "Тамбов, Гимназическая улица, цветная открытка изд. М. Шераношер",
+  "caption_year": "1910–1918",
+  "caption_why": "Тамбов, где работал портной Василий Лаврентьевич Кочергин (†1906) и прошло детство Николая (1904).",
+  "size": "L",
+  "people": [
+   "VAS",
+   "NIK",
+   "ALX"
+  ],
+  "place": "Тамбов",
+  "source_url": "https://commons.wikimedia.org/wiki/File:%D0%A2%D0%90%D0%9C%D0%91%D0%9E%D0%92,_%D0%93%D0%98%D0%9C%D0%9D%D0%90%D0%97%D0%98%D0%A7%D0%95%D0%A1%D0%9A%D0%90%D0%AF_%D0%A3%D0%9B%D0%98%D0%A6%D0%90_%D0%BE%D1%82%D0%BA%D1%80%D1%8B%D1%82%D0%BA%D0%B0_1910-1918%D0%B3.jpg",
+  "license": "Public domain (Wikimedia Commons); первоисточник — pastvu.com/p/1744468",
+  "island": "path",
+  "seq": 3,
+  "links": [
+   "tambov_dvoryanskaya_1913"
+  ],
+  "aspect": 1.535
+ },
+ {
+  "id": "tambov_dvoryanskaya_1913",
+  "file": "images/tambov_dvoryanskaya_1913.webp",
+  "caption_title": "«Г. Тамбов. Дворянская ул. Городская управа», открытка",
+  "caption_year": "1913–1914",
+  "caption_why": "Главная улица Тамбова, где портняжничал Василий Лаврентьевич и росли его дети, в т. ч. Николай (1904).",
+  "size": "L",
+  "people": [
+   "VAS",
+   "NIK",
+   "ALX",
+   "OLG"
+  ],
+  "place": "Тамбов, Дворянская улица",
+  "source_url": "https://pastvu.com/p/202057",
+  "license": "Общественное достояние по сроку давности (pastvu.com; при публикации ставить ссылку на страницу фото); дореволюционная открытка, домашний архив",
+  "island": "path",
+  "seq": 4,
+  "links": [
+   "moscow_yaroslavsky_1930"
+  ],
+  "aspect": 1.548
+ },
+ {
+  "id": "moscow_yaroslavsky_1930",
+  "file": "images/moscow_yaroslavsky_1930.webp",
+  "caption_title": "Москва, Ярославский вокзал, почтовая карточка Гознака",
+  "caption_year": "1928–1930",
+  "caption_why": "Вокзал, связывавший Сергиев с Москвой, — ворота переезда семьи в столицу.",
+  "size": "L",
+  "people": [
+   "NIK",
+   "NIN",
+   "SSER"
+  ],
+  "place": "Москва, Каланчёвская (Комсомольская) площадь",
+  "source_url": "https://pastvu.com/p/1326690",
+  "license": "Общественное достояние по сроку давности (pastvu.com; при публикации ставить ссылку на страницу фото); анонимная открытка Гознака 1930 г., частный архив",
+  "island": "path",
+  "seq": 5,
+  "links": [
+   "zagorsk_zomz_1935",
+   "libava_1910"
+  ],
+  "aspect": 1.446
+ },
+ {
+  "id": "libava_1910",
+  "file": "images/libava_1910.webp",
+  "caption_title": "«Libau. Südseite»: вид Либавы с Большой синагогой и собором св. Иосифа, открытка",
+  "caption_year": "около 1910",
+  "caption_why": "Либава — город Чижевских.",
+  "size": "L",
+  "people": [
+   "CFRZ",
+   "CILF"
+  ],
+  "place": "Либава (Лиепая), Курляндская губ.",
+  "source_url": "https://commons.wikimedia.org/wiki/File:Libau,_view_-01.jpg",
+  "license": "Public domain (Wikimedia Commons); частная коллекция",
+  "island": "west",
+  "seq": 100,
+  "links": [
+   "kalisz_rynek_1905"
+  ],
+  "aspect": 1.552
+ },
+ {
+  "id": "kalisz_rynek_1905",
+  "file": "images/kalisz_rynek_1905.webp",
+  "caption_title": "«Kalisz. Główny Rynek»: Главная площадь Калиша, открытка",
+  "caption_year": "до 1906",
+  "caption_why": "Калиш — губернский город на прусской границе с Калишской таможней, связанный с Чижевскими.",
+  "size": "L",
+  "people": [
+   "CFRZ"
+  ],
+  "place": "Калиш, Калишская губ. Царства Польского",
+  "source_url": "https://commons.wikimedia.org/wiki/File:Kalisz,_glowny_rynek._ante_1906_(1021230).jpg",
+  "license": "Public domain (Wikimedia Commons); первоисточник — Национальная библиотека Польши (Polona), автор неизвестен",
+  "island": "west",
+  "seq": 101,
+  "links": [
+   "nadezhdinsk_zavod_1932"
+  ],
+  "aspect": 1.504
+ },
+ {
+  "id": "nadezhdinsk_zavod_1932",
+  "file": "images/nadezhdinsk_zavod_1932.webp",
+  "caption_title": "Надеждинский завод: общий вид завода и соцгорода",
+  "caption_year": "1932",
+  "caption_why": "Надеждинский металлургический завод (г. Серов), где в 1930-х работал инженер-металлург Иллиодор Иллиодорович Чижевский.",
+  "size": "M",
+  "people": [
+   "CHI"
+  ],
+  "place": "Надеждинск (Серов), Уральская обл.",
+  "source_url": "https://pastvu.com/p/1246733",
+  "license": "Общественное достояние по сроку давности (pastvu.com; при публикации ставить ссылку на страницу фото); первоисточник — Госкаталог музейного фонда РФ",
+  "island": "west",
+  "seq": 102,
+  "links": [
+   "murmansk_1933"
+  ],
+  "aspect": 1.488
+ },
+ {
+  "id": "murmansk_1933",
+  "file": "images/murmansk_1933.webp",
+  "caption_title": "Мурманск, площадь Жертв Революции",
+  "caption_year": "1933",
+  "caption_why": "Мурманск 1930-х, где экономистом «Мурманрыбы» работал Всеволод Иллиодорович Чижевский.",
+  "size": "M",
+  "people": [
+   "CVSE"
+  ],
+  "place": "Мурманск",
+  "source_url": "https://pastvu.com/p/2306487",
+  "license": "Общественное достояние по сроку давности (pastvu.com; при публикации ставить ссылку на страницу фото); фото 1933 г.",
+  "island": "west",
+  "seq": 103,
+  "links": [],
+  "aspect": 1.412
+ },
+ {
+  "id": "zagorsk_zomz_1935",
+  "file": "images/zagorsk_zomz_1935.webp",
+  "caption_title": "Загорск: строится рабочий посёлок Загорского оптико-механического завода (ЗОМЗ)",
+  "caption_year": "1935–1940",
+  "caption_why": "Загорск 1930-х — индустриальный город, где Наталья Фёдоровна растила детей и жил столяр Илья Иванович Семенчинский.",
+  "size": "M",
+  "people": [
+   "NAT",
+   "SILI"
+  ],
+  "place": "Загорск, ул. Карла Либкнехта",
+  "source_url": "https://pastvu.com/p/231071",
+  "license": "Общественное достояние по сроку давности (pastvu.com; при публикации ставить ссылку на страницу фото); опубл. в кн. «Сергиево-Посадский район. В зеркале истории. XX век»",
+  "island": "posad20",
+  "seq": 200,
+  "links": [
+   "sergiev_krasnogorskaya_1925"
+  ],
+  "aspect": 1.531
+ },
+ {
+  "id": "sergiev_krasnogorskaya_1925",
+  "file": "images/sergiev_krasnogorskaya_1925.webp",
+  "caption_title": "Красногорская площадь в праздник 7 ноября (в книге-источнике — 1 мая 1929)",
+  "caption_year": "1925",
+  "caption_why": "Советский Сергиев (с 1930 г. Загорск), где Наталья Фёдоровна растила детей.",
+  "size": "M",
+  "people": [
+   "NAT",
+   "SLID",
+   "SELI"
+  ],
+  "place": "Сергиев (Загорск), Красногорская площадь",
+  "source_url": "https://pastvu.com/p/291721",
+  "license": "Общественное достояние по сроку давности (pastvu.com; при публикации ставить ссылку на страницу фото); опубликовано: Балдин В. И. «Загорск. История города и его планировки», М., 1981",
+  "island": "posad20",
+  "seq": 201,
+  "links": [
+   "posad_bazar_1919",
+   "sverdlovsk_lenina_1930"
+  ],
+  "aspect": 1.297
+ },
+ {
+  "id": "posad_bazar_1919",
+  "file": "images/posad_bazar_1919.webp",
+  "caption_title": "Красногорская площадь в базарный день: возы и торг у Лавры",
+  "caption_year": "1919",
+  "caption_why": "Базар голодного 1919 г.: последний год Алексея Яковлевича (†1920), когда семья теряла детей от голода.",
+  "size": "M",
+  "people": [
+   "ALS",
+   "NAT"
+  ],
+  "place": "Сергиев, Красногорская площадь",
+  "source_url": "https://pastvu.com/p/291712",
+  "license": "Общественное достояние по сроку давности (pastvu.com; при публикации ставить ссылку на страницу фото); опубл.: Балдин В. И. «Загорск. История города и его планировки», М., 1981",
+  "island": "posad20",
+  "seq": 202,
+  "links": [
+   "posad_voznesenskaya_1900"
+  ],
+  "aspect": 0.85
+ },
+ {
+  "id": "posad_voznesenskaya_1900",
+  "file": "images/posad_voznesenskaya_1900.webp",
+  "caption_title": "Вознесенская площадь, вид на посадскую застройку",
+  "caption_year": "1897–1903",
+  "caption_why": "Площадь Вознесенского прихода — посадская застройка, среди которой жили Семенчинские.",
+  "size": "M",
+  "people": [
+   "SEKA",
+   "SVAL"
+  ],
+  "place": "Сергиев посад, Вознесенская площадь",
+  "source_url": "https://pastvu.com/p/2578817",
+  "license": "Общественное достояние по сроку давности (pastvu.com; при публикации ставить ссылку на страницу фото); из архива В. Матвеева",
+  "island": "posad20",
+  "seq": 203,
+  "links": [
+   "posad_ilyinskaya_ul_1902"
+  ],
+  "aspect": 1.669
+ },
+ {
+  "id": "posad_ilyinskaya_ul_1902",
+  "file": "images/posad_ilyinskaya_ul_1902.webp",
+  "caption_title": "Ильинская улица с видом на деревянную Казанскую церковь (фото В. И. Соколова)",
+  "caption_year": "1902",
+  "caption_why": "Улица родного Ильинского прихода такой, какой её видели Семенчинские.",
+  "size": "M",
+  "people": [
+   "ALS",
+   "YAKS",
+   "YAKD"
+  ],
+  "place": "Сергиев посад, Ильинская улица",
+  "source_url": "https://pastvu.com/p/1668195",
+  "license": "Общественное достояние по сроку давности (pastvu.com; при публикации ставить ссылку на страницу фото); первоисточник — Сергиево-Посадский музей-заповедник (museum-sp.ru)",
+  "island": "posad20",
+  "seq": 204,
+  "links": [
+   "posad_krasnaya_1902"
+  ],
+  "aspect": 1.326
+ },
+ {
+  "id": "posad_krasnaya_1902",
+  "file": "images/posad_krasnaya_1902.webp",
+  "caption_title": "Красногорская (Красная) площадь и Новые торговые ряды, открытка «Сергиево. Общий вид», изд. Общины св. Евгении",
+  "caption_year": "1902–1916",
+  "caption_why": "Главная площадь посада у ворот Лавры, куда Семенчинские и Максимовы ходили в базарные дни.",
+  "size": "L",
+  "people": [
+   "ALS",
+   "NAT",
+   "YAKS"
+  ],
+  "place": "Сергиев посад, Красногорская площадь",
+  "source_url": "https://pastvu.com/p/253385",
+  "license": "Общественное достояние по сроку давности (pastvu.com; при публикации ставить ссылку на страницу фото); дореволюционная открытка",
+  "island": "posad20",
+  "seq": 205,
+  "links": [
+   "posad_lavrskaya_gostinitsa_1905"
+  ],
+  "aspect": 1.573
+ },
+ {
+  "id": "posad_lavrskaya_gostinitsa_1905",
+  "file": "images/posad_lavrskaya_gostinitsa_1905.webp",
+  "caption_title": "«Сергиевский посад. Новая Лаврская гостиница», цветная открытка",
+  "caption_year": "1905–1911",
+  "caption_why": "Лаврская гостиница на Красногорской площади принимала тысячи богомольцев — ими кормился весь посад.",
+  "size": "M",
+  "people": [],
+  "place": "Сергиев посад, Красногорская площадь",
+  "source_url": "https://pastvu.com/p/161278",
+  "license": "Общественное достояние по сроку давности (pastvu.com; при публикации ставить ссылку на страницу фото); дореволюционная открытка",
+  "island": "posad20",
+  "seq": 206,
+  "links": [
+   "posad_s_kolokolni_1902"
+  ],
+  "aspect": 1.596
+ },
+ {
+  "id": "posad_s_kolokolni_1902",
+  "file": "images/posad_s_kolokolni_1902.webp",
+  "caption_title": "Вид Сергиева посада с лаврской колокольни на восток",
+  "caption_year": "1902–1903",
+  "caption_why": "Панорама посада с высоты — слободы, пруды и крыши, среди которых жили Семенчинские и Максимовы на рубеже веков.",
+  "size": "L",
+  "people": [
+   "ALS",
+   "NAT"
+  ],
+  "place": "Сергиев посад, вид с колокольни Лавры",
+  "source_url": "https://pastvu.com/p/1331172",
+  "license": "Общественное достояние по сроку давности (pastvu.com; при публикации ставить ссылку на страницу фото); фото начала XX в. (аукционный лот)",
+  "island": "posad20",
+  "seq": 207,
+  "links": [
+   "posad_pyatnitskaya_vvedenskaya_1910"
+  ],
+  "aspect": 1.344
+ },
+ {
+  "id": "posad_pyatnitskaya_vvedenskaya_1910",
+  "file": "images/posad_pyatnitskaya_vvedenskaya_1910.webp",
+  "caption_title": "«Сергиевский посад. Древняя Пятницкая церковь»: Пятницкая и Введенская церкви, цветная открытка",
+  "caption_year": "1910–1914",
+  "caption_why": "Пятницкая и Введенская церкви у Пятницкого колодца — приходские храмы торгового подола посада, мимо которых ходили Семенчинские и Максимовы.",
+  "size": "L",
+  "people": [],
+  "place": "Сергиев посад, Пятницкое подворье",
+  "source_url": "https://pastvu.com/p/1210473",
+  "license": "Общественное достояние по сроку давности (pastvu.com; при публикации ставить ссылку на страницу фото); дореволюционная открытка, частная коллекция",
+  "island": "posad20",
+  "seq": 208,
+  "links": [
+   "posad_pyatnitskoe_1913"
+  ],
+  "aspect": 1.576
+ },
+ {
+  "id": "posad_pyatnitskoe_1913",
+  "file": "images/posad_pyatnitskoe_1913.webp",
+  "caption_title": "Вид на Пятницкое подворье и Блинные ряды",
+  "caption_year": "1913",
+  "caption_why": "Пятницкое подворье с Пятницкой церковью — торговое сердце посада, где жили семьи.",
+  "size": "S",
+  "people": [
+   "NAT",
+   "NIN"
+  ],
+  "place": "Сергиев посад, Пятницкое подворье",
+  "source_url": "https://pastvu.com/p/1239222",
+  "license": "Общественное достояние по сроку давности (pastvu.com; при публикации ставить ссылку на страницу фото); первоисточник — runivers.ru (RBM-16343-257)",
+  "island": "posad20",
+  "seq": 209,
+  "links": [
+   "posad_dom_prizreniya_1900"
+  ],
+  "aspect": 1.036
+ },
+ {
+  "id": "posad_dom_prizreniya_1900",
+  "file": "images/posad_dom_prizreniya_1900.webp",
+  "caption_title": "Александро-Мариинский дом призрения, восточный фасад с домовой церковью",
+  "caption_year": "1900",
+  "caption_why": "Посадская богадельня-призрение на Переяславской улице — одно из главных благотворительных учреждений Сергиева посада.",
+  "size": "M",
+  "people": [],
+  "place": "Сергиев посад, Переяславская улица",
+  "source_url": "https://pastvu.com/p/1304094",
+  "license": "Общественное достояние по сроку давности (pastvu.com; при публикации ставить ссылку на страницу фото); опубл. в кн. «Сергиев Посад. Взгляд сквозь века», 2009",
+  "island": "posad20",
+  "seq": 210,
+  "links": [
+   "lavra_bolnitsa_1900"
+  ],
+  "aspect": 1.337
+ },
+ {
+  "id": "lavra_bolnitsa_1900",
+  "file": "images/lavra_bolnitsa_1900.webp",
+  "caption_title": "«Лаврская больница и богадельня», фото из альбома (собрание Эрмитажа)",
+  "caption_year": "1900–1909",
+  "caption_why": "Больница при Лавре; Фёдор Максимович Максимов (†1922) служил сторожем в больнице — возможно, именно в этой (не установлено).",
+  "size": "M",
+  "people": [
+   "FED"
+  ],
+  "place": "Сергиев посад, у Троице-Сергиевой лавры",
+  "source_url": "https://pastvu.com/p/2559520",
+  "license": "Общественное достояние по сроку давности (pastvu.com; при публикации ставить ссылку на страницу фото); первоисточник — Государственный Эрмитаж, collections.hermitagemuseum.org/entity/OBJECT/866250",
+  "island": "posad20",
+  "seq": 211,
+  "links": [
+   "posad_klementevskaya_1912"
+  ],
+  "aspect": 1.202
+ },
+ {
+  "id": "posad_klementevskaya_1912",
+  "file": "images/posad_klementevskaya_1912.webp",
+  "caption_title": "Клементьевская (Успенская) улица, дом 14 — двор и сад дома священника М. В. Павлова",
+  "caption_year": "1912–1916",
+  "caption_why": "Клементьевская улица — деревянная застройка Клементьевской слободы, к волости которой были приписаны семьи.",
+  "size": "S",
+  "people": [
+   "VVAS",
+   "VIVA"
+  ],
+  "place": "Сергиев посад, Клементьевская улица",
+  "source_url": "https://pastvu.com/p/746244",
+  "license": "Общественное достояние по сроку давности (pastvu.com; при публикации ставить ссылку на страницу фото); домашний архив, автор неизвестен",
+  "island": "posad20",
+  "seq": 212,
+  "links": [
+   "posad_voskresenskaya_1890"
+  ],
+  "aspect": 1.606
+ },
+ {
+  "id": "posad_voskresenskaya_1890",
+  "file": "images/posad_voskresenskaya_1890.webp",
+  "caption_title": "Церковь Воскресения Христова (Воскресенская) на Воскресенской площади",
+  "caption_year": "1890–1901",
+  "caption_why": "Воскресенский приход на южном краю посада, у Московской дороги — посад времён Якова Васильевича и молодого Алексея Яковлевича.",
+  "size": "M",
+  "people": [
+   "YAK",
+   "ALS"
+  ],
+  "place": "Сергиев посад, Воскресенская площадь",
+  "source_url": "https://pastvu.com/p/1408610",
+  "license": "Общественное достояние по сроку давности (pastvu.com; при публикации ставить ссылку на страницу фото); опубл. в кн.: Балдин В. И. «Загорск», М.: Искусство, 1984",
+  "island": "lavra",
+  "seq": 300,
+  "links": [
+   "posad_rozhdestvo_1890"
+  ],
+  "aspect": 1.439
+ },
+ {
+  "id": "posad_rozhdestvo_1890",
+  "file": "images/posad_rozhdestvo_1890.webp",
+  "caption_title": "Церковь Рождества Христова в бывшей Верхней Служней слободе",
+  "caption_year": "1890–1893",
+  "caption_why": "Христорождественский приход — один из посадских приходов, связанных с Семенчинскими и Максимовыми.",
+  "size": "S",
+  "people": [
+   "FED",
+   "FEK",
+   "ANN"
+  ],
+  "place": "Сергиев посад, Верхняя Служняя слобода",
+  "source_url": "https://pastvu.com/p/165299",
+  "license": "Общественное достояние по сроку давности (pastvu.com; при публикации ставить ссылку на страницу фото); альбом «Виды Свято-Троицкой Сергиевой Лавры»",
+  "island": "lavra",
+  "seq": 301,
+  "links": [
+   "ilyinskaya"
+  ],
+  "aspect": 0.791
+ },
+ {
+  "id": "ilyinskaya",
+  "file": "images/ilyinskaya.webp",
+  "caption_title": "Каменная церковь Пророка Илии в бывшей Пушкарской слободе",
+  "caption_year": "1890–1893",
+  "caption_why": "Приходской храм семьи: здесь Семенчинские венчались и крестили детей.",
+  "size": "M",
+  "people": [
+   "ALS",
+   "NAT",
+   "YAK",
+   "VALE",
+   "SSER"
+  ],
+  "place": "Сергиев посад, Ильинская слобода",
+  "source_url": "https://pastvu.com/p/165286",
+  "license": "Общественное достояние по сроку давности (pastvu.com; при публикации ставить ссылку на страницу фото); альбом «Виды Свято-Троицкой Сергиевой Лавры»",
+  "island": "lavra",
+  "seq": 302,
+  "links": [
+   "kazanskaya"
+  ],
+  "aspect": 0.842
+ },
+ {
+  "id": "kazanskaya",
+  "file": "images/kazanskaya.webp",
+  "caption_title": "Деревянная Казанская (летняя Ильинская) церковь 1752 г.",
+  "caption_year": "1890–1893",
+  "caption_why": "Деревянный храм Ильинского погоста, который предки видели всю жизнь (1752–1886).",
+  "size": "S",
+  "people": [
+   "VAFA"
+  ],
+  "place": "Сергиев посад, Ильинская слобода",
+  "source_url": "https://pastvu.com/p/165614",
+  "license": "Общественное достояние по сроку давности (pastvu.com; при публикации ставить ссылку на страницу фото); альбом «Виды Свято-Троицкой Сергиевой Лавры»",
+  "island": "lavra",
+  "seq": 303,
+  "links": [
+   "kelarsky"
+  ],
+  "aspect": 0.831
+ },
+ {
+  "id": "kelarsky",
+  "file": "images/kelarsky.webp",
+  "caption_title": "Вид Лавры с Келарского пруда",
+  "caption_year": "1850–1860",
+  "caption_why": "Самое раннее фото места у Ильинской слободы — время молодости Якова Васильевича.",
+  "size": "M",
+  "people": [
+   "YAK",
+   "YKON"
+  ],
+  "place": "Сергиев посад, Келарский пруд",
+  "source_url": "https://pastvu.com/p/783177",
+  "license": "Общественное достояние по сроку давности (pastvu.com; при публикации ставить ссылку на страницу фото); автор по pastvu — Charles Szathmari (?)",
+  "island": "lavra",
+  "seq": 304,
+  "links": [
+   "klementevo"
+  ],
+  "aspect": 1.29
+ },
+ {
+  "id": "klementevo",
+  "file": "images/klementevo.webp",
+  "caption_title": "Успенская церковь в Клементьеве",
+  "caption_year": "1890–1893",
+  "caption_why": "Храм центра Клементьевской волости, к которой были приписаны семьи.",
+  "size": "M",
+  "people": [
+   "VVAS",
+   "VIVA"
+  ],
+  "place": "Сергиев посад, Клементьево",
+  "source_url": "https://pastvu.com/p/165629",
+  "license": "Общественное достояние по сроку давности (pastvu.com; при публикации ставить ссылку на страницу фото); альбом «Виды Свято-Троицкой Сергиевой Лавры»",
+  "island": "lavra",
+  "seq": 305,
+  "links": [
+   "plan1839"
+  ],
+  "aspect": 1.333
+ },
+ {
+  "id": "plan1839",
+  "file": "images/plan1839.webp",
+  "caption_title": "План Сергиева посада со всеми слободами",
+  "caption_year": "1839",
+  "caption_why": "Карта посада, где жили Василий Алексеевич Семенчинсков и маленький Яков; видны Клементьево и Ильинская слобода.",
+  "size": "L",
+  "people": [
+   "VVAS",
+   "YAK",
+   "VALE"
+  ],
+  "place": "Сергиев посад",
+  "source_url": "https://commons.wikimedia.org/wiki/File:Sergiyev_Posad_plan_1839.jpg",
+  "license": "Public domain (PD-RusEmpire); первоисточник — Президентская библиотека",
+  "island": "lavra",
+  "seq": 306,
+  "links": [
+   "lavra1841"
+  ],
+  "aspect": 1.548
+ },
+ {
+  "id": "lavra1841",
+  "file": "images/lavra1841.webp",
+  "caption_title": "«Das Troizker Sergiuskloster»: Лавра и слободские избы, гравюра на стали, Meyer’s Universum, Bd. 8",
+  "caption_year": "1841",
+  "caption_why": "Лавра и посадские избы такими, какими их видели Василий и Иван Алексеевичи.",
+  "size": "L",
+  "people": [
+   "VAFA",
+   "VALE",
+   "VVAS"
+  ],
+  "place": "Троице-Сергиева лавра",
+  "source_url": "https://commons.wikimedia.org/wiki/File:Meyer%E2%80%99s_Universum_Bd._8._1841_(138502877).jpg",
+  "license": "Public domain (Wikimedia Commons; первоисточник — Polona)",
+  "island": "lavra",
+  "seq": 307,
+  "links": [
+   "lavra_gravura_1790"
+  ],
+  "aspect": 1.562
+ },
+ {
+  "id": "lavra_gravura_1790",
+  "file": "images/lavra_gravura_1790.webp",
+  "caption_title": "«Вид Свято-Троицкия Сергиевы лавры монастыря», гравюра на меди по рисунку Ф. Компорези",
+  "caption_year": "1790–1792",
+  "caption_why": "Лавра в эпоху Афанасия Емельяновича (ок. 1744–1813), самого раннего известного предка.",
+  "size": "L",
+  "people": [
+   "VAFA"
+  ],
+  "place": "Троице-Сергиева лавра",
+  "source_url": "https://pastvu.com/p/1207644",
+  "license": "Общественное достояние по сроку давности (pastvu.com; при публикации ставить ссылку на страницу фото); гравюра XVIII в. из частной коллекции (загружено fil417)",
+  "island": "lavra",
+  "seq": 308,
+  "links": [],
+  "aspect": 1.4
+ },
+ {
+  "id": "sverdlovsk_lenina_1930",
+  "file": "images/sverdlovsk_lenina_1930.webp",
+  "caption_title": "Свердловск, улица Ленина, школа им. М. Горького, открытка № 20 (фото Н. К. Татарченко)",
+  "caption_year": "1930",
+  "caption_why": "Свердловск 1930-х — город Алфутовых.",
+  "size": "M",
+  "people": [
+   "SLID",
+   "SALF"
+  ],
+  "place": "Свердловск (Екатеринбург)",
+  "source_url": "https://commons.wikimedia.org/wiki/File:%D0%A1%D0%B2%D0%B5%D1%80%D0%B4%D0%BB%D0%BE%D0%B2%D1%81%D0%BA_%D1%83%D0%BB%D0%B8%D1%86%D0%B0_%D0%9B%D0%B5%D0%BD%D0%B8%D0%BD%D0%B0_%D1%88%D0%BA%D0%BE%D0%BB%D0%B0_%D0%9C_%D0%93%D0%BE%D1%80%D1%8C%D0%BA%D0%BE%D0%B3%D0%BE.jpg",
+  "license": "Public domain (Wikimedia Commons); автор Н. К. Татарченко (1894–1942)",
+  "island": "east",
+  "seq": 400,
+  "links": [
+   "kimry_1900"
+  ],
+  "aspect": 1.425
+ },
+ {
+  "id": "kimry_1900",
+  "file": "images/kimry_1900.webp",
+  "caption_title": "Общий вид села Кимры (фото М. П. Дмитриева)",
+  "caption_year": "1900-е",
+  "caption_why": "Кимры — сапожная столица России, откуда сапожники Елисеевы.",
+  "size": "L",
+  "people": [
+   "EKV",
+   "EOM"
+  ],
+  "place": "Кимры, Тверская губ.",
+  "source_url": "https://commons.wikimedia.org/wiki/File:Kimry_village.jpg",
+  "license": "Public domain (Wikimedia Commons); автор М. П. Дмитриев (1858–1948)",
+  "island": "east",
+  "seq": 401,
+  "links": [
+   "kimry_yarmarka_1912"
+  ],
+  "aspect": 1.402
+ },
+ {
+  "id": "kimry_yarmarka_1912",
+  "file": "images/kimry_yarmarka_1912.webp",
+  "caption_title": "Кимры, ярмарка на Ильинской улице (возможно, Петровская)",
+  "caption_year": "1912",
+  "caption_why": "Кимрский торг, где сбывали обувь местных сапожников, — мир Константина Васильевича и Ольги Матвеевны Елисеевых.",
+  "size": "L",
+  "people": [
+   "EKV",
+   "EOM",
+   "SLSE"
+  ],
+  "place": "Кимры, Тверская губ., Ильинская улица",
+  "source_url": "https://pastvu.com/p/2170245",
+  "license": "Общественное достояние по сроку давности (pastvu.com; при публикации ставить ссылку на страницу фото); частная коллекция",
+  "island": "east",
+  "seq": 402,
+  "links": [
+   "uren_1913"
+  ],
+  "aspect": 1.567
+ },
+ {
+  "id": "uren_1913",
+  "file": "images/uren_1913.webp",
+  "caption_title": "Урень дореволюционный: вид села",
+  "caption_year": "1913",
+  "caption_why": "Урень Варнавинского уезда — город Еликониды Алексеевны и Николая Гавриловича Байчиковых.",
+  "size": "M",
+  "people": [
+   "SELI",
+   "SBAI"
+  ],
+  "place": "Урень, Варнавинский уезд Костромской губ.",
+  "source_url": "https://pastvu.com/p/1198196",
+  "license": "Общественное достояние по сроку давности (pastvu.com; при публикации ставить ссылку на страницу фото); первоисточник — Госкаталог музейного фонда РФ, Музейно-выставочный комплекс им. В. Ф. Мамонтова (Урень)",
+  "island": "east",
+  "seq": 403,
+  "links": [],
+  "aspect": 1.589
+ }
+]

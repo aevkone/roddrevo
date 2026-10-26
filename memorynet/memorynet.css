@@ -1,0 +1,76 @@
+/* «Места и память рода» — оформление фона древа (страница старинного альбома) */
+:root{
+  --mem-paper:#F6EFE2;      /* фон листа = светлый тон изображений */
+  --mem-mat:#FBF6EB;        /* паспарту — на тон светлее листа */
+  --mem-shadow:#E6DAC2;     /* плоская тень паспарту */
+  --mem-rule:#A8803A;       /* волосяная рамка, нити */
+  --mem-sepia:#3A2A14;      /* уголки, тёмный тон */
+  --mem-cap1:#7A5A2A;       /* первая строка подписи */
+  --mem-cap2:#8A7A62;       /* вторая строка подписи */
+  --mem-img-filter:none;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --mem-paper:#17130F; --mem-mat:#211A13; --mem-shadow:#0E0B08; --mem-rule:#B8955A;
+  --mem-sepia:#E9DCC0; --mem-cap1:#D9BD84; --mem-cap2:#B3A389;
+  --mem-img-filter:brightness(.8) contrast(.92);
+}}
+:root[data-theme="dark"]{
+  --mem-paper:#17130F; --mem-mat:#211A13; --mem-shadow:#0E0B08; --mem-rule:#B8955A;
+  --mem-sepia:#E9DCC0; --mem-cap1:#D9BD84; --mem-cap2:#B3A389;
+  --mem-img-filter:brightness(.8) contrast(.92);
+}
+
+/* фон окна схемы — тот же лист */
+#scroller{background:var(--mem-paper)}
+
+.mem-net{pointer-events:none}
+.mem-paper{fill:var(--mem-paper)}
+
+/* паспарту */
+.mem-shadow{fill:var(--mem-shadow)}
+.mem-mat{fill:var(--mem-mat);stroke:var(--mem-rule);stroke-opacity:.55;stroke-width:2.5}
+.mem-rule{fill:none;stroke:var(--mem-rule);stroke-opacity:.45;stroke-width:1.5}
+.mem-edge{fill:none;stroke:var(--mem-sepia);stroke-opacity:.35;stroke-width:2}
+.mem-corner{fill:var(--mem-sepia);opacity:.82}
+.mem-img{filter:var(--mem-img-filter)}
+
+/* подписи: курсив Cormorant Garamond, по центру, с обводкой цветом листа */
+.mem-cap text{font-family:"Cormorant Garamond","Cormorant Fallback",Georgia,serif;font-style:italic;text-anchor:middle;
+  paint-order:stroke;stroke:var(--mem-paper);stroke-width:9px;stroke-linejoin:round}
+.mem-cap-t{font-weight:600;fill:var(--mem-cap1)}
+.mem-cap-w{font-weight:400;fill:var(--mem-cap2)}
+.mem-cap-rule{stroke:var(--mem-rule);stroke-width:2;opacity:.6}
+.mem-far .mem-cap{display:none}
+
+/* рамка полотна */
+.mem-frame-out,.mem-frame-in{fill:none;stroke:var(--mem-rule);vector-effect:non-scaling-stroke}
+.mem-frame-out{stroke-width:1.2;opacity:.55}.mem-frame-in{stroke-width:.8;opacity:.35}
+.mem-frame-d{fill:var(--mem-rule);opacity:.5}
+
+/* нити: только между соседними местами и только по свободному полю; одинаковой толщины на любом масштабе */
+.mem-t path:not(.mem-knot){fill:none;stroke:var(--mem-rule);stroke-width:1.3;vector-effect:non-scaling-stroke;stroke-linecap:round}
+.mem-pp{opacity:.34}
+.mem-knot{fill:var(--mem-rule)}
+.mem-overview .mem-knot{display:none}
+
+/* подсветка: человек → его места, место → его люди */
+.mem-pic,.mem-t{transition:opacity .25s ease}
+.mem-hl .mem-t{opacity:.06}
+.mem-hl .mem-pic{opacity:.45}
+.mem-hl .mem-pic.mem-on,.mem-hl .mem-pic.mem-near{opacity:1}
+.mem-hl .mem-t.mem-on{opacity:1}
+.mem-t.mem-on path:not(.mem-knot){stroke-width:2.4}
+.mem-pic.mem-on .mem-mat{stroke-opacity:1;stroke-width:5}
+.tree .node.mem-on .card{stroke:var(--mem-rule);stroke-width:7}
+
+/* наведение на изображения — только где есть мышь */
+@media (hover:hover) and (pointer:fine){ .mem-pic{pointer-events:auto;cursor:help} }
+
+/* телефон: без мелких изображений (их не строим), нити бледнее */
+.mem-mobile .mem-pp{opacity:.26}
+
+/* одно медленное проступание при первом показе */
+@keyframes mem-in{from{opacity:0}to{opacity:1}}
+.mem-net{animation:mem-in 1.8s ease-out both}
+@media (prefers-reduced-motion:reduce){.mem-net{animation:none}.mem-pic,.mem-t{transition:none}}
+.mem-note{text-align:center;font-size:.8rem;color:var(--muted);margin:4px 16px 0}
