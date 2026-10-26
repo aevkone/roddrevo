@@ -303,13 +303,10 @@
       svg.setAttribute('viewBox', '0 ' + L.top + ' ' + vbW + ' ' + L.H);
 
       var net = el('g', {'class': 'mem-net' + (mobile ? ' mem-mobile' : ''), 'aria-hidden': 'true'});
-      el('rect', {'class': 'mem-paper', x: -2000, y: L.top - 2000, width: vbW + 4000, height: L.H + 4000}, net);
-      // рамка полотна: двойная волосяная линия с ромбиками — общий «лист альбома»
-      var fr = el('g', {'class': 'mem-frame'}, net), fy0 = L.top + 40, fy1 = L.top + L.H - 40;
-      [0, 14].forEach(function (o) {
-        el('rect', {x: 140 + o, y: fy0 + o, width: vbW - 180 - 2 * o, height: fy1 - fy0 - 2 * o, 'class': o ? 'mem-frame-in' : 'mem-frame-out'}, fr);
-      });
-      for (var dx = 140 + 6 * U; dx < vbW - 6 * U; dx += 6 * U) { diamond(fr, dx, fy0 + 7, 12, 'mem-frame-d', {}); diamond(fr, dx, fy1 - 7, 12, 'mem-frame-d', {}); }
+      el('rect', {'class': 'mem-paper', x: -20000, y: L.top - 2000, width: vbW + 40000, height: L.H + 4000}, net);
+      // рамка полотна (двойная волосяная линия с ромбиками) рисуется в scaleWatch:
+      // по бокам она стоит ровно в 1 см экрана от крайних карточек при любом масштабе
+      el('g', {'class': 'mem-frame'}, net);
       var gThreads = el('g', {'class': 'mem-threads'}, net);
       var gPics = el('g', {'class': 'mem-pics'}, net);
       var byId = {};
@@ -382,7 +379,7 @@
       svg.insertBefore(net, svg.firstChild);
       svg.setAttribute('data-mem', L.placed.length + '/' + items.length + ' · ' + Math.round(performance.now() - t0) + ' мс');
       lazy(svg, net);
-      scaleWatch(svg, net, vbW);
+      scaleWatch(svg, net, vbW, L);
       hover(svg, net, byId);
       lastSvg = svg;
     } finally { building = false; }
@@ -401,9 +398,36 @@
   }
 
   /* ---------- подписи только с «Крупно» ---------- */
-  function scaleWatch(svg, net, vbW) {
+  var CM = 96 / 2.54;   // 1 см в CSS-пикселях
+  function cardSpan(svg) {
+    var a = Infinity, z = -Infinity;
+    svg.querySelectorAll('.node[data-pid] rect.card').forEach(function (r) {
+      var x = +r.getAttribute('x'), w = +r.getAttribute('width'); a = Math.min(a, x); z = Math.max(z, x + w);
+    });
+    return isFinite(a) ? [a, z] : [140, svg.__memVbW - 40];
+  }
+  function frame(svg, net, vbW, L) {
+    var w = svg.getBoundingClientRect().width; if (!w) return;
+    var sp = cardSpan(svg), VW = +svg.viewBox.baseVal.width || vbW, g, x0, x1, fL, fR;
+    for (var i = 0; i < 6; i++) {           // масштаб зависит от ширины viewBox, а она — от отступа
+      g = CM * VW / w; fL = sp[0] - g; fR = sp[1] + g;
+      x0 = Math.min(0, fL - 140); x1 = Math.max(vbW, fR + 40); VW = x1 - x0;
+    }
+    svg.setAttribute('viewBox', x0 + ' ' + L.top + ' ' + VW + ' ' + L.H);
+    var gens = svg.querySelector(':scope > .gens');          // номера поколений — снаружи рамки, как и были
+    if (gens) gens.setAttribute('transform', 'translate(' + (fL - 140) + ' 0)');
+    var fr = net.querySelector('.mem-frame'), fy0 = L.top + 40, fy1 = L.top + L.H - 40;
+    while (fr.firstChild) fr.removeChild(fr.firstChild);
+    [0, 14].forEach(function (o) {
+      el('rect', {x: fL + o, y: fy0 + o, width: fR - fL - 2 * o, height: fy1 - fy0 - 2 * o, 'class': o ? 'mem-frame-in' : 'mem-frame-out'}, fr);
+    });
+    for (var dx = fL + 6 * U; dx < fR - 6 * U; dx += 6 * U) { diamond(fr, dx, fy0 + 7, 12, 'mem-frame-d', {}); diamond(fr, dx, fy1 - 7, 12, 'mem-frame-d', {}); }
+  }
+  function scaleWatch(svg, net, vbW, L) {
+    var lastW = 0;
     function upd() {
       var w = svg.getBoundingClientRect().width, k = w / vbW;
+      if (Math.abs(w - lastW) > 0.5) { lastW = w; frame(svg, net, vbW, L); }
       net.classList.toggle('mem-far', k < CFG.captionsFrom);
       net.classList.toggle('mem-overview', k < 0.15);
     }
