@@ -1403,11 +1403,26 @@ body.cin-open{overflow:hidden}
   try { var saved = localStorage.getItem('zoomLevel'); setLevel(saved !== null ? +saved : def, false); } catch(e) { setLevel(def, false); }
   function centerOn(pid, smooth){
     var g = c.querySelector('.node[data-pid="' + pid + '"]'); if (!g) return null;
+    if (typeof moved !== 'undefined' && smooth) moved = true;
     var r = g.getBoundingClientRect(), sr = sc.getBoundingClientRect();
     sc.scrollTo({left: sc.scrollLeft + (r.left + r.width / 2) - (sr.left + sr.width / 2), top: sc.scrollTop + (r.top + r.height / 2) - (sr.top + sr.height / 2), behavior: smooth ? BH : 'auto'});
     return g;
   }
-  if (level > 0) { var start = c.querySelector('.node[data-pid="NIN"]') || c.querySelector('.node[data-pid]'); if (start) centerOn(start.dataset.pid, false); mini(); }
+  // при открытии — середина древа (центр рамки, охватывающей все карточки), пока человек сам не сдвинул схему
+  var moved = false;
+  ['pointerdown', 'wheel', 'keydown', 'touchstart'].forEach(function(ev){ sc.addEventListener(ev, function(){ moved = true; }, {passive: true}); });
+  function centerMiddle(){
+    if (moved) return;
+    var a = Infinity, z = -Infinity, t = Infinity, b = -Infinity;
+    c.querySelectorAll('.node[data-pid] rect.card').forEach(function(r){ var q = r.getBoundingClientRect(); a = Math.min(a, q.left); z = Math.max(z, q.right); t = Math.min(t, q.top); b = Math.max(b, q.bottom); });
+    if (!isFinite(a)) return;
+    var sr = sc.getBoundingClientRect();
+    sc.scrollTo({left: sc.scrollLeft + (a + z) / 2 - (sr.left + sr.width / 2), top: sc.scrollTop + (t + b) / 2 - (sr.top + sr.height / 2), behavior: 'auto'});
+    mini();
+  }
+  ['zoomIn', 'zoomOut'].forEach(function(id){ $(id).addEventListener('click', function(){ moved = true; }); });
+  window.familyCenterTree = centerMiddle;
+  centerMiddle();
 
   // «Ваша линия»: от найденного человека вверх к предкам
   function lineage(pid){

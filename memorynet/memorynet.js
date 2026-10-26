@@ -427,7 +427,7 @@
     var lastW = 0;
     function upd() {
       var w = svg.getBoundingClientRect().width, k = w / vbW;
-      if (Math.abs(w - lastW) > 0.5) { lastW = w; frame(svg, net, vbW, L); }
+      if (Math.abs(w - lastW) > 0.5) { lastW = w; frame(svg, net, vbW, L); if (window.familyCenterTree) window.familyCenterTree(); }
       net.classList.toggle('mem-far', k < CFG.captionsFrom);
       net.classList.toggle('mem-overview', k < 0.15);
     }
