@@ -50,8 +50,30 @@ def split_photos(entries, outdir):
         conc = math.hypot(hx, hy) / sw if sw else 1
         hue = math.degrees(math.atan2(hy, hx)) % 360 if sw else 0
         mono = s0 < 0.14 or (s0 < 0.30 and conc >= 0.96 and (hue <= 50 or hue >= 345))  # ч/б или сепия
-        if not cnt or not mono or (edge and sum(edge) / len(edge) > 210 and min(edge) > 110):
-            return raw, ext  # цветное — не трогаем; края уже белые — уже обработано
+        if not cnt or not mono:
+            return raw, ext  # цветное — не трогаем
+
+        # ч/б выравниваем по лицу (овал в центре): тёмные вытягиваем, блёклые делаем контрастнее —
+        # 2% самых тёмных точек лица → 20, 2% самых светлых → 235, средняя яркость → ~128
+        v = sorted(px[x, y][0] * .299 + px[x, y][1] * .587 + px[x, y][2] * .114
+                   for y in range(0, n, 2) for x in range(0, n, 2)
+                   if math.hypot((x + .5 - c) / n, (y + .5 - c) / (n * 1.15)) < 0.3)
+        lo, hi = v[len(v) // 50], v[len(v) * 49 // 50]
+        gain, mid = min(2.2, max(1.0, 215 / max(hi - lo, 1))), (lo + hi) / 2
+        lin = lambda q: min(1, max(0, (127.5 + (q - mid) * gain) / 255))
+        mean = sum(lin(q) for q in v) / len(v)
+        gam = min(1.6, max(0.6, math.log(0.5) / math.log(min(max(mean, 0.05), 0.95))))
+        lut = [round(255 * lin(i) ** gam) for i in range(256)]
+        tuned = im.convert("L").point(lut).convert("RGB")  # сепию — в нейтральный серый, иначе растяжка рыжит
+        if max(abs(a - b) for a, b in zip(lut, range(256))) > 6:
+            im = tuned; px = im.load()
+            edge = [sum(px[x, y]) / 3 for y in range(0, n, 2) for x in range(0, n, 2)
+                    if 0.44 <= math.hypot(x + .5 - c, y + .5 - c) / n < 0.5]
+        if edge and sum(edge) / len(edge) > 210 and min(edge) > 110:
+            if im is tuned:  # края уже белые — только сохраняем выровненное
+                buf = io.BytesIO(); im.save(buf, "JPEG", quality=88)
+                return buf.getvalue(), "jpeg"
+            return raw, ext
 
         def oval(r0, r1):
             m = Image.new("L", (n, n)); mp = m.load()
