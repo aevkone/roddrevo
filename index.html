@@ -1125,7 +1125,7 @@ body.cin-open{overflow:hidden}
         // дети, умершие в детстве: одна карточка, имена и годы в две колонки
         o += '<text aria-hidden="true" class="sur" x="' + c.toFixed(1) + '" y="' + (y + 44) + '">умерли в детстве</text>';
         // больше четырёх — в три колонки мельче, чтобы два ряда влезли в карточку
-        var gn = B.grp[id].length > 4 ? 3 : 2, gf = gn === 3 ? ' style="font-size:23px"' : '';
+        var gn = B.grp[id].length > 4 ? 3 : 2, gf = gn === 3 ? ' style="font-size:22px"' : '';
         B.grp[id].forEach(function(s, k){
           var tx = left + (gn === 3 ? 16 : 26) + (k % gn) * ((w - (gn === 3 ? 20 : 0)) / gn), ty = y + 86 + Math.floor(k / gn) * 52;
           o += '<text aria-hidden="true" class="sib grp"' + gf + ' x="' + tx.toFixed(1) + '" y="' + ty + '">' + esc(s[0]) + '</text><text aria-hidden="true" class="sibd" x="' + tx.toFixed(1) + '" y="' + (ty + 24) + '">' + esc(s[1]) + '</text>';
