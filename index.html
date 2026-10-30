@@ -1336,8 +1336,12 @@ body.cin-open{overflow:hidden}
   function showAt(cx, cy, touch){
     var s = src(), r = s.getBoundingClientRect(), x = cx - r.left, y = cy - r.top;
     if (x < 0 || y < 0 || x > r.width || y > r.height) { lens.hidden = true; return; }
-    var vb = s.viewBox.baseVal.width, z = Math.max(touch ? 1.8 : 1.3, (level ? 1.1 : .7) * vb / r.width);
-    lens.hidden = false; var R = lens.offsetWidth / 2, w = Math.round(r.width * z);
+    // фон «Места и память рода» расширяет viewBox схемы после того, как сделана копия для лупы,
+    // поэтому точку переводим в координаты схемы и уже их — в пиксели копии с её собственным viewBox
+    var vb = s.viewBox.baseVal, cv = copy.viewBox.baseVal, k = r.width / vb.width,
+        z = Math.max(touch ? 1.8 : 1.3, (level ? 1.1 : .7) / k),
+        ux = vb.x + x / k - cv.x, uy = vb.y + y / k - cv.y;
+    lens.hidden = false; var R = lens.offsetWidth / 2, w = Math.round(cv.width * k * z);
     if (w !== lastW) { copy.style.width = w + 'px'; lastW = w; }
     var lx = cx - R, ly = cy - R;
     if (touch) {
@@ -1349,7 +1353,7 @@ body.cin-open{overflow:hidden}
       ly = Math.max(8, Math.min(innerHeight - 2 * R - 8, ly));
     }
     lens.style.transform = 'translate(' + lx + 'px,' + ly + 'px)';
-    lin.style.transform = 'translate(' + (R - x * z) + 'px,' + (R - y * z) + 'px)';
+    lin.style.transform = 'translate(' + (R - ux * k * z) + 'px,' + (R - uy * k * z) + 'px)';
   }
   c.addEventListener('pointermove', move);
   c.addEventListener('pointerleave', function(e){ if (e.pointerType === 'mouse') { pend = null; lens.hidden = true; } });
