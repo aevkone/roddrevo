@@ -39,7 +39,6 @@
 .tree .exl{font-size:22px;font-style:italic;fill:var(--muted)}
 .tree .genl{font-family:var(--sc);font-size:60px;fill:var(--gold);text-anchor:middle;font-weight:600}
 .f-k{--c:var(--k)}.f-s{--c:var(--s)}.f-m{--c:var(--m)}.f-r{--c:var(--r)}.f-l{--c:var(--l)}.f-i{--c:var(--muted)}
-
 .f-i .stripe{fill:none}
 .emblem .sh-edge{stroke:var(--gold);stroke-width:3}
 
@@ -409,6 +408,86 @@ html,body{overflow-x:clip}
 .tree-sec.tree-full .minimap{position:fixed;bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:61}
 .tree-sec.tree-full .mem-note{display:none}
 
+/* ===== Компактный верх: всё, что выше схемы, — плотнее, древо начинается выше ===== */
+.page{padding-block:14px 72px;gap:18px}
+.page>main{gap:18px}
+.hero{gap:4px;padding-block:12px 10px}
+.hero h1{font-size:clamp(2.2rem,5.4vw,4.3rem);line-height:1.02}
+.hero .sub{font-size:1.05rem}
+.hero .facts{font-size:1.05rem;gap:2px 20px}
+.hero .facts b{font-size:1.4rem}
+.hero-shields{--w:clamp(24px,2.3vw,32px);--g:clamp(4px,.5vw,7px);margin:4px auto 2px}
+.hero .tour-start{margin-top:2px}
+.tour-btn{padding-block:2px}
+.faces{gap:10px;padding:12px 0 12px;margin:0}
+.faces-rows{gap:8px}
+.face{width:146px;gap:3px;padding:6px 5px 7px}
+.face-ph{width:66px;height:66px}
+.face-n{line-height:1.15}
+.face-track{gap:12px;padding:4px 6px}
+.faces-head{gap:2px}
+.faces-title{font-size:clamp(1.8rem,4vw,2.6rem)}
+.faces-sub{font-size:clamp(.98rem,1.8vw,1.15rem)}
+.faces-text{font-size:.98rem;line-height:1.45;max-width:110ch;margin:2px 0 0}
+.invite{gap:12px}
+.inv-card{gap:6px;padding:12px 16px 14px;border-top-width:3px;align-content:center}
+.inv-text{font-size:.95rem;line-height:1.4;max-width:60ch}
+.inv-card .cta{min-height:46px}
+.finder-row .find-btn{min-height:46px}
+.finder input{padding-block:9px}
+.faces .steps{margin:0;font-size:.98rem}
+/* блок древа: заголовок, кнопки и подсказки — плотной шапкой над схемой */
+.tree-sec.block{padding-top:clamp(12px,1.6vw,20px);gap:8px}
+.tree-sec .bar{gap:8px 12px}
+.tree-sec .bar .block-head h2{font-size:clamp(1.7rem,2.6vw,2.1rem)}
+.tree-sec .wide-note,.tree-sec .lens-hint p,.tree-sec .add-cta .cta-note{font-size:.92rem;line-height:1.35}
+.tree-sec .wide-note{margin:0;padding:6px 10px;text-align:left}
+.tree-sec .lens-hint{padding:2px 0 2px 10px;gap:8px}
+.tree-sec .lens-hint .lh-icon{width:26px;height:26px}
+@media (min-width:900px){
+ /* «Добавить сведения», подсказка лупы и плашка про ширину — одной строкой в три колонки */
+ .tree-sec{grid-template-columns:auto minmax(0,1fr) minmax(0,1fr);column-gap:16px}
+ .tree-sec>*{grid-column:1 / -1}
+ .tree-sec>.add-cta{grid-row:2;grid-column:1;display:grid;gap:4px;justify-items:center;align-content:center;max-width:360px}
+ .tree-sec>.add-cta .cta{white-space:nowrap}
+ .tree-sec>.lens-hint{grid-row:2;grid-column:2;align-self:center}
+ .tree-sec>.wide-note{grid-row:2;grid-column:3;align-self:center}
+ .tree-sec .add-cta .cta{min-height:46px}
+ .tree-sec .add-cta .cta-note{font-size:.85rem;line-height:1.3}
+ .tree-sec.tree-full{grid-template-columns:minmax(0,1fr)}
+}
+@media (max-width:640px){
+ .page{padding-block:8px 56px}
+ .hero{padding-block:10px 8px}
+ .hero h1{font-size:clamp(2rem,10vw,2.6rem)}
+ .eyebrow-lg{font-size:1rem}
+ .hero .sub{font-size:.95rem;letter-spacing:.08em}
+ .hero .facts>span{padding:3px 2px}
+ .hero-shields{--n:15;--w:clamp(18px,5.4vw,22px);--g:3px}
+ .hero .facts{grid-template-columns:repeat(5,1fr);max-width:none;font-size:.68rem;letter-spacing:.02em}
+ .hero .facts>span,.hero .facts>span:nth-child(n+4){grid-column:auto;padding:2px 1px}
+ .hero .facts>span:nth-child(4){border-inline-start:1px solid var(--rule)}
+ .hero .facts b{font-size:1.35rem}
+ .faces-sub{font-size:.9rem;letter-spacing:.04em}
+ .tree-sec .mem-note{order:3}
+ .faces{padding:8px 0 10px;gap:8px}
+ .face{width:104px}
+ .face-ph{width:64px;height:64px}
+ .face-name{font-size:.9rem}
+ .faces-title{font-size:1.75rem}
+ .faces-text{font-size:.92rem;padding-inline:4px}
+ .invite{gap:8px;padding-inline:4px}
+ .inv-card{padding:10px 12px 12px}
+ .faces .steps{gap:4px;font-size:.92rem;padding-inline:8px}
+ .steps li{padding-left:32px;min-height:24px}
+ .steps li::before{width:24px;height:24px;font-size:.85rem}
+ .tree-sec.block{padding:10px 8px}
+ .tree-sec .bar{gap:6px}
+ .tree-sec .bar .block-head{padding-bottom:0}
+ .tree-sec .ctl{gap:6px}
+ .tree-sec .ctl>button,.tree-sec .zoom-grp button{min-height:44px}
+}
+
 [hidden]{display:none!important}
 .readonly .edit-only{display:none!important}
 html:not(.readonly) .ro-note{display:none}
@@ -702,7 +781,7 @@ body.cin-open{overflow:hidden}
   <div class="invite">
     <div class="inv-card">
       <p class="inv-title"><span aria-hidden="true">✦</span> Древо интерактивное</p>
-      <p class="inv-text">Каждый может дополнить его своей информацией: годы, имена, фото, воспоминания и документы.</p>
+      <p class="inv-text">Каждый может дополнить его своей информацией.</p>
       <button type="button" class="cta" id="facesAdd"><span class="cta-plus" aria-hidden="true">+</span>Добавить сведения</button>
     </div>
     <div class="inv-card">
