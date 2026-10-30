@@ -136,6 +136,12 @@ try:
         if e.get("dates"):
             e["dates"] = public_dates(e["dates"])
         out.append(e)
+    # фото из исходников древа (static_entries.json) — на сервере дополнений их нет
+    try:
+        ids = {e.get("id") for e in out}
+        out += [e for e in json.load(open("static_entries.json", encoding="utf-8")).get("entries", []) if e.get("id") not in ids]
+    except Exception as err:
+        print("static_entries.json не прочитан:", err)
     data = {"entries": split_photos(out, ".")}
     with open("entries.json", "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False)
