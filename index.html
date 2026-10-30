@@ -754,6 +754,11 @@ body.cin-open{overflow:hidden}
 .tree-play .tree .wed.over{stroke-dasharray:none;stroke-dashoffset:0;animation:fade .9s both}
 .tree .ptag{text-anchor:start;font-size:26px;font-weight:700;fill:var(--accent);paint-order:stroke;stroke:var(--card);stroke-width:6px}
 .tree .ptag-c{text-anchor:middle}
+
+/* Шапка без лишних линий */
+.hero,.faces{border-block:0}
+.hero::before,.hero::after,.faces::before{display:none!important}
+.tour-btn{border-bottom:0}
 </style><link rel="stylesheet" href="memorynet/memorynet.css"></head><body>
 <div class="page play" id="page">
 <a class="skip" href="#tree">Перейти к древу</a>
