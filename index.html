@@ -617,6 +617,26 @@ html{scroll-padding-top:16px}
 .scan-link{display:inline-flex;align-items:center;gap:4px;padding:1px 10px;border:1px solid var(--accent);border-radius:999px;color:var(--accent);text-decoration:none;font-size:.88em;white-space:nowrap}
 .scan-link::before{content:"";width:12px;height:14px;border:1.5px solid currentColor;border-radius:2px}
 .scan-link:hover{background:var(--accent);color:var(--on-accent)}
+/* самое раннее упоминание рода — скан с обведённым именем на первом экране (31.10.2026) */
+.first-anc{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:clamp(16px,3vw,40px);align-items:center;padding:clamp(16px,3vw,32px) 0;border-bottom:1px solid var(--rule)}
+.fa-text{display:grid;gap:10px;align-content:center}
+.fa-text h2{margin:0;font-size:clamp(1.6rem,3.2vw,2.4rem);line-height:1.15}
+.fa-lead,.fa-tr{margin:0}
+.fa-quote{margin:0;padding:10px 16px;border-left:3px solid var(--accent);background:var(--card);font-style:italic;font-size:1.1rem}
+.fa-tr{color:var(--muted)}
+.fa-src{margin:0;font-size:.88rem;color:var(--muted)}
+.fa-btns{display:flex;flex-wrap:wrap;gap:10px;margin:4px 0 0}
+.fa-go{background:var(--accent);color:var(--on-accent);border-color:var(--accent);border-radius:999px;font-family:var(--sc);letter-spacing:.04em;padding:0 20px}
+.fa-zoom{border-radius:999px;font-family:var(--sc);letter-spacing:.04em}
+.fa-scan{margin:0}
+.fa-img{position:relative;display:block;width:100%;padding:0;border:1px solid var(--gold);background:#2a2622;cursor:zoom-in;overflow:hidden;min-height:0;line-height:0}
+.fa-img img{width:100%;height:auto;display:block}
+.fa-img .fa-box{position:absolute;border:3px solid #e01b2f;border-radius:4px;box-shadow:0 0 0 3px rgba(255,255,255,.55),0 0 18px rgba(224,27,47,.55)}
+.fa-img .fa-box{margin-top:0}
+@media (prefers-reduced-motion:no-preference){.fa-img .fa-box{animation:faPulse 2.4s ease-in-out 1s 3}}
+@keyframes faPulse{50%{box-shadow:0 0 0 3px rgba(255,255,255,.55),0 0 28px 6px rgba(224,27,47,.75)}}
+.fa-img:hover{transform:none}
+@media (max-width:820px){.first-anc{grid-template-columns:minmax(0,1fr)}.fa-scan{order:-1}}
 
 [hidden]{display:none!important}
 .readonly .edit-only{display:none!important}
@@ -904,6 +924,24 @@ body.cin-open{overflow:hidden}
 </header>
 
 <main id="main">
+<section class="first-anc" id="firstAnc" aria-labelledby="faTitle">
+  <div class="fa-text">
+    <div class="eyebrow">Самое раннее упоминание рода · 1678 год</div>
+    <h2 id="faTitle">Пашка Ортемьев сын Семенечкин</h2>
+    <p class="fa-lead">Перепись 1678 года, слобода Троице-Сергиева монастыря. Наш самый ранний известный предок — <b>Павел Артемьевич Семенечкин</b>, монастырский служебник. Его имя обведено на скане.</p>
+    <blockquote class="fa-quote">«…двор Пашка Ортемьев сын Семенечкин, а у него сын Ивашко шти лет»</blockquote>
+    <p class="fa-tr">То есть: двор Павла Артемьевича Семенечкина, у него сын Иван шести лет (род. около 1672 года).</p>
+    <p class="fa-src">Списки с переписных книг 1678 г., РГБ ОР ф.303/I д.581, л.30 об. · <a href="https://lib-fond.ru/lib-rgb/303-i/f-303i-581/" target="_blank" rel="noopener">скан на lib-fond.ru</a> · прозвище в рукописи читается вероятно</p>
+    <p class="fa-btns"><button type="button" class="fa-go" data-line="VPAV">Показать на древе</button><button type="button" class="fa-zoom" id="faZoom">Скан крупно</button></p>
+  </div>
+  <figure class="fa-scan">
+    <button type="button" class="fa-img" id="faImg" aria-label="Открыть скан переписи 1678 года крупно">
+      <img src="first/vpav_1678_crop.jpg" width="1000" height="760" alt="Скан страницы переписи 1678 года с записью о дворе Пашки Ортемьева сына Семенечкина" loading="eager" decoding="async">
+      <span class="fa-box" style="left:55.6%;top:36.4%;width:38.2%;height:6.4%"></span>
+      <span class="fa-box b2" style="left:21.4%;top:43.6%;width:46%;height:6%"></span>
+    </button>
+  </figure>
+</section>
 <section class="faces" id="faces" aria-labelledby="facesTitle">
   <div class="faces-rows" id="facesRows" hidden>
     <div class="faces-row" id="facesA"></div>
@@ -1879,6 +1917,17 @@ body.cin-open{overflow:hidden}
     img.classList.toggle('zoom');
     if (img.classList.contains('zoom')) requestAnimationFrame(function(){ body.scrollLeft = fx * img.offsetWidth - body.clientWidth / 2; body.scrollTop = fy * img.offsetHeight - body.clientHeight / 2; });
   });
+  // самое раннее упоминание рода: скан — в окно просмотра, «Показать на древе» — линия предка
+  function openScanLocal(src, title){
+    var img = $('scanImg'); img.classList.remove('zoom'); img.src = src; img.alt = title;
+    $('scanTitle').textContent = title; $('scanOrig').href = 'https://lib-fond.ru/lib-rgb/303-i/f-303i-581/';
+    var d = $('scanView'); if (d.showModal) d.showModal(); else d.setAttribute('open', '');
+  }
+  [$('faImg'), $('faZoom')].forEach(function(b){ if (b) b.onclick = function(){ openScanLocal('first/vpav_1678.jpg', 'Перепись 1678 г., л.30 об.: «двор Пашка Ортемьев сын Семенечкин…»'); }; });
+  document.querySelectorAll('.fa-go').forEach(function(b){ b.onclick = function(){
+    document.getElementById('tree').scrollIntoView({behavior: BH, block: 'start'});
+    setTimeout(function(){ lastFound = null; window.familyLineFirst && window.familyLineFirst(b.dataset.line); }, RM ? 0 : 450);
+  }; });
   $('scanClose').onclick = function(){ $('scanView').close ? $('scanView').close() : $('scanView').removeAttribute('open'); };
   document.body.appendChild($('branchView'));  // прямо в body — чтобы печать ветки скрыла всё остальное
   $('lineList').onclick = function(){ if (lastFound) showBranch(lastFound); };
