@@ -42,15 +42,20 @@
 .f-i .stripe{fill:none}
 .emblem .sh-edge{stroke:var(--gold);stroke-width:3}
 
+@keyframes treeIn{from{opacity:0;transform:translateY(10px)}}
+@media (prefers-reduced-motion: reduce){
+ .tree-play .tree .node,.tree-play .tree .ring,.tree-play .tree .genl{animation:fade .5s ease-out both;animation-delay:calc(.1s + var(--g)*.1s)}
+ .tree-play .tree .kin,.tree-play .tree .wed{animation:fade .4s ease-out both;animation-delay:calc(.05s + var(--g)*.1s)}
+ .reveal-on .tree-sec:not(.tree-play):not(.tree-done) .tree .node{opacity:0}
+}
 @media (prefers-reduced-motion: no-preference){
- .tree-play .tree .node{animation:rise .8s var(--ease-out) both;animation-delay:calc(.5s + var(--g)*.6s + var(--i)*6ms);transform-box:fill-box;transform-origin:center}
- .tree-play .tree .kin,.tree-play .tree .wed{stroke-dasharray:1;stroke-dashoffset:1;animation:draw .9s ease-out forwards;animation-delay:calc(.3s + var(--g)*.6s)}
- .tree-play .tree .wed.ex{stroke-dasharray:none;animation:fade .9s both;animation-delay:calc(.3s + var(--g)*.6s)}
- .tree-play .tree .ring{animation:pop .5s cubic-bezier(.3,1.6,.5,1) both;animation-delay:calc(.9s + var(--g)*.6s);transform-box:fill-box;transform-origin:center}
- .tree-play .tree .genl{animation:fade 1s both;animation-delay:calc(.3s + var(--g)*.6s)}
+ /* вступление древа — у всех, быстро и легко (31.10.2026): волна по поколениям ~2 с, только opacity и сдвиг */
+ .tree-play .tree .node{animation:treeIn .5s var(--ease-out) both;animation-delay:calc(.15s + var(--g)*.13s)}
+ .tree-play .tree .kin,.tree-play .tree .wed{stroke-dasharray:1;stroke-dashoffset:1;animation:draw .45s ease-out forwards;animation-delay:calc(.05s + var(--g)*.13s)}
+ .tree-play .tree .wed.ex{stroke-dasharray:none;animation:fade .45s both;animation-delay:calc(.05s + var(--g)*.13s)}
+ .tree-play .tree .ring{animation:fade .35s both;animation-delay:calc(.35s + var(--g)*.13s)}
+ .tree-play .tree .genl{animation:fade .5s both;animation-delay:calc(.05s + var(--g)*.13s)}
  .reveal-on .tree-sec:not(.tree-play):not(.tree-done) .tree .node,.reveal-on .tree-sec:not(.tree-play):not(.tree-done) .tree .ring{opacity:0}
- .lite.tree-play .tree .node{animation:fade .45s ease-out both;animation-delay:calc(.2s + var(--g)*.3s)}
- .lite.tree-play .tree .kin,.lite.tree-play .tree .wed{animation-duration:.4s;animation-delay:calc(.1s + var(--g)*.3s)}
  .play .emblem .sh-edge{stroke-dasharray:1;stroke-dashoffset:1;animation:draw 1.4s ease-in-out forwards;animation-delay:calc(var(--e)*.15s)}
  .play .emblem .sh-field,.play .emblem .charge{animation:fade .9s both;animation-delay:calc(.9s + var(--e)*.15s)}
  .play .title-gold{animation:foil 2.6s var(--ease-in-out) .2s both}
@@ -529,6 +534,17 @@ html,body{overflow-x:clip}
 }
 @media (max-width:420px){.tree-sec .tbar .tb{flex-direction:column;gap:2px;min-height:56px;font-size:.78rem}}
 @media (max-width:640px){.tree-sec .line-note>.ic{display:none}.tree-sec .line-note{font-size:.95rem}}
+/* режим «Крупный текст» (31.10.2026) */
+html.big-text{font-size:118%}
+html.big-text body{font-size:23px}
+html.big-text .tree-sec .lens-hint p,html.big-text .tree-sec .add-cta .cta-note,html.big-text .tree-sec .wide-note{font-size:1.05rem}
+html.big-text .tree .node text{paint-order:stroke}
+@media (max-width:899px){.tree-sec .tbar{grid-template-columns:repeat(2,1fr)}}
+@media (min-width:420px) and (max-width:899px){.tree-sec .tbar{grid-template-columns:repeat(4,1fr)}}
+/* гербы в шапке — строками по центру, неполная последняя строка тоже по центру (31.10.2026) */
+.hero-shields,.hero .hero-shields{display:flex!important;flex-wrap:wrap;justify-content:center;margin-inline:auto;max-width:min(100%,calc(var(--n) * var(--w) + (var(--n) - 1) * var(--g)))}
+.hero-shields .hs{flex:0 0 var(--w);width:var(--w)}
+@media (max-width:640px){.hero-shields,.hero .hero-shields{--n:11}}
 
 [hidden]{display:none!important}
 .readonly .edit-only{display:none!important}
@@ -619,7 +635,7 @@ body.panel-open{overflow:hidden}
 .tree .node.found .card{stroke:var(--accent);stroke-width:8}
 @media (prefers-reduced-motion: no-preference){.tree .node.found{animation:found .9s var(--ease-in-out) .5s 2;transform-box:fill-box;transform-origin:center}}
 @keyframes found{50%{transform:scale(1.08)}}
-.tree.has-line .node:not(.anc):not(.found),.tree.has-line .kin:not(.lineage),.tree.has-line .wed:not(.lineage){opacity:.25;transition:opacity .6s var(--ease-out)}
+.tree.has-line .node:not(.anc):not(.found),.tree.has-line .kin:not(.lineage),.tree.has-line .wed:not(.lineage){opacity:.4;transition:opacity .6s var(--ease-out)}
 .tree .wed.lineage{stroke:var(--accent);stroke-width:5}
 .tree .kin.lineage{stroke:var(--accent);stroke-width:6}
 .tree .node.anc .card{stroke:var(--accent);stroke-width:5}
@@ -705,7 +721,7 @@ body.panel-open{overflow:hidden}
 .tree.hl .wed.hl-on{stroke:var(--accent)}
 /* родство «не доказано» — пунктир */
 .tree .kin.prob{stroke-width:2;stroke-opacity:.45;animation:none!important;opacity:1}
-.tree-play .tree .kin.prob{opacity:0;animation:fadeIn .6s ease-out forwards!important;animation-delay:calc(.3s + var(--g)*.6s)!important}
+.tree-play .tree .kin.prob{opacity:0;animation:fadeIn .6s ease-out forwards!important;animation-delay:calc(.05s + var(--g)*.13s)!important}
 @keyframes fadeIn{to{opacity:1}}
 .legend .lg-prob::before{content:"";display:inline-block;width:22px;height:0;border-top:2px solid rgba(0,0,0,.25);vertical-align:4px;margin-right:6px}
 /* обычные (прописные) цифры: «1881», а не «I88I» */
@@ -797,6 +813,11 @@ body.cin-open{overflow:hidden}
 .tree-play .tree .wed.over{stroke-dasharray:none;stroke-dashoffset:0;animation:fade .9s both}
 .tree .ptag{text-anchor:start;font-size:26px;font-weight:700;fill:var(--accent);paint-order:stroke;stroke:var(--card);stroke-width:6px}
 .tree .ptag-c{text-anchor:middle}
+/* выбранный человек линии — золотая рамка; кнопка «Открыть карточку» в строке линии (31.10.2026) */
+.tree.has-line .node.found .card{stroke:var(--gold);stroke-width:11}
+.tree-sec .line-open{display:inline-flex;align-items:center;border-radius:999px;min-height:42px;padding:0 16px;background:var(--card);color:var(--accent);border:1.5px solid var(--accent);font-family:var(--sc);letter-spacing:.03em}
+/* длинные ссылки и шифры в источниках переносятся, а не обрезаются (31.10.2026) */
+.src-list,.src-list li,.src-list a,.panel .entry,.panel .entry a{overflow-wrap:anywhere;word-break:break-word}
 </style><link rel="stylesheet" href="memorynet/memorynet.css"></head><body>
 <div class="page play" id="page">
 <a class="skip" href="#tree">Перейти к древу</a>
@@ -850,6 +871,7 @@ body.cin-open{overflow:hidden}
       <button type="button" id="zoomIn" aria-label="Увеличить схему" title="Увеличить"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5v14"/></svg></button>
       </div>
       <button type="button" id="lensbtn" class="tb" aria-pressed="true" title="Увеличительное стекло под курсором"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5 21 21"/></svg><span class="lbl">Лупа</span></button>
+      <button type="button" id="bigText" class="tb" aria-pressed="false" title="Крупнее весь текст на странице и в древе"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 19 8 6l5 13M4.8 14.5h6.4M14 19l3.5-9 3.5 9M15.2 16h4.6"/></svg><span class="lbl">Крупный текст</span></button>
       <button type="button" id="replay" class="tb" title="Показать, как древо вырастает"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z"/></svg><span class="lbl">Анимация</span></button>
       <button type="button" id="fullBtn" class="tb" aria-pressed="false" title="Открыть древо на весь экран"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg><span class="lbl">Во весь экран</span></button>
     </div>
@@ -858,7 +880,7 @@ body.cin-open{overflow:hidden}
   <div class="add-cta edit-only"><button type="button" id="addAny" class="cta cta-main"><span class="cta-plus" aria-hidden="true">+</span>Добавить сведения в древо</button><span class="cta-note">Человек, история, дата или исправление — запись сразу увидят все родные</span></div>
   <div class="lens-hint mouse-only"><span class="lh-icon" aria-hidden="true"><svg viewBox="0 0 48 48"><circle cx="20" cy="20" r="13"/><path d="M30 30 L43 43"/></svg></span><p><b>Наведите курсор на человека</b> — подсветятся его родители, супруги и дети. <b>Чтобы сдвинуть схему,</b> зажмите левую кнопку мыши и тяните. Кнопка <b>«Лупа»</b> включает увеличительное стекло под курсором.</p></div>
   <div class="lens-hint touch-only"><span class="lh-icon" aria-hidden="true"><svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="6"/><circle cx="24" cy="24" r="15"/></svg></span><p><b>Лупа:</b> нажмите на древо и подержите палец — появится увеличительное стекло, ведите им по карточкам. <b>Коснитесь человека</b> — откроется его карточка. Листайте схему пальцем, кнопкой <b>−</b> увидите её целиком.</p></div>
-  <p class="line-note" id="lineNote" hidden role="status"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v18M6 9l6-6 6 6"/></svg><span></span> <button type="button" id="lineOff"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>Снять подсветку</button></p>
+  <p class="line-note" id="lineNote" hidden role="status"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v18M6 9l6-6 6 6"/></svg><span></span> <button type="button" id="lineOff"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>Снять подсветку</button> <button type="button" id="lineOpen" class="line-open">Открыть карточку</button></p>
   <div class="scroll-wrap"><div class="scroller" id="scroller" tabindex="0" role="region" aria-label="Схема древа, листайте вбок стрелками"><div class="canvas" id="canvas"></div></div>
   <div class="minimap" id="minimap" hidden aria-hidden="true"><div class="mm-in" id="mmIn"></div><div class="mm-view" id="mmView"></div></div></div>
   <p class="mem-note">Вокруг древа — старинные виды мест, где жили предки (общественное достояние: Wikimedia Commons, pastvu.com). Наведите на изображение — подсветятся люди, кому место важно.</p>
@@ -1511,6 +1533,16 @@ body.cin-open{overflow:hidden}
   // на компьютере лупа выключена, пока её не включат кнопкой: она закрывала подсветку семьи; на телефоне — по долгому нажатию
   try { var ls = localStorage.getItem('lens'); if (ls === '0' || (ls === null && !coarseUI)) { lb.onclick(); localStorage.removeItem('lens'); } } catch(e) {}
 
+  // «Крупный текст»: весь текст страницы крупнее, древо — не мельче «Крупно»; выбор запоминается
+  var bt = $('bigText');
+  function setBig(on, save){
+    document.documentElement.classList.toggle('big-text', on); bt.setAttribute('aria-pressed', on);
+    if (on && level < 2) setLevel(2, true);
+    if (save) try { localStorage.setItem('bigText', on ? '1' : '0'); } catch(e) {}
+  }
+  bt.onclick = function(){ setBig(bt.getAttribute('aria-pressed') !== 'true', true); };
+  try { if (localStorage.getItem('bigText') === '1') setBig(true, false); } catch(e) {}
+
   // подсказка лупы исчезает после первого использования
   function hideLensHint(){ document.querySelectorAll('.lens-hint.mouse-only').forEach(function(h){ h.classList.add('seen'); }); }
   try { if (localStorage.getItem('lensSeen')) hideLensHint(); } catch(e) {}
@@ -1691,16 +1723,35 @@ body.cin-open{overflow:hidden}
       var P = (window.FAMILY_PEOPLE || {})[top] || {}, parts = [];
       if (depth) parts.push(depth + ' ' + ru(depth, 'поколение', 'поколения', 'поколений') + ' предков, самый ранний — ' + ((P.sur ? P.sur + ' ' : '') + (P.name || '')).trim());
       if (down) parts.push(down + ' ' + ru(down, 'поколение', 'поколения', 'поколений') + ' потомков');
-      note.querySelector('span').textContent = 'Вся линия: ' + parts.join('; ');
+      var ME = (window.FAMILY_PEOPLE || {})[pid] || {};
+      note.querySelector('span').textContent = 'Линия: ' + ((ME.sur ? ME.sur + ' ' : '') + (ME.name || '')).trim() + ' — ' + parts.join('; ');
     }
   }
-  // нажатие на карточку — подсветить всю линию этого человека
-  c.addEventListener('click', function(e){
-    var n = e.target.closest && e.target.closest('.node[data-pid]'); if (!n) return;
+  // нажатие на карточку: сначала подсветить всю линию и вписать её в окно; повторное нажатие (или кнопка) — открыть карточку
+  function fitLine(pid){
+    var svg = c.querySelector('svg'); if (!svg) return;
+    var a = Infinity, z = -Infinity, t = Infinity, b = -Infinity;
+    svg.querySelectorAll('.node.anc rect.card, .node.found rect.card').forEach(function(r){ var q = r.getBoundingClientRect(); a = Math.min(a, q.left); z = Math.max(z, q.right); t = Math.min(t, q.top); b = Math.max(b, q.bottom); });
+    if (!isFinite(a)) { centerOn(pid, true); return; }
+    var W = c.offsetWidth || 1, fw = (z - a) / W, fh = (b - t) / W, best = 1;
+    for (var n = 1; n < LEVELS.length; n++) if (fw * levelPx(n) <= sc.clientWidth * .94 && fh * levelPx(n) <= sc.clientHeight * .94) best = n;
+    var fx = ((a + z) / 2 - c.getBoundingClientRect().left) / W, fy = ((t + b) / 2 - c.getBoundingClientRect().top) / W, fits = fw * levelPx(best) <= sc.clientWidth * .94;
+    if (best !== level) setLevel(best, false);
+    requestAnimationFrame(function(){
+      if (!fits) { centerOn(pid, true); return; }
+      var w = c.offsetWidth;
+      sc.scrollTo({left: fx * w - sc.clientWidth / 2, top: fy * w - sc.clientHeight / 2, behavior: BH});
+    });
+  }
+  window.familyLineFirst = function(pid){
+    if (lastFound === pid && lineOn) return false;  // уже выбран — открываем карточку
     c.querySelectorAll('.node.found').forEach(function(x){ x.classList.remove('found'); });
-    n.classList.add('found'); lastFound = n.dataset.pid; lineOn = true; lineage(lastFound); if (window.refreshLens) window.refreshLens();
-  });
-  $('lineOff').onclick = function(){ lineOn = false; var s = c.querySelector('svg'); if (s) s.classList.remove('has-line'); $('lineNote').hidden = true; window.refreshLens(); };
+    var n = c.querySelector('.node[data-pid="' + pid + '"]'); if (n) n.classList.add('found');
+    lastFound = pid; lineOn = true; moved = true; lineage(pid); fitLine(pid); if (window.refreshLens) window.refreshLens();
+    return true;
+  };
+  $('lineOpen').onclick = function(){ if (lastFound && window.familyOpen) window.familyOpen(lastFound); };
+  $('lineOff').onclick = function(){ lineOn = false; lastFound = null; c.querySelectorAll('.node.found').forEach(function(x){ x.classList.remove('found'); }); var s = c.querySelector('svg'); if (s) s.classList.remove('has-line'); $('lineNote').hidden = true; window.refreshLens(); };
 
   // перелёт к человеку: увеличить, плавно прокрутить, подсветить, открыть карточку
 
@@ -1728,14 +1779,31 @@ body.cin-open{overflow:hidden}
   // поиск прощает: одну опечатку в длинном слове, «Семенчиков» = «Семенчинский», фамилию мужа или жены, окончания «-а/-ая»
   function alias(s){ return s.replace(/семенчинск\S*|семенчиков\S*|семенчаев\S*/g, function(w){ return w + ' семенчин'; }); }
   function stem(w){ return w.length > 5 ? w.replace(/(ая|ой|ий|ого|а|у)$/, '') : w; }
-  function near(a, b){ // расстояние правки не больше 1
+  // латиница → кириллица: «Kochergin», «Semenchinsky» находят своих
+  function translit(w){
+    if (!/[a-z]/.test(w)) return w;
+    w = w.replace(/(sky|skiy|skij)$/, 'ский').replace(/(aya)$/, 'ая');
+    var M = [['shch','щ'],['sch','щ'],['zh','ж'],['kh','х'],['ch','ч'],['sh','ш'],['ts','ц'],['yu','ю'],['ya','я'],['yo','ё'],['ye','е'],
+             ['a','а'],['b','б'],['v','в'],['w','в'],['g','г'],['d','д'],['e','е'],['z','з'],['i','и'],['j','й'],['k','к'],['l','л'],['m','м'],['n','н'],
+             ['o','о'],['p','п'],['r','р'],['s','с'],['t','т'],['u','у'],['f','ф'],['h','х'],['c','к'],['y','ы'],['x','кс'],['q','к']];
+    var out = '', i = 0;
+    while (i < w.length) { var hit = M.find(function(m){ return w.substr(i, m[0].length) === m[0]; }); if (hit) { out += hit[1]; i += hit[0].length; } else { out += w[i]; i++; } }
+    return out.replace(/ё/g, 'е');
+  }
+  function swapped(a, b){ // две соседние буквы переставлены: «Кочегрин»
+    if (a.length !== b.length) return false;
+    var d = []; for (var i = 0; i < a.length; i++) if (a[i] !== b[i]) d.push(i);
+    return d.length === 2 && d[1] === d[0] + 1 && a[d[0]] === b[d[1]] && a[d[1]] === b[d[0]];
+  }
+  function near(a, b){ // расстояние правки не больше 1 (или перестановка соседних букв)
+    if (swapped(a, b)) return true;
     if (Math.abs(a.length - b.length) > 1) return false;
     var i = 0, j = 0, d = 0;
     while (i < a.length && j < b.length) { if (a[i] === b[j]) { i++; j++; continue; } if (++d > 1) return false; if (a.length > b.length) i++; else if (b.length > a.length) j++; else { i++; j++; } }
     return d + (a.length - i) + (b.length - j) <= 1;
   }
   function search(q){
-    var words = norm(q).split(/\s+/).filter(Boolean).map(function(w){ return alias(w).split(' ').pop(); }), P = window.FAMILY_PEOPLE || {}, REL = window.FAMILY_REL || {}, out = [];
+    var words = norm(q).split(/\s+/).filter(Boolean).map(function(w){ return alias(translit(w)).split(' ').pop(); }), P = window.FAMILY_PEOPLE || {}, REL = window.FAMILY_REL || {}, out = [];
     if (!words.length) return out;
     Object.keys(P).forEach(function(id){
       var p = P[id], sp = ((REL[id] || {}).sp || []).map(function(x){ return P[x.id] ? P[x.id].sur : ''; }).join(' ');
@@ -1746,7 +1814,7 @@ body.cin-open{overflow:hidden}
         if (toks.some(function(t){ return t.indexOf(w) === 0; })) { score += 3; return true; }
         if (toks.some(function(t){ return t.indexOf(s) === 0; })) { score += 2; return true; }
         if (hay.indexOf(w) >= 0) { score += 1; return true; }
-        return w.length >= 5 && toks.some(function(t){ return near(t.slice(0, w.length), w) || near(t, w); });
+        return w.length >= 4 && toks.some(function(t){ return near(t.slice(0, w.length), w) || near(t, w); });
       });
       if (ok) out.push([id, score]);
     });
@@ -1815,7 +1883,7 @@ body.cin-open{overflow:hidden}
   // вступление играет один раз: по окончании (или при первом масштабе) схема переходит в спокойное состояние и больше не «собирается» заново
   var playT = 0;
   function settleTree(){ clearTimeout(playT); if (treeSec.classList.contains('tree-play')) { treeSec.classList.remove('tree-play'); treeSec.classList.add('tree-done'); } }
-  function playTree(){ treeSec.classList.remove('tree-play', 'tree-done'); void treeSec.offsetWidth; treeSec.classList.add('tree-play'); clearTimeout(playT); playT = setTimeout(settleTree, lite ? 5000 : 9500); }
+  function playTree(){ treeSec.classList.remove('tree-play', 'tree-done'); void treeSec.offsetWidth; treeSec.classList.add('tree-play'); clearTimeout(playT); playT = setTimeout(settleTree, 2800); }
   ['zoomIn', 'zoomOut'].forEach(function(id){ $(id).addEventListener('click', settleTree); });
   // «Во весь экран»: схема занимает весь экран (через Fullscreen API, а где его нет — растягиваем блок поверх страницы)
   var fullBtn = $('fullBtn');
@@ -2234,7 +2302,7 @@ body.cin-open{overflow:hidden}
       g.setAttribute('tabindex', g.dataset.pid === rovePid ? '0' : '-1'); g.setAttribute('role', 'button');
       var P = (window.FAMILY_PEOPLE || {})[g.dataset.pid] || {}, kin = kinText(g.dataset.pid);
       g.setAttribute('aria-label', personTitle(g.dataset.pid) + (P.dates ? ', ' + P.dates : '') + (kin ? '. ' + kin : '') + '. Открыть карточку — Enter, соседи — стрелки');
-      g.addEventListener('click', function(){ openPanel(g.dataset.pid); });
+      g.addEventListener('click', function(){ if (window.familyLineFirst && window.familyLineFirst(g.dataset.pid)) return; openPanel(g.dataset.pid); });
       g.addEventListener('focus', function(){ if (rovePid !== g.dataset.pid) { var o = svg.querySelector('.node[tabindex="0"]'); if (o) o.setAttribute('tabindex', '-1'); g.setAttribute('tabindex', '0'); rovePid = g.dataset.pid; } });
       g.addEventListener('keydown', function(e){
         if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openPanel(g.dataset.pid); return; }
