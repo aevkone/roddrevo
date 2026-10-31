@@ -648,6 +648,11 @@ html{scroll-padding-top:16px}
  .tree-sec:not(.tree-full) .minimap{position:relative;left:auto;right:auto;bottom:auto;width:100%;box-sizing:border-box;margin-top:6px;touch-action:none}
  .tree-sec:not(.tree-full) .minimap{min-height:64px}
 }
+/* рамка имени предка 1678 — одним ступенчатым контуром в промежутках строк, не закрывает буквы (31.10.2026) */
+.fa-img .fa-outline{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none}
+.fa-outline polygon{fill:rgba(224,27,47,.06);stroke:#e01b2f;stroke-width:3;vector-effect:non-scaling-stroke;stroke-linejoin:round;filter:drop-shadow(0 0 4px rgba(255,255,255,.8)) drop-shadow(0 0 8px rgba(224,27,47,.45))}
+@media (prefers-reduced-motion:no-preference){.fa-outline polygon{animation:faGlow 2.4s ease-in-out 1s 3}}
+@keyframes faGlow{50%{fill:rgba(224,27,47,.14)}}
 
 [hidden]{display:none!important}
 .readonly .edit-only{display:none!important}
@@ -968,8 +973,7 @@ body.cin-open{overflow:hidden}
   <figure class="fa-scan">
     <button type="button" class="fa-img" id="faImg" aria-label="Открыть скан переписи 1678 года крупно">
       <img src="first/vpav_1678_crop.jpg" width="850" height="760" alt="Скан страницы переписи 1678 года с записью о дворе Пашки Ортемьева сына Семенечкина" loading="eager" decoding="async">
-      <span class="fa-box" style="left:47.76%;top:36.4%;width:44.94%;height:6.4%"></span>
-      <span class="fa-box b2" style="left:7.53%;top:43.6%;width:54.12%;height:6%"></span>
+<svg class="fa-outline" viewBox="0 0 850 760" preserveAspectRatio="none" aria-hidden="true"><polygon points="402,280 778,280 778,339 507,339 507,369 64,369 64,316 402,316"/></svg>
     </button>
   </figure>
   <div class="fa-text">
@@ -1954,6 +1958,11 @@ body.cin-open{overflow:hidden}
   $('branchBody').addEventListener('click', function(e){
     var b = e.target.closest('.br-p'); if (!b) return;
     var id = b.dataset.pid; showBranch(id); window.familyLineFirst && (lastFound = null, window.familyLineFirst(id));
+  });
+  // нажатие мимо карточек (на пустое место схемы) — снять подсветку линии, древо снова в обычной яркости
+  c.addEventListener('click', function(e){
+    if (!lineOn || (e.target.closest && e.target.closest('.node[data-pid]'))) return;
+    $('lineOff').click();
   });
   $('lineOpen').onclick = function(){ if (lastFound && window.familyOpen) window.familyOpen(lastFound); };
   $('lineOff').onclick = function(){ lineOn = false; lastFound = null; c.querySelectorAll('.node.found').forEach(function(x){ x.classList.remove('found'); }); var s = c.querySelector('svg'); if (s) s.classList.remove('has-line'); $('lineNote').hidden = true; window.refreshLens(); };
