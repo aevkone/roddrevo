@@ -653,6 +653,26 @@ html{scroll-padding-top:16px}
 .fa-outline polygon{fill:rgba(224,27,47,.06);stroke:#e01b2f;stroke-width:3;vector-effect:non-scaling-stroke;stroke-linejoin:round;filter:drop-shadow(0 0 4px rgba(255,255,255,.8)) drop-shadow(0 0 8px rgba(224,27,47,.45))}
 @media (prefers-reduced-motion:no-preference){.fa-outline polygon{animation:faGlow 2.4s ease-in-out 1s 3}}
 @keyframes faGlow{50%{fill:rgba(224,27,47,.14)}}
+/* цифры в шапке: равные ячейки, число и подпись по центру ячейки (31.10.2026) */
+@media (max-width:640px){
+ .hero .facts{grid-template-columns:repeat(5,minmax(0,1fr))!important}
+ .hero .facts>span{min-width:0;align-items:center;justify-content:center;text-align:center}
+ .hero .facts>span>span{display:block;max-width:100%;overflow-wrap:anywhere}
+}
+@media (max-width:640px){
+ .hero .facts>span>span{overflow-wrap:normal;white-space:nowrap;letter-spacing:0;font-size:min(.68rem,2.65vw)}
+}
+/* лента «Лица рода»: фото и подписи строго по центру карточки, текст не вылезает за края (31.10.2026) */
+.face{grid-template-columns:minmax(0,1fr);box-sizing:border-box;text-align:center}
+.face-ph{justify-self:center}
+.face-n{min-width:0;width:100%;text-align:center}
+.face-n>*{min-width:0;overflow-wrap:anywhere}
+@media (max-width:640px){
+ .face{width:118px}
+ .face-sur{letter-spacing:.02em;font-size:.68rem}
+ .face-name{font-size:.86rem}
+ .face-d{font-size:.74rem}
+}
 
 [hidden]{display:none!important}
 .readonly .edit-only{display:none!important}
