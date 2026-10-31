@@ -2501,10 +2501,15 @@ body.cin-open{overflow:hidden}
     sg.save(); put(sg); sg.fillStyle = '#000'; sg.fillRect(inset, inset, img.width - 2 * inset, img.height - 2 * inset); sg.restore();
     lg.globalCompositeOperation = 'destination-in'; hq(lg); lg.drawImage(soft(shape, n, n / 10), 0, 0, n, n);
     c.drawImage(layer, 0, 0);
-    if (mono && !plain) whiten(c, n);
+    if (mono && !plain && deadNow()) whiten(c, n);  // медальон — только умершим, живым фото как есть
     c.restore();
   }
   // чёрно-белый снимок: голова остаётся резкой, вокруг неё — размытие, плавно уходящее в белый, без чёткой границы
+  function deadNow(){
+    var pid = window.familyCurrent ? window.familyCurrent() : '', P = (window.FAMILY_PEOPLE || {})[pid] || {};
+    var d = String(P.dates || ''), y = d.match(/\d{4}/);
+    return /†|–\s*\S/.test(d) || !!(y && +y[0] < 1910);  // родился до 1910 — заведомо умер
+  }
   function oval(n, r0, r1){
     var m = document.createElement('canvas'); m.width = m.height = n; var g = m.getContext('2d');
     g.translate(n / 2, n / 2); g.scale(1, 1.15);                          // овал чуть вытянут вверх-вниз, как голова

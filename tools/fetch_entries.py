@@ -31,13 +31,8 @@ def split_photos(entries, outdir):
             im = Image.open(io.BytesIO(raw)).convert("RGB")
         except Exception:
             return raw, ext
-        if im.size[0] != im.size[1]:  # не квадрат — берём квадрат по центру (лицо обычно в середине)
-            k = min(im.size); l, t = (im.size[0] - k) // 2, max(0, (im.size[1] - k) // 3)
-            im = im.crop((l, t, l + k, t + k)); raw = b""
         n = im.size[0]
-        if n < 64:
-            if not raw:
-                buf = io.BytesIO(); im.save(buf, "JPEG", quality=88); return buf.getvalue(), "jpeg"
+        if n < 64 or im.size[1] != n:
             return raw, ext
         px = im.load(); c = n / 2; sat = cnt = 0; edge = []; hx = hy = sw = 0.0
         for y in range(0, n, 2):
@@ -55,9 +50,8 @@ def split_photos(entries, outdir):
         conc = math.hypot(hx, hy) / sw if sw else 1
         hue = math.degrees(math.atan2(hy, hx)) % 360 if sw else 0
         mono = s0 < 0.14 or (s0 < 0.30 and conc >= 0.96 and (hue <= 50 or hue >= 345))  # ч/б или сепия
-        if not cnt:
-            return raw, ext
-        # с 31.10.2026 правила медальона — для всех фото: цветные тоже переводим в ч/б в тон древа (решение владельца)
+        if not cnt or not mono:
+            return raw, ext  # цветное — не трогаем
 
         # ч/б выравниваем по лицу (овал в центре): тёмные вытягиваем, блёклые делаем контрастнее —
         # 2% самых тёмных точек лица → 20, 2% самых светлых → 235, средняя яркость → ~128
@@ -71,7 +65,7 @@ def split_photos(entries, outdir):
         gam = min(1.6, max(0.6, math.log(0.5) / math.log(min(max(mean, 0.05), 0.95))))
         lut = [round(255 * lin(i) ** gam) for i in range(256)]
         tuned = im.convert("L").point(lut).convert("RGB")  # сепию — в нейтральный серый, иначе растяжка рыжит
-        if True:  # всегда в выровненный ч/б
+        if max(abs(a - b) for a, b in zip(lut, range(256))) > 6:
             im = tuned; px = im.load()
             edge = [sum(px[x, y]) / 3 for y in range(0, n, 2) for x in range(0, n, 2)
                     if 0.44 <= math.hypot(x + .5 - c, y + .5 - c) / n < 0.5]
@@ -93,6 +87,13 @@ def split_photos(entries, outdir):
         buf = io.BytesIO(); out.save(buf, "JPEG", quality=88)
         return buf.getvalue(), "jpeg"
 
+    # медальон — только умершим (список кодов пишет сборка в medal.json); живым и цветным — фото как есть (решение владельца 31.10.2026)
+    try:
+        import json as _json
+        dead = set(_json.load(open(os.path.join(str(outdir), "medal.json"), encoding="utf-8")))
+    except Exception:
+        dead = set()
+
     def save(e, ext, data):
         try:
             raw = base64.b64decode(data)
@@ -102,7 +103,8 @@ def split_photos(entries, outdir):
         if not good or len(raw) > 30000:
             e["text"] = "Фото не удалось прочитать"
             return
-        raw, ext = whiten(raw, ext)
+        if str(e.get("person") or "") in dead:
+            raw, ext = whiten(raw, ext)
         name = _re.sub("[^A-Za-z0-9_-]", "_", str(e.get("person") or "x"))
         with open(os.path.join(str(outdir), "photos", name + (".webp" if ext == "webp" else ".jpg")), "wb") as f:
             f.write(raw)
