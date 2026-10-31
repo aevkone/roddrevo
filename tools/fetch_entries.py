@@ -125,7 +125,7 @@ def split_photos(entries, outdir):
             g["parts"][i][0]["text"] = "§PHOTOX"
 
     # прежний формат: одно дополнение «§PHOTO1:формат:данные» (+ хвост в occupation/place/name)
-    for e in sorted(entries, key=lambda x: x.get("created") or 0):
+    for e in sorted(entries, key=lambda x: int(x.get("created") or 0)):
         t = e.get("text") or ""
         if e.get("kind") != "fact" or not t.startswith("§PHOTO1:"):
             continue
