@@ -382,13 +382,14 @@
       scaleWatch(svg, net, vbW, L);
       hover(svg, net, byId);
       lastSvg = svg;
+      if (window.refreshLensCopy) window.refreshLensCopy();  // лупа должна видеть и снимки мест
     } finally { building = false; }
   }
 
   /* ---------- ленивая загрузка ---------- */
   function lazy(svg, net) {
     var imgs = net.querySelectorAll('image[data-src]');
-    function load(i) { var s = i.getAttribute('data-src'); if (s) { i.setAttribute('href', s); i.removeAttribute('data-src'); } }
+    function load(i) { var s = i.getAttribute('data-src'); if (s) { i.setAttribute('href', s); i.removeAttribute('data-src'); if (window.lensImgLoaded) window.lensImgLoaded(s); } }
     if (!('IntersectionObserver' in window)) { imgs.forEach(load); return; }
     var root = document.getElementById('scroller');
     var io = new IntersectionObserver(function (es) {

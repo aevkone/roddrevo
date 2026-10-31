@@ -1503,6 +1503,9 @@ body.cin-open{overflow:hidden}
     clans();
   };
   window.refreshLens();
+  // копия для лупы — заново после того, как на фон легли снимки мест; их картинки грузятся лениво — догружаем и в копию
+  window.refreshLensCopy = function(){ if (!src()) return; lin.textContent = ''; copy = src().cloneNode(true); quiet(copy); lin.appendChild(copy); lastW = 0; };
+  window.lensImgLoaded = function(url){ if (!copy) return; copy.querySelectorAll('image[data-src]').forEach(function(i){ if (i.getAttribute('data-src') === url) { i.setAttribute('href', url); i.removeAttribute('data-src'); } }); };
   lb.onclick = function(){ on = !on; lb.setAttribute('aria-pressed', on); if (!on) lens.hidden = true;
     try { localStorage.setItem('lens', on ? '1' : '0'); } catch(e) {} };
   // на компьютере лупа выключена, пока её не включат кнопкой: она закрывала подсветку семьи; на телефоне — по долгому нажатию
@@ -2852,4 +2855,4 @@ body.cin-open{overflow:hidden}
   else sec.classList.add('faces-on');
 })();
 </script>
-<script src="memorynet/memorynet.js" defer></script></body></html>
+<script src="memorynet/memorynet.js?v=2cc49dee" defer></script></body></html>
