@@ -674,6 +674,18 @@ html{scroll-padding-top:16px}
  .face-d{font-size:.74rem}
 }
 
+.fa-cap{margin:8px 0 0;font-size:.88rem;color:var(--muted);line-height:1.4}
+.fa-ctx{padding:12px 16px;border:1px solid var(--rule);border-radius:6px;background:var(--card)}
+.fa-ctx p{margin:0 0 8px;line-height:1.5}
+.fa-ctx p:last-child{margin-bottom:0}
+.fa-ctx .fa-ctx-h{font-family:var(--sc);letter-spacing:.06em;color:var(--accent);margin-bottom:6px}
+.first-anc .fa-scan + .fa-text + .fa-scan{border-top:1px solid var(--rule);padding-top:clamp(16px,3vw,32px)}
+.first-anc{align-items:start}
+.first-anc .fa-scan{position:sticky;top:16px}
+@media (max-width:820px){.first-anc .fa-scan{position:static}}
+.first-anc .fa-scan + .fa-text + .fa-scan + .fa-text{border-top:1px solid var(--rule);padding-top:clamp(16px,3vw,32px)}
+@media (max-width:820px){.first-anc .fa-scan + .fa-text + .fa-scan + .fa-text{border-top:0;padding-top:0}}
+
 [hidden]{display:none!important}
 .readonly .edit-only{display:none!important}
 html:not(.readonly) .ro-note{display:none}
@@ -1034,7 +1046,26 @@ body.cin-open{overflow:hidden}
   <ol class="steps"><li><b>Найдите</b> себя, родителей или бабушку с дедушкой</li><li><b>Нажмите</b> на карточку человека</li><li><b>Допишите</b>, что знаете: годы, имена, историю</li></ol>
 </section>
 <section class="first-anc" id="firstAnc" aria-labelledby="faHead">
-  <h2 class="fa-head" id="faHead">Самое первое упоминание нашего рода, которое удалось найти, — 1678&nbsp;год</h2>
+  <h2 class="fa-head" id="faHead">Самые ранние упоминания нашего рода — 1609 и 1678&nbsp;годы</h2>
+  <figure class="fa-scan">
+    <button type="button" class="fa-img" id="faImg2" aria-label="Открыть скан синодика 1609 года крупно">
+      <img src="first/sinodik_1609_crop.jpg" width="866" height="398" alt="Строки Синодика Троице-Сергиева монастыря с киноварной пометой «Семеньчинские» над именами Марфы и инока Вассиана" loading="lazy" decoding="async">
+<svg class="fa-outline" viewBox="0 0 866 398" preserveAspectRatio="none" aria-hidden="true"><polygon points="596,28 784,28 784,164 596,164"/><polygon points="146,230 422,230 422,330 146,330"/></svg>
+    </button>
+    <figcaption class="fa-cap">Два фрагмента листа, увеличено. Вверху — конец 9-й строки: красным «семень», под ним имя «Марѳу». Внизу — начало 10-й строки: красным «…чинские», под ним «іно Васіана». Вместе: «Семеньчинские».</figcaption>
+  </figure>
+  <div class="fa-text">
+    <h3>1609 год · Семеньчинские: Марфа и инок Вассиан</h3>
+    <p class="fa-lead">Синодик Троице-Сергиева монастыря — книга, по которой монахи поминали умерших. Осенью 1609 года в него вписали погибших в осаду, и над двумя именами киноварью помечено: <b>«Семеньчинские»</b>. Так же — Семенчинские — с XVIII века пишется наша ветвь. Но прямого документа, который связал бы Марфу и Вассиана с Павлом Семенечкиным, пока нет — это гипотеза.</p>
+    <blockquote class="fa-quote">«Семеньчинские: Марѳу, іно Васіана»</blockquote>
+    <div class="fa-ctx">
+      <p class="fa-ctx-h">Что происходило тогда</p>
+      <p>Шло Смутное время. 23 сентября 1608 года к Троице-Сергиеву монастырю подошло войско самозванца Лжедмитрия II — польско-литовские отряды гетмана Яна Сапеги и Александра Лисовского. Монастырь стал крепостью: за его стенами укрылись монахи, стрельцы, монастырские слуги и жители окрестных слобод и сёл — с жёнами и детьми.</p>
+      <p>Осада длилась почти 16 месяцев. Монастырь выдержал штурмы, но зимой 1608–1609 годов в тесноте начались цинга и мор; умирали каждый день, хоронили десятками. Поминали погибших в этом синодике — чаще всего без фамилий, лишь у некоторых сверху дописано прозвище рода. Иноком Вассианом, вероятно, стал мирянин, постриженный перед смертью. Осада была снята 12 января 1610 года, когда к монастырю подошли полки князя Михаила Скопина-Шуйского.</p>
+    </div>
+    <p class="fa-src">НИОР РГБ ф.304/III № 25, л. 250 об., строки 9–10 · <a href="https://lib-fond.ru/lib-rgb/304-iii/f-304iii-25/" target="_blank" rel="noopener">скан на lib-fond.ru</a> · чтение «Семеньчинские» — по скану высокого разрешения, вероятно (в публикации 2023 г. — «Семеньческие»)</p>
+    <p class="fa-btns"><button type="button" class="fa-go" data-line="SMMR">Показать на древе</button><button type="button" class="fa-zoom" id="faZoom2">Скан крупно</button></p>
+  </div>
   <figure class="fa-scan">
     <button type="button" class="fa-img" id="faImg" aria-label="Открыть скан переписи 1678 года крупно">
       <img src="first/vpav_1678_crop.jpg" width="850" height="760" alt="Скан страницы переписи 1678 года с записью о дворе Пашки Ортемьева сына Семенечкина" loading="eager" decoding="async">
@@ -1042,12 +1073,16 @@ body.cin-open{overflow:hidden}
     </button>
   </figure>
   <div class="fa-text">
-    <h3 id="faTitle">Пашка Ортемьев сын Семенечкин</h3>
-    <p class="fa-lead">Перепись 1678 года, слобода Троице-Сергиева монастыря. Наш самый ранний известный предок — <b>Павел Артемьевич Семенечкин</b>, монастырский служебник. Его имя обведено на скане.</p>
+    <h3 id="faTitle">1678 год · Пашка Ортемьев сын Семенечкин</h3>
+    <p class="fa-lead">Перепись 1678 года, слобода Троице-Сергиева монастыря. Наш самый ранний <b>доказанный</b> предок — <b>Павел Артемьевич Семенечкин</b>, монастырский служебник. Его имя обведено на скане.</p>
     <blockquote class="fa-quote">«…двор Пашка Ортемьев сын Семенечкин, а у него сын Ивашко шти лет»</blockquote>
     <p class="fa-tr">То есть: двор Павла Артемьевича Семенечкина, у него сын Иван шести лет (род. около 1672 года).</p>
     <p class="fa-src">Списки с переписных книг 1678 г., РГБ ОР ф.303/I д.581, л.30 об. · <a href="https://lib-fond.ru/lib-rgb/303-i/f-303i-581/" target="_blank" rel="noopener">скан на lib-fond.ru</a> · прозвище в рукописи читается вероятно</p>
-    <p class="fa-src">Возможный исток фамилии ещё раньше: в Синодике погибших при осаде Лавры войсками Лжедмитрия II (1608–1610) осенью 1609 года помянуты «Семеньческие: Марфа, инок Вассиан» (РГБ ОР ф.304/III № 25, л.250 об.). Связь с Семенечкиными не доказана.</p>
+    <div class="fa-ctx">
+      <p class="fa-ctx-h">Что происходило тогда</p>
+      <p>Прошло почти 70 лет после Смуты. Царствовал Фёдор Алексеевич, старший брат будущего Петра I. Вокруг Троице-Сергиева монастыря — крупнейшего землевладельца страны — выросли слободы: в них жили монастырские слуги, ремесленники и крестьяне. Служебники монастыря ездили с его поручениями, охраняли обители и вотчины, работали на конюшенном и других дворах.</p>
+      <p>В 1678–1679 годах по всей стране прошла перепись дворов: государство переходило от поземельного налога к подворному, и писцы обошли каждый двор, записав хозяина и мужчин семьи с возрастом. Женщин в таких книгах обычно не писали — поэтому жена Павла неизвестна. Через несколько лет, в 1682 и 1689 годах, за стенами того же монастыря будет укрываться от стрелецких мятежей юный Пётр I.</p>
+    </div>
     <p class="fa-btns"><button type="button" class="fa-go" data-line="VPAV">Показать на древе</button><button type="button" class="fa-zoom" id="faZoom">Скан крупно</button></p>
   </div>
 </section>
@@ -2016,6 +2051,7 @@ body.cin-open{overflow:hidden}
     $('scanTitle').textContent = title; $('scanOrig').href = 'https://lib-fond.ru/lib-rgb/303-i/f-303i-581/';
     var d = $('scanView'); if (d.showModal) d.showModal(); else d.setAttribute('open', '');
   }
+  [$('faImg2'), $('faZoom2')].forEach(function(b){ if (b) b.onclick = function(){ openScanLocal('first/sinodik_1609.jpg', 'Синодик Троице-Сергиева монастыря, л. 250 об.: «Семеньчинские: Марфу, инока Васьяна», осень 1609 г.'); }; });
   [$('faImg'), $('faZoom')].forEach(function(b){ if (b) b.onclick = function(){ openScanLocal('first/vpav_1678.jpg', 'Перепись 1678 г., л.30 об.: «двор Пашка Ортемьев сын Семенечкин…»'); }; });
   document.querySelectorAll('.fa-go').forEach(function(b){ b.onclick = function(){
     document.getElementById('tree').scrollIntoView({behavior: BH, block: 'start'});
