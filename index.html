@@ -679,12 +679,12 @@ html{scroll-padding-top:16px}
 .fa-ctx p{margin:0 0 8px;line-height:1.5}
 .fa-ctx p:last-child{margin-bottom:0}
 .fa-ctx .fa-ctx-h{font-family:var(--sc);letter-spacing:.06em;color:var(--accent);margin-bottom:6px}
-.first-anc .fa-scan + .fa-text + .fa-scan{border-top:1px solid var(--rule);padding-top:clamp(16px,3vw,32px)}
 .first-anc{align-items:start}
 .first-anc .fa-scan{position:sticky;top:16px}
 @media (max-width:820px){.first-anc .fa-scan{position:static}}
-.first-anc .fa-scan + .fa-text + .fa-scan + .fa-text{border-top:1px solid var(--rule);padding-top:clamp(16px,3vw,32px)}
-@media (max-width:820px){.first-anc .fa-scan + .fa-text + .fa-scan + .fa-text{border-top:0;padding-top:0}}
+/* каждая пара скан+текст — свой блок: липкий скан не выходит за пределы своей пары */
+.fa-pair{grid-column:1 / -1;display:grid;grid-template-columns:inherit;gap:inherit;align-items:start}
+.fa-pair + .fa-pair{border-top:1px solid var(--rule);padding-top:clamp(16px,3vw,32px)}
 
 [hidden]{display:none!important}
 .readonly .edit-only{display:none!important}
@@ -1047,10 +1047,11 @@ body.cin-open{overflow:hidden}
 </section>
 <section class="first-anc" id="firstAnc" aria-labelledby="faHead">
   <h2 class="fa-head" id="faHead">Самые ранние упоминания нашего рода — 1609 и 1678&nbsp;годы</h2>
+  <div class="fa-pair">
   <figure class="fa-scan">
     <button type="button" class="fa-img" id="faImg2" aria-label="Открыть скан синодика 1609 года крупно">
-      <img src="first/sinodik_1609_crop.jpg" width="866" height="398" alt="Строки Синодика Троице-Сергиева монастыря с киноварной пометой «Семеньчинские» над именами Марфы и инока Вассиана" loading="lazy" decoding="async">
-<svg class="fa-outline" viewBox="0 0 866 398" preserveAspectRatio="none" aria-hidden="true"><polygon points="596,28 784,28 784,164 596,164"/><polygon points="146,230 422,230 422,330 146,330"/></svg>
+      <img src="first/sinodik_1609_crop.jpg" width="866" height="806" alt="Строки Синодика Троице-Сергиева монастыря с киноварной пометой «Семеньчинские» над именами Марфы и инока Вассиана" loading="lazy" decoding="async">
+<svg class="fa-outline" viewBox="0 0 866 806" preserveAspectRatio="none" aria-hidden="true"><polygon points="596,124 784,124 784,260 596,260"/><polygon points="146,532 422,532 422,632 146,632"/></svg>
     </button>
     <figcaption class="fa-cap">Два фрагмента листа, увеличено. Вверху — конец 9-й строки: красным «семень», под ним имя «Марѳу». Внизу — начало 10-й строки: красным «…чинские», под ним «іно Васіана». Вместе: «Семеньчинские».</figcaption>
   </figure>
@@ -1066,6 +1067,8 @@ body.cin-open{overflow:hidden}
     <p class="fa-src">НИОР РГБ ф.304/III № 25, л. 250 об., строки 9–10 · <a href="https://lib-fond.ru/lib-rgb/304-iii/f-304iii-25/" target="_blank" rel="noopener">скан на lib-fond.ru</a> · чтение «Семеньчинские» — по скану высокого разрешения, вероятно (в публикации 2023 г. — «Семеньческие»)</p>
     <p class="fa-btns"><button type="button" class="fa-go" data-line="SMMR">Показать на древе</button><button type="button" class="fa-zoom" id="faZoom2">Скан крупно</button></p>
   </div>
+  </div>
+  <div class="fa-pair">
   <figure class="fa-scan">
     <button type="button" class="fa-img" id="faImg" aria-label="Открыть скан переписи 1678 года крупно">
       <img src="first/vpav_1678_crop.jpg" width="850" height="760" alt="Скан страницы переписи 1678 года с записью о дворе Пашки Ортемьева сына Семенечкина" loading="eager" decoding="async">
@@ -1085,6 +1088,7 @@ body.cin-open{overflow:hidden}
     </div>
     <p class="fa-btns"><button type="button" class="fa-go" data-line="VPAV">Показать на древе</button><button type="button" class="fa-zoom" id="faZoom">Скан крупно</button></p>
   </div>
+</div>
 </section>
 
 <section class="block reveal tree-sec" id="tree">
