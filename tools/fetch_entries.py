@@ -8,7 +8,7 @@ LIVE = "https://aevkone.github.io/roddrevo/entries.json"
 KEEP = ["id", "created", "kind", "person", "personName", "author", "relation", "name", "dates", "place", "occupation", "text", "verified"]
 
 
-REMOVED = {'1792776964537-4431e73e', '1792776963752-0f6cbcbf', '1792776964129-60e67b96', '1792776964956-e6b97e08'}
+REMOVED = {'1792776963752-0f6cbcbf', '1792776964129-60e67b96', '1792776964956-e6b97e08', '1792776964537-4431e73e'}
 
 
 def get(url):
